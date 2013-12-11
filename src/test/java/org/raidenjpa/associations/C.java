@@ -3,24 +3,20 @@ package org.raidenjpa.associations;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Entity
-public class A {
+public class C {
 
 	@Id
 	@GeneratedValue
 	private Long id;
-
+	
 	private String value;
 
-	@OneToOne
-	private B b;
-
-	public A() {
+	public C() {
 	}
-
-	public A(String value) {
+	
+	public C(String value) {
 		this.value = value;
 	}
 
@@ -32,14 +28,6 @@ public class A {
 		this.id = id;
 	}
 
-	public B getB() {
-		return b;
-	}
-
-	public void setB(B b) {
-		this.b = b;
-	}
-
 	public String getValue() {
 		return value;
 	}
@@ -47,5 +35,4 @@ public class A {
 	public void setValue(String value) {
 		this.value = value;
 	}
-
 }

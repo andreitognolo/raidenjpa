@@ -1,4 +1,4 @@
-package org.raidenjpa.associations;
+package org.raidenjpa.merge;
 
 import org.junit.Test;
 

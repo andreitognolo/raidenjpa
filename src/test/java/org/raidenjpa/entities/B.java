@@ -1,4 +1,4 @@
-package org.raidenjpa.associations;
+package org.raidenjpa.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,21 +6,21 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class A {
+public class B {
 
 	@Id
 	@GeneratedValue
 	private Long id;
-
+	
 	private String value;
-
+	
 	@OneToOne
-	private B b;
+	private C c;
 
-	public A() {
+	public B() {
 	}
-
-	public A(String value) {
+	
+	public B(String value) {
 		this.value = value;
 	}
 
@@ -32,12 +32,12 @@ public class A {
 		this.id = id;
 	}
 
-	public B getB() {
-		return b;
+	public C getC() {
+		return c;
 	}
 
-	public void setB(B b) {
-		this.b = b;
+	public void setC(C c) {
+		this.c = c;
 	}
 
 	public String getValue() {
@@ -47,5 +47,4 @@ public class A {
 	public void setValue(String value) {
 		this.value = value;
 	}
-
 }

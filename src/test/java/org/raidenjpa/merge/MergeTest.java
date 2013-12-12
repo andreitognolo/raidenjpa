@@ -1,4 +1,4 @@
-package org.raidenjpa.associations;
+package org.raidenjpa.merge;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import org.junit.Test;
+import org.raidenjpa.entities.A;
+import org.raidenjpa.entities.B;
+import org.raidenjpa.entities.C;
 import org.raidenjpa.util.EntityManagerUtil;
 
 public class MergeTest {

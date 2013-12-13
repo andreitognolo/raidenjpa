@@ -12,7 +12,9 @@ public class A {
 	@GeneratedValue
 	private Long id;
 
-	private String value;
+	private String stringValue;
+	
+	private int intValue;
 
 	@OneToOne
 	private B b;
@@ -20,8 +22,9 @@ public class A {
 	public A() {
 	}
 
-	public A(String value) {
-		this.value = value;
+	public A(String stringValue, int intValue) {
+		this.stringValue = stringValue;
+		this.intValue = intValue;
 	}
 
 	public Long getId() {
@@ -40,12 +43,20 @@ public class A {
 		this.b = b;
 	}
 
-	public String getValue() {
-		return value;
+	public String getStringValue() {
+		return stringValue;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setStringValue(String stringValue) {
+		this.stringValue = stringValue;
+	}
+
+	public int getIntValue() {
+		return intValue;
+	}
+
+	public void setIntValue(int intValue) {
+		this.intValue = intValue;
 	}
 
 }

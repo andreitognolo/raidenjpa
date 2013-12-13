@@ -15,7 +15,7 @@ public class MergeTest {
 	
 	@Test
 	public void testSimpleTx() {
-		A a = new A("a");
+		A a = new A("a", 1);
 		B b = new B("b");
 		C c = new C("c");
 		
@@ -35,7 +35,7 @@ public class MergeTest {
 		
 		em = EntityManagerUtil.em();
 		a = em.find(A.class, a.getId());
-		assertEquals(a.getValue(), "a");
+		assertEquals(a.getStringValue(), "a");
 		assertEquals(a.getB().getValue(), "b");
 		assertEquals(a.getB().getC().getValue(), "c");
 		em.close();

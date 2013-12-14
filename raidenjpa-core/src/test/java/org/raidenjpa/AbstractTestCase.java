@@ -31,7 +31,7 @@ public class AbstractTestCase {
 	
 	@After
 	public void tearDown() {
-		EntityManagerUtil.closeAll();
+		EntityManagerUtil.clean();
 	}
 	
 	public void loadEntities() {
@@ -109,5 +109,13 @@ public class AbstractTestCase {
 		} finally {
 			Util.close(ps);
 		}
+	}
+	
+	public void asHibernate() {
+		EntityManagerUtil.asHibernate();
+	}
+	
+	public void asRaiden() {
+		EntityManagerUtil.asRaiden();
 	}
 }

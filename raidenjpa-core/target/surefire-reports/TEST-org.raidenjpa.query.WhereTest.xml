@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.554" errors="0" skipped="0" tests="2" name="org.raidenjpa.query.WhereTest">
+<testsuite failures="0" time="0.247" errors="0" skipped="0" tests="2" name="org.raidenjpa.query.WhereTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/local/java-stuff/jdk_new/jre/lib/i386"/>
@@ -14,7 +14,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.os.patch.level" value="unknown"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="/home2/andrei/projetos/raidenjpa/raidenjpa-core"/>
+    <property name="user.dir" value="/home2/andrei/projetos/raidenjpa"/>
     <property name="java.runtime.version" value="1.7.0_07-b10"/>
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
     <property name="java.endorsed.dirs" value="/usr/local/java-stuff/jdk_new/jre/lib/endorsed"/>
@@ -59,6 +59,6 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.41" classname="org.raidenjpa.query.WhereTest" name="testOneValue"/>
-  <testcase time="0.13" classname="org.raidenjpa.query.WhereTest" name="testOneAnd"/>
+  <testcase time="0.195" classname="org.raidenjpa.query.WhereTest" name="testOneValue"/>
+  <testcase time="0.05" classname="org.raidenjpa.query.WhereTest" name="testOneAnd"/>
 </testsuite>

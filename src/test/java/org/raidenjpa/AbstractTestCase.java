@@ -2,18 +2,18 @@ package org.raidenjpa;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.sql.DataSource;
 
+import org.junit.After;
 import org.junit.Before;
 import org.raidenjpa.entities.A;
 import org.raidenjpa.entities.B;
@@ -47,16 +47,20 @@ public class AbstractTestCase {
 		em.close();
 	}
 	
+	@After
+	public void tearDown() {
+		EntityManagerUtil.closeAll();
+	}
+	
 	public void truncate() {
-		DataSource ds = null;
 		Connection conn = null;
+		Properties connectionProps = new Properties();
+	    connectionProps.put("user", "sa");
+	    connectionProps.put("password", "");
 		try {
-			ds = (DataSource) new InitialContext().lookup("jdbc/PDocDS");
-			conn = ds.getConnection();
+			conn = DriverManager.getConnection("jdbc:hsqldb:mem:.");
 			hsqlTruncate(conn);
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} catch (NamingException e) {
 			throw new RuntimeException(e);
 		} finally {
 			Util.close(conn);

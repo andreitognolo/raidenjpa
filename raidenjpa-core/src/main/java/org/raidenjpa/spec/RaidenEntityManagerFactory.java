@@ -9,18 +9,19 @@ import javax.persistence.PersistenceUnitUtil;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.metamodel.Metamodel;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.raiden.exception.NoPlansToImplementException;
 import org.raiden.exception.NotYetImplementedException;
 
 public class RaidenEntityManagerFactory implements EntityManagerFactory {
 
 	public EntityManager createEntityManager() {
-		throw new NotYetImplementedException();
+		return createEntityManager(new HashedMap());
 	}
 
 	@SuppressWarnings("rawtypes")
 	public EntityManager createEntityManager(Map map) {
-		throw new NotYetImplementedException();
+		return new RaidenEntityManager();
 	}
 
 	public Metamodel getMetamodel() {

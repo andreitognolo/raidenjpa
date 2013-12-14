@@ -2,10 +2,19 @@ package org.raidenjpa.query;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
+import org.raidenjpa.util.QueryHelper;
 
 public class WhereTest extends AbstractTestCase {
+	
+	@Before
+	public void setUp() {
+		super.setUp();
+		
+		loadEntities();
+	}
 
 	@Test
 	public void testOneValue() {

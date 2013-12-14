@@ -27,7 +27,14 @@ public class AbstractTestCase {
 	@Before
 	public void setUp() {
 		truncate();
-		
+	}
+	
+	@After
+	public void tearDown() {
+		EntityManagerUtil.closeAll();
+	}
+	
+	public void loadEntities() {
 		A a = new A("a", 1);
 		B b = new B("b");
 		C c = new C("c");
@@ -45,11 +52,6 @@ public class AbstractTestCase {
 		
 		tx.commit();
 		em.close();
-	}
-	
-	@After
-	public void tearDown() {
-		EntityManagerUtil.closeAll();
 	}
 	
 	public void truncate() {

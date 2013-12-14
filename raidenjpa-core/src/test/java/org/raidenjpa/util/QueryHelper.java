@@ -1,11 +1,9 @@
-package org.raidenjpa.query;
+package org.raidenjpa.util;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
-import org.raidenjpa.util.EntityManagerUtil;
 
 public class QueryHelper {
 

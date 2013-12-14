@@ -14,7 +14,7 @@ import javax.persistence.ElementCollection;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
-import org.raidenjpa.Entidade;
+import org.raidenjpa.entities.Entidade;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.ReflectionUtil;
 

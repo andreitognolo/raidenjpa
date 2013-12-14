@@ -2,7 +2,7 @@ package org.raidenjpa.db;
 
 import java.util.List;
 
-import org.raidenjpa.Entidade;
+import org.raidenjpa.entities.Entidade;
 
 public class ResultadoInMemory<T> implements Resultado<T> {
 

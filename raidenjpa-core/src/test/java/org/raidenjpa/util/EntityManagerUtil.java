@@ -14,7 +14,9 @@ public class EntityManagerUtil {
 
 	private static List<EntityManager> ems = new ArrayList<EntityManager>();
 
-	private static EntityManagerFactory emf;
+	private static EntityManagerFactory emfHibernate;
+	
+	private static EntityManagerFactory emfRaiden;
 
 	private static TestType testType;
 
@@ -27,17 +29,19 @@ public class EntityManagerUtil {
 	}
 
 	private synchronized static EntityManagerFactory emf() {
-		if (emf == null) {
-			if (testType == TestType.HIBERNATE) {
-				emf = Persistence.createEntityManagerFactory("test-pu");
-			} else if (testType == TestType.RAIDEN) {
-				emf = new RaidenEntityManagerFactory();
-			} else {
-				throw new RuntimeException("testType not recognized: "
-						+ testType);
+		if (testType == TestType.HIBERNATE) {
+			if (emfHibernate == null) {
+				emfHibernate = Persistence.createEntityManagerFactory("test-pu");
 			}
+			return emfHibernate;
+		} else if (testType == TestType.RAIDEN) {
+			if (emfRaiden == null) {
+				emfRaiden = new RaidenEntityManagerFactory();
+			}
+			return emfRaiden;
+		} else {
+			throw new RuntimeException("testType not recognized: " + testType);
 		}
-		return emf;
 	}
 
 	public static void clean() {

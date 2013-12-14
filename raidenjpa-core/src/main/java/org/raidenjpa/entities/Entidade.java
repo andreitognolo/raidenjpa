@@ -1,4 +1,4 @@
-package org.raidenjpa;
+package org.raidenjpa.entities;
 
 import javax.persistence.MappedSuperclass;
 

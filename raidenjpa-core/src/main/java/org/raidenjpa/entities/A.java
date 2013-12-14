@@ -5,8 +5,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import org.raidenjpa.Entidade;
+
 @Entity
-public class A {
+public class A extends Entidade {
 
 	@Id
 	@GeneratedValue
@@ -31,8 +33,9 @@ public class A {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public A setId(Long id) {
 		this.id = id;
+		return this;
 	}
 
 	public B getB() {

@@ -4,8 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.raidenjpa.Entidade;
+
 @Entity
-public class C {
+public class C extends Entidade {
 
 	@Id
 	@GeneratedValue
@@ -24,8 +26,9 @@ public class C {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public C setId(Long id) {
 		this.id = id;
+		return this;
 	}
 
 	public String getValue() {

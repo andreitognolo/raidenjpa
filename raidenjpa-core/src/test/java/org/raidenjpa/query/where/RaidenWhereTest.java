@@ -1,4 +1,4 @@
-package org.raidenjpa.query;
+package org.raidenjpa.query.where;
 
 import org.junit.Before;
 import org.junit.Test;

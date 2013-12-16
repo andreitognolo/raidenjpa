@@ -29,6 +29,10 @@ public class EntityManagerUtil {
 	}
 
 	private synchronized static EntityManagerFactory emf() {
+		if (testType == null) {
+			throw new RuntimeException("testType not defined");
+		}
+		
 		if (testType == TestType.HIBERNATE) {
 			if (emfHibernate == null) {
 				emfHibernate = Persistence.createEntityManagerFactory("test-pu");

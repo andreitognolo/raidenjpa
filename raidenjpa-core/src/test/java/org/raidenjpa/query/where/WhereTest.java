@@ -1,4 +1,4 @@
-package org.raidenjpa.query;
+package org.raidenjpa.query.where;
 
 import static org.junit.Assert.assertEquals;
 

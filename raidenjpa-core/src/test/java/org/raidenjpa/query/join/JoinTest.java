@@ -1,4 +1,4 @@
-package org.raidenjpa.query;
+package org.raidenjpa.query.join;
 
 public class JoinTest {
 

@@ -195,6 +195,7 @@ public class RaidenEntityManager implements EntityManager {
 		return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Query createNativeQuery(String sqlString, Class resultClass) {
 		// TODO Auto-generated method stub

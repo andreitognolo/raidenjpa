@@ -13,6 +13,8 @@ public class QueryAnalysis {
 	private SelectClause select;
 	
 	private FromClause from;
+
+	private WhereClause where;
 	
 	public QueryAnalysis(String jpql) {
 		this.jpql = jpql;
@@ -21,6 +23,7 @@ public class QueryAnalysis {
 		int position;
 		position = prepareSelect();
 		position = prepareFrom(position);
+		position = prepareWhere(position);
 	}
 
 	private int prepareSelect() {
@@ -58,6 +61,14 @@ public class QueryAnalysis {
 		
 		return ++position;
 	}
+	
+	private int prepareWhere(int position) {
+		if (words.length == position || !"WHERE".equalsIgnoreCase(words[position])) {
+			return position;
+		}
+		
+		return 0;
+	}
 
 	private boolean existAlias(int position) {
 		if (words.length == position) {
@@ -75,5 +86,9 @@ public class QueryAnalysis {
 
 	public FromClause getFrom() {
 		return from;
+	}
+
+	public WhereClause getWhere() {
+		return where;
 	}
 }

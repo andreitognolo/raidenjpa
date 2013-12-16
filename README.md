@@ -5,7 +5,7 @@ A subset implementation of JPA specification which main goal is be really fast i
 
 Build Status (by Travis):
 
-[![Build Status](https://travis-ci.org/andreitognolo/raidenjpa.png)](http://travis-ci.org/andreitognolo]/raidenjpa])
+[![Build Status](https://travis-ci.org/andreitognolo/raidenjpa.png)](http://travis-ci.org/andreitognolo/raidenjpa)
 
 ## @Before
 

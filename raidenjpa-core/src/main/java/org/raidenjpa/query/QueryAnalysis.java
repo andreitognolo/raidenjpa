@@ -67,7 +67,15 @@ public class QueryAnalysis {
 			return position;
 		}
 		
-		return 0;
+		position++;
+		
+		String left = words[position];
+		String compare = words[position + 1];
+		String right = words[position + 2];
+		WhereExpression whereExpression = new WhereExpression(left, compare, right);
+		
+		position = position + 3;
+		return position;
 	}
 
 	private boolean existAlias(int position) {

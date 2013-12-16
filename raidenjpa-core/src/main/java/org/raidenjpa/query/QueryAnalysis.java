@@ -59,7 +59,7 @@ public class QueryAnalysis {
 		
 		from = new FromClause(className, alias);
 		
-		return ++position;
+		return position;
 	}
 	
 	private int prepareWhere(int position) {

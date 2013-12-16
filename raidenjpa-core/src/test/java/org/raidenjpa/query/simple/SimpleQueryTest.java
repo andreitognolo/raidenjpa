@@ -1,9 +1,8 @@
 package org.raidenjpa.query.simple;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
 import org.raidenjpa.util.QueryHelper;
 
@@ -11,12 +10,10 @@ public class SimpleQueryTest extends AbstractTestCase {
 	
 	@Before
 	public void setUp() {
-		asHibernate();
 		super.setUp();
 		loadEntities();
 	}
 	
-	@Test
 	public void testWithSelectEntity() {
 		QueryHelper query;
 		
@@ -27,7 +24,6 @@ public class SimpleQueryTest extends AbstractTestCase {
 		assertEquals(1, query.getResultList().size());
 	}
 	
-	@Test
 	public void testWithSelectAttributes() {
 		
 	}

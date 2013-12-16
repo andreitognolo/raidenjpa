@@ -161,8 +161,8 @@ public class RaidenEntityManager implements EntityManager {
 	}
 
 	@Override
-	public Query createQuery(String qlString) {
-		throw new NotYetImplementedException();
+	public Query createQuery(String jpql) {
+		return new RaidenQuery(jpql);
 	}
 
 	@Override

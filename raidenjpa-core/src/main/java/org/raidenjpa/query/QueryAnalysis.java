@@ -76,8 +76,4 @@ public class QueryAnalysis {
 	public FromClause getFrom() {
 		return from;
 	}
-	
-	public static void main(String[] args) {
-		throw new QueryAnalysisException("jpql", "FROM", 10);
-	}
 }

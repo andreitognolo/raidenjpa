@@ -11,13 +11,13 @@ public class QueryAnalysisTest {
 		String jpql = "SELECT a FROM A a";
 		QueryAnalysis queryAnalysis = new QueryAnalysis(jpql);
 		
-		FromClause from = queryAnalysis.getFrom();
-		assertEquals("A", from.getClassName());
-		assertEquals("a", from.getAliasName());
-		
 		SelectClause select = queryAnalysis.getSelect();
 		assertEquals(1, select.getElements().size());
 		assertEquals("a", select.getElements().get(0));
+		
+		FromClause from = queryAnalysis.getFrom();
+		assertEquals("A", from.getClassName());
+		assertEquals("a", from.getAliasName());
 	}
 	
 	@Test
@@ -27,9 +27,9 @@ public class QueryAnalysisTest {
 
 	@Test
 	public void testWithoutSelect() {
-		String jpql = "FROM A a";
-		
-		jpql = "FROM A";
+//		String jpql = "FROM A a";
+//		
+//		jpql = "FROM A";
 	}
 	
 	@Test

@@ -18,6 +18,7 @@ import org.raidenjpa.entities.Entidade;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.ReflectionUtil;
 
+@BadSmell("Singleton dont allow multi thread")
 public class InMemoryDB {
 
 	private static InMemoryDB me;
@@ -32,6 +33,11 @@ public class InMemoryDB {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public <T> List<T> getAll(String table) {
+		return (List<T>) rows(table);
+	}
+
+	@SuppressWarnings("unchecked")
 	public <T> List<T> get(Class<T> table, Collection<Object> ids) {
 		List<Entidade> rows = rows(table);
 
@@ -45,12 +51,16 @@ public class InMemoryDB {
 		return result;
 	}
 
-	@BadSmell("Primitive obssession, nao deveria ser um map, deveria ser uma classe tabelas")
 	private <T> List<Entidade> rows(Class<T> table) {
-		List<Entidade> rows = data.get(table.getSimpleName());
+		return rows(table.getSimpleName());
+	}
+	
+	@BadSmell("Primitive obssession, nao deveria ser um map, deveria ser uma classe tabelas")
+	private <T> List<Entidade> rows(String table) {
+		List<Entidade> rows = data.get(table);
 		if (rows == null) {
 			rows = new ArrayList<Entidade>();
-			data.put(table.getSimpleName(), rows);
+			data.put(table, rows);
 		}
 		return rows;
 	}

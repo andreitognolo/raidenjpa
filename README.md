@@ -11,4 +11,4 @@ Build Status (by Travis):
 
 You need Java 7+ and maven 3+
 
-If you dont have maven3+ you call get it calling ant prepare && source env/dextra/env.sh
+If you dont have maven3+ you can get it calling "ant prepare" && "source env/dextra/env.sh"

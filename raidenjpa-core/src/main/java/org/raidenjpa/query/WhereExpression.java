@@ -1,15 +1,9 @@
 package org.raidenjpa.query;
 
-public class WhereExpression {
-
-	private String left;
-	private String compare;
-	private String right;
+public class WhereExpression extends WhereElement {
 
 	public WhereExpression(String left, String compare, String right) {
-		this.left = left;
-		this.compare = compare;
-		this.right = right;
+		super(left, compare, right);
 	}
 
 }

@@ -1,6 +1,7 @@
 package org.raidenjpa.query;
 
 import org.hibernate.cfg.NotYetImplementedException;
+import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.StringUtil;
 
@@ -8,6 +9,7 @@ public class QueryAnalysis {
 	
 	private String jpql;
 	
+	@BadSmell("Primite Obession (create class QueryWords)")
 	private String[] words;
 
 	private SelectClause select;
@@ -63,19 +65,8 @@ public class QueryAnalysis {
 	}
 	
 	private int prepareWhere(int position) {
-		if (words.length == position || !"WHERE".equalsIgnoreCase(words[position])) {
-			return position;
-		}
-		
-		position++;
-		
-		String left = words[position];
-		String compare = words[position + 1];
-		String right = words[position + 2];
-		WhereExpression whereExpression = new WhereExpression(left, compare, right);
-		
-		position = position + 3;
-		return position;
+		where = new WhereClause();
+		return where.parse(words, position);
 	}
 
 	private boolean existAlias(int position) {

@@ -15,6 +15,7 @@ import javax.persistence.EntityTransaction;
 
 import org.junit.After;
 import org.junit.Before;
+import org.raidenjpa.db.InMemoryDB;
 import org.raidenjpa.entities.A;
 import org.raidenjpa.entities.B;
 import org.raidenjpa.entities.C;
@@ -55,6 +56,20 @@ public class AbstractTestCase {
 	}
 	
 	public void truncate() {
+		if (EntityManagerUtil.isHibernate()) {
+			hibernateTruncate();
+		} else if (EntityManagerUtil.isRaiden()) {
+			raidenTruncate();
+		} else {
+			throw new RuntimeException("Neither hibernate nor raide");
+		}
+	}
+
+	private void raidenTruncate() {
+		InMemoryDB.me().truncate();
+	}
+
+	private void hibernateTruncate() {
 		Connection conn = null;
 		Properties connectionProps = new Properties();
 	    connectionProps.put("user", "sa");

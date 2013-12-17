@@ -67,9 +67,17 @@ public class EntityManagerUtil {
 	public static void asHibernate() {
 		testType = TestType.HIBERNATE;
 	}
+	
+	public static boolean isHibernate() {
+		return testType == TestType.HIBERNATE; 
+	}
 
 	public static void asRaiden() {
 		testType = TestType.RAIDEN;
+	}
+	
+	public static boolean isRaiden() {
+		return testType == TestType.RAIDEN; 
 	}
 
 	private enum TestType {

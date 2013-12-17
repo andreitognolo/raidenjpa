@@ -5,7 +5,7 @@ import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.StringUtil;
 
-public class QueryAnalysis {
+public class QueryParser {
 	
 	private String jpql;
 	
@@ -18,7 +18,7 @@ public class QueryAnalysis {
 
 	private WhereClause where;
 	
-	public QueryAnalysis(String jpql) {
+	public QueryParser(String jpql) {
 		this.jpql = jpql;
 		this.words = jpql.split(" ");
 		
@@ -41,7 +41,7 @@ public class QueryAnalysis {
 	@FixMe("A a, B b dont generate a exception")
 	private int prepareFrom(int position) {
 		if (!"FROM".equals(words[position])) {
-			throw new QueryAnalysisException(jpql, "FROM", position);
+			throw new QueryParserException(jpql, "FROM", position);
 		}
 		
 		position++;
@@ -63,20 +63,29 @@ public class QueryAnalysis {
 		
 		return position;
 	}
-	
+
+	@BadSmell("This if should be inside where.parse (do it when create QueryWords)")
 	private int prepareWhere(int position) {
+		if (!hasMoreWord(position)) {
+			return position;
+		}
+		
 		where = new WhereClause();
 		return where.parse(words, position);
 	}
 
 	private boolean existAlias(int position) {
-		if (words.length == position) {
+		if (!hasMoreWord(position)) {
 			return false;
 		}
 		
 		String[] POSSIBLE_WORDS_AFTER_FROM = {"INNER", "WHERE", "JOIN", "LEFT"};
 		
 		return !StringUtil.equalsIgnoreCase(words[position], POSSIBLE_WORDS_AFTER_FROM);
+	}
+
+	private boolean hasMoreWord(int position) {
+		return words.length > position;
 	}
 
 	public SelectClause getSelect() {

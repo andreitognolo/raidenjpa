@@ -14,7 +14,7 @@ public class QueryHelper {
 		query = em.createQuery(jpql);
 	}
 
-	public void filter(String parameter, Object value) {
+	public void parameter(String parameter, Object value) {
 		query.setParameter(parameter, value);
 	}
 

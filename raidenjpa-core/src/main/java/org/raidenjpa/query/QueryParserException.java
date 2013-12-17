@@ -1,6 +1,6 @@
 package org.raidenjpa.query;
 
-public class QueryAnalysisException extends RuntimeException {
+public class QueryParserException extends RuntimeException {
 
 	private static final long serialVersionUID = -6129184279691249676L;
 
@@ -10,7 +10,7 @@ public class QueryAnalysisException extends RuntimeException {
 
 	private String jpql;
 
-	public QueryAnalysisException(String jpql, String tokenExpected,
+	public QueryParserException(String jpql, String tokenExpected,
 			int position) {
 		this.jpql = jpql;
 		this.tokenExpected = tokenExpected;

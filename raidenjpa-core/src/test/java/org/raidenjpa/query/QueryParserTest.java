@@ -1,6 +1,6 @@
 package org.raidenjpa.query;
 
-public class QueryAnalysisTest {
+public class QueryParserTest {
 
 	public void testAdaptJPQL() {
 		// SELECT a FROM a WHERE a.stringValue=:a is correct?

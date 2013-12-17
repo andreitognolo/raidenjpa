@@ -4,18 +4,18 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class FromQueryAnalysisTest {
+public class FromQueryParserTest {
 
 	@Test
 	public void testWithSelectEntityAndAlias() {
 		String jpql = "SELECT a FROM A a";
-		QueryAnalysis queryAnalysis = new QueryAnalysis(jpql);
+		QueryParser queryParser = new QueryParser(jpql);
 		
-		SelectClause select = queryAnalysis.getSelect();
+		SelectClause select = queryParser.getSelect();
 		assertEquals(1, select.getElements().size());
 		assertEquals("a", select.getElements().get(0));
 		
-		FromClause from = queryAnalysis.getFrom();
+		FromClause from = queryParser.getFrom();
 		assertEquals("A", from.getClassName());
 		assertEquals("a", from.getAliasName());
 	}

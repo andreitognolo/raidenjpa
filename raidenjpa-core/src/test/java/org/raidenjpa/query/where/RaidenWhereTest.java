@@ -12,7 +12,6 @@ public class RaidenWhereTest extends WhereTest {
 		super.setUp();
 	}
 	
-	@Ignore
 	@Test
 	public void testOneValue() {
 		super.testOneValue();

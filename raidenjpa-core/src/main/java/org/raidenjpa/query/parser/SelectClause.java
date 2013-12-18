@@ -1,4 +1,4 @@
-package org.raidenjpa.query;
+package org.raidenjpa.query.parser;
 
 import java.util.ArrayList;
 import java.util.List;

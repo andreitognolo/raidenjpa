@@ -18,12 +18,12 @@ import org.apache.commons.collections.Predicate;
 import org.raiden.exception.NoPlansToImplementException;
 import org.raiden.exception.NotYetImplementedException;
 import org.raidenjpa.db.InMemoryDB;
-import org.raidenjpa.query.ExpressionParameter;
-import org.raidenjpa.query.ExpressionPath;
-import org.raidenjpa.query.FromClause;
-import org.raidenjpa.query.QueryParser;
-import org.raidenjpa.query.WhereClause;
-import org.raidenjpa.query.WhereExpression;
+import org.raidenjpa.query.parser.ExpressionParameter;
+import org.raidenjpa.query.parser.ExpressionPath;
+import org.raidenjpa.query.parser.FromClause;
+import org.raidenjpa.query.parser.QueryParser;
+import org.raidenjpa.query.parser.WhereClause;
+import org.raidenjpa.query.parser.WhereExpression;
 import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.ReflectionUtil;
 
@@ -34,6 +34,7 @@ public class RaidenQuery implements Query {
 	private WhereClause where;
 	
 	private Map<String, Object> parameters = new HashMap<String, Object>();
+	private int maxResult;
 
 	public RaidenQuery(String jpql) {
 		this.jpql = jpql;
@@ -51,7 +52,17 @@ public class RaidenQuery implements Query {
 			filter(rows, where);
 		}
 		
+		rows = limit(rows);
+		
 		return rows;
+	}
+
+	private List<Object> limit(List<Object> rows) {
+		if (maxResult >= rows.size()) {
+			return rows;
+		}
+		
+		return rows.subList(0, maxResult);
 	}
 
 	private void filter(List<Object> rows, WhereClause where) {
@@ -93,7 +104,8 @@ public class RaidenQuery implements Query {
 	}
 
 	public Query setMaxResults(int maxResult) {
-		throw new NotYetImplementedException();
+		this.maxResult = maxResult;
+		return this;
 	}
 
 	public int getMaxResults() {

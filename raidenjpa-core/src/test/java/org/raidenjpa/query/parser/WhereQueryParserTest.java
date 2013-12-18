@@ -1,8 +1,12 @@
-package org.raidenjpa.query;
+package org.raidenjpa.query.parser;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.raidenjpa.query.parser.ExpressionParameter;
+import org.raidenjpa.query.parser.ExpressionPath;
+import org.raidenjpa.query.parser.WhereClause;
+import org.raidenjpa.query.parser.WhereExpression;
 
 
 public class WhereQueryParserTest {

@@ -21,4 +21,8 @@ public class QueryHelper {
 	public List<?> getResultList() {
 		return query.getResultList();
 	}
+
+	public void setMaxResult(int maxResult) {
+		query.setMaxResults(maxResult);
+	}
 }

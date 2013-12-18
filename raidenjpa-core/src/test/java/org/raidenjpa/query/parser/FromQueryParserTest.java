@@ -1,8 +1,10 @@
-package org.raidenjpa.query;
+package org.raidenjpa.query.parser;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.raidenjpa.query.parser.FromClause;
+import org.raidenjpa.query.parser.SelectClause;
 
 public class FromQueryParserTest {
 

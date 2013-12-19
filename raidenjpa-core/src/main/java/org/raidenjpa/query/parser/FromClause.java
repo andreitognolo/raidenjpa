@@ -19,4 +19,10 @@ public class FromClause {
 		return aliasName;
 	}
 
+	@Override
+	public String toString() {
+		return "FromClause [className=" + className + ", aliasName="
+				+ aliasName + "]";
+	}
+
 }

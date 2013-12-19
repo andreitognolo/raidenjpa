@@ -34,7 +34,7 @@ public class RaidenQuery implements Query {
 	private WhereClause where;
 	
 	private Map<String, Object> parameters = new HashMap<String, Object>();
-	private int maxResult;
+	private Integer maxResult;
 
 	public RaidenQuery(String jpql) {
 		this.jpql = jpql;
@@ -58,7 +58,7 @@ public class RaidenQuery implements Query {
 	}
 
 	private List<Object> limit(List<Object> rows) {
-		if (maxResult >= rows.size()) {
+		if (maxResult == null || maxResult >= rows.size()) {
 			return rows;
 		}
 		

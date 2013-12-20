@@ -14,6 +14,22 @@ public class WhereClause {
 		
 		position++;
 		
+		while (words.isThereMoreWhereElements(position)) {
+			position = addElement(words, position);
+		}
+		
+		return position;
+	}
+
+	private int addElement(QueryWords words, int position) {
+		if (words.isWhereLogicOperator(position)) {
+			return addElementLogicOperator(words, position);
+		} else {
+			return addElementExpression(words, position);
+		}
+	}
+
+	private int addElementExpression(QueryWords words, int position) {
 		String left = words.get(position);
 		String compare = words.get(position + 1);
 		String right = words.get(position + 2);
@@ -21,6 +37,12 @@ public class WhereClause {
 		queue.add(whereExpression);
 		
 		position = position + 3;
+		return position;
+	}
+
+	private int addElementLogicOperator(QueryWords words, int position) {
+		queue.add(new WhereLogicOperator(words.get(position)));
+		position++;
 		return position;
 	}
 

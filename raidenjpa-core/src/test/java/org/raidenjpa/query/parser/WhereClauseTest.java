@@ -1,15 +1,12 @@
 package org.raidenjpa.query.parser;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
-import org.junit.Ignore;
 import org.junit.Test;
-import org.raidenjpa.query.parser.ExpressionParameter;
-import org.raidenjpa.query.parser.ExpressionPath;
-import org.raidenjpa.query.parser.WhereClause;
-import org.raidenjpa.query.parser.WhereExpression;
+import org.raidenjpa.util.FixMe;
 
-public class WhereQueryParserTest {
+public class WhereClauseTest {
 
 	@Test
 	public void testOneExpression() {
@@ -33,12 +30,12 @@ public class WhereQueryParserTest {
 		assertFalse(where.hasNextElement());
 	}
 
-	@Ignore
+	@FixMe("Improve this test")
 	@Test
 	public void testAndExpression() {
 		String jpql;
 		jpql = "SELECT a FROM A a";
-		jpql += "WHERE a.stringValue = :stringValue AND a.intValue = :intValue";
+		jpql += " WHERE a.stringValue = :stringValue AND a.intValue = :intValue";
 
 		QueryParser parser = new QueryParser(jpql);
 		WhereClause where = parser.getWhere();

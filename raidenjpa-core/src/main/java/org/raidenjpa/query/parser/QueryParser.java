@@ -3,7 +3,6 @@ package org.raidenjpa.query.parser;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
-import org.raidenjpa.util.StringUtil;
 
 public class QueryParser {
 	
@@ -38,6 +37,7 @@ public class QueryParser {
 	}
 
 	@FixMe("A a, B b dont generate a exception")
+	@BadSmell("This should be inside FromClause")
 	private int prepareFrom(int position) {
 		if (!"FROM".equals(words.get(position))) {
 			throw new QueryParserException(jpql, "FROM", position);
@@ -53,7 +53,7 @@ public class QueryParser {
 		position++;
 		
 		String alias = null;
-		if (existAlias(position)) {
+		if (words.existAlias(position)) {
 			alias = words.get(position);
 			position++;
 		}
@@ -71,16 +71,6 @@ public class QueryParser {
 		
 		where = new WhereClause();
 		return where.parse(words, position);
-	}
-
-	private boolean existAlias(int position) {
-		if (!words.hasMoreWord(position)) {
-			return false;
-		}
-		
-		String[] POSSIBLE_WORDS_AFTER_FROM = {"INNER", "WHERE", "JOIN", "LEFT"};
-		
-		return !StringUtil.equalsIgnoreCase(words.get(position), POSSIBLE_WORDS_AFTER_FROM);
 	}
 
 	public SelectClause getSelect() {

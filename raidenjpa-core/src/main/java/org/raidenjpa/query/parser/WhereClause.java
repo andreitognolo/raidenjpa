@@ -7,16 +7,16 @@ public class WhereClause {
 	
 	private Queue<WhereElement> queue = new LinkedList<WhereElement>();
 	
-	public int parse(String[] words, int position) {
-		if (words.length == position || !"WHERE".equalsIgnoreCase(words[position])) {
-			return position;
+	public int parse(QueryWords words, int position) {
+		if (!"WHERE".equalsIgnoreCase(words.get(position))) {
+			throw new RuntimeException("There is no where clause in position " + position + " of jpql '" + words.getJpql());
 		}
 		
 		position++;
 		
-		String left = words[position];
-		String compare = words[position + 1];
-		String right = words[position + 2];
+		String left = words.get(position);
+		String compare = words.get(position + 1);
+		String right = words.get(position + 2);
 		WhereExpression whereExpression = new WhereExpression(left, compare, right);
 		queue.add(whereExpression);
 		

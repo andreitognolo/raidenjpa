@@ -13,7 +13,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.metamodel.Metamodel;
 
-import org.raiden.exception.NotYetImplementedException;
 import org.raidenjpa.db.InMemoryDB;
 
 public class RaidenEntityManager implements EntityManager {

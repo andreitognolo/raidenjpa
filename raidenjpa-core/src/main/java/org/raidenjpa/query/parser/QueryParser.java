@@ -9,8 +9,7 @@ public class QueryParser {
 	
 	private String jpql;
 	
-	@BadSmell("Primite Obession (create class QueryWords)")
-	private String[] words;
+	private QueryWords words;
 
 	private SelectClause select;
 	
@@ -20,7 +19,7 @@ public class QueryParser {
 	
 	public QueryParser(String jpql) {
 		this.jpql = jpql;
-		this.words = jpql.split(" ");
+		this.words = new QueryWords(jpql);
 		
 		int position;
 		position = prepareSelect();
@@ -29,33 +28,33 @@ public class QueryParser {
 	}
 
 	private int prepareSelect() {
-		if (!"SELECT".equalsIgnoreCase(words[0])) {
+		if (!"SELECT".equalsIgnoreCase(words.get(0))) {
 			return 0;
 		}
 		
-		select = new SelectClause(words[1]);
+		select = new SelectClause(words.get(1));
 		
 		return 2;
 	}
 
 	@FixMe("A a, B b dont generate a exception")
 	private int prepareFrom(int position) {
-		if (!"FROM".equals(words[position])) {
+		if (!"FROM".equals(words.get(position))) {
 			throw new QueryParserException(jpql, "FROM", position);
 		}
 		
 		position++;
 		
-		if (words[position].endsWith(",")) {
+		if (words.get(position).endsWith(",")) {
 			throw new NotYetImplementedException("Query with more than one entity in from clause");
 		}
 		
-		String className = words[position];
+		String className = words.get(position);
 		position++;
 		
 		String alias = null;
 		if (existAlias(position)) {
-			alias = words[position];
+			alias = words.get(position);
 			position++;
 		}
 		
@@ -66,7 +65,7 @@ public class QueryParser {
 
 	@BadSmell("This if should be inside where.parse (do it when create QueryWords)")
 	private int prepareWhere(int position) {
-		if (!hasMoreWord(position)) {
+		if (!words.hasMoreWord(position)) {
 			return position;
 		}
 		
@@ -75,17 +74,13 @@ public class QueryParser {
 	}
 
 	private boolean existAlias(int position) {
-		if (!hasMoreWord(position)) {
+		if (!words.hasMoreWord(position)) {
 			return false;
 		}
 		
 		String[] POSSIBLE_WORDS_AFTER_FROM = {"INNER", "WHERE", "JOIN", "LEFT"};
 		
-		return !StringUtil.equalsIgnoreCase(words[position], POSSIBLE_WORDS_AFTER_FROM);
-	}
-
-	private boolean hasMoreWord(int position) {
-		return words.length > position;
+		return !StringUtil.equalsIgnoreCase(words.get(position), POSSIBLE_WORDS_AFTER_FROM);
 	}
 
 	public SelectClause getSelect() {

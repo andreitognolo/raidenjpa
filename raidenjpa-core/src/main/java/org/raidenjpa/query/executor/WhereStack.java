@@ -8,11 +8,11 @@ import org.raidenjpa.query.parser.WhereExpression;
 import org.raidenjpa.query.parser.WhereLogicOperator;
 import org.raidenjpa.util.BadSmell;
 
-public class StackQuery {
+public class WhereStack {
 
 	private Stack<Element> stack = new Stack<Element>(); 
 	
-	public StackQueryOperation push(WhereElement element) {
+	WhereStackOperation push(WhereElement element) {
 		stack.push(new Element(element));
 		
 		if (element.isLogicOperator()) {
@@ -24,11 +24,11 @@ public class StackQuery {
 		}
 	}
 
-	private StackQueryOperation pushExpression(WhereExpression element) {
+	private WhereStackOperation pushExpression(WhereExpression element) {
 		if (isThereOperatorBefore()) {
-			return StackQueryOperation.REDUCE;
+			return WhereStackOperation.REDUCE;
 		} else {
-			return StackQueryOperation.RESOLVE;
+			return WhereStackOperation.RESOLVE;
 		}
 	}
 
@@ -49,12 +49,12 @@ public class StackQuery {
 		return stack.get(stack.size() - 2);
 	}
 
-	private StackQueryOperation pushLogicOperator(WhereLogicOperator element) {
+	private WhereStackOperation pushLogicOperator(WhereLogicOperator element) {
 		if (stack.size() == 1) {
 			throw new RuntimeException("First element must be a expression");
 		}
 		
-		return StackQueryOperation.NOTHING;
+		return WhereStackOperation.NOTHING;
 	}
 
 	@BadSmell("It is not so beautiful, but at least is isolated")
@@ -62,7 +62,7 @@ public class StackQuery {
 		
 		private Object element;
 		
-		public Element(Object element) {
+		Element(Object element) {
 			if (element instanceof WhereElement || element instanceof List) {
 				this.element = element;
 			} else {
@@ -70,7 +70,7 @@ public class StackQuery {
 			}
 		}
 
-		public boolean isLogicOperator() {
+		boolean isLogicOperator() {
 			return element instanceof WhereLogicOperator;
 		}
 	}

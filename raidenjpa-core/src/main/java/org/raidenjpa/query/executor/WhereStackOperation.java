@@ -1,6 +1,6 @@
 package org.raidenjpa.query.executor;
 
-public enum StackQueryOperation {
+public enum WhereStackOperation {
 
 	NOTHING, RESOLVE, REDUCE
 	

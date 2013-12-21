@@ -7,6 +7,10 @@ public class WhereLogicOperator extends WhereElement {
 	public WhereLogicOperator(String operator) {
 		this.operator = operator;
 	}
+	
+	public boolean isLogicOperator() {
+		return true;
+	}
 
 	public String getOperator() {
 		return operator;

@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
-import org.raidenjpa.util.FixMe;
 
 public class WhereClauseTest {
 
@@ -16,21 +15,11 @@ public class WhereClauseTest {
 		WhereClause where = parser.getWhere();
 
 		WhereExpression expression = (WhereExpression) where.nextElement();
-		
-		ExpressionPath left = (ExpressionPath) expression.getLeft();
-		assertEquals(2, left.getPath().size());
-		assertEquals("a", left.getPath().get(0));
-		assertEquals("stringValue", left.getPath().get(1));
-
-		assertEquals("=", expression.getOperator());
-
-		ExpressionParameter right = (ExpressionParameter) expression.getRight();
-		assertEquals("a", right.getParameterName());
+		assertExpression(expression, "a.stringValue", "=", "a");
 
 		assertFalse(where.hasNextElement());
 	}
 
-	@FixMe("Improve this test")
 	@Test
 	public void testAndExpression() {
 		String jpql;
@@ -39,8 +28,27 @@ public class WhereClauseTest {
 
 		QueryParser parser = new QueryParser(jpql);
 		WhereClause where = parser.getWhere();
-		assertEquals(WhereExpression.class, where.nextElement().getClass());
-		assertEquals(WhereLogicOperator.class, where.nextElement().getClass());
-		assertEquals(WhereExpression.class, where.nextElement().getClass());
+		
+		WhereExpression firstExpression = (WhereExpression) where.nextElement();
+		assertExpression(firstExpression, "a.stringValue", "=", "stringValue");
+		
+		WhereLogicOperator logicOperator = (WhereLogicOperator) where.nextElement();
+		assertEquals("AND", logicOperator.getOperator());
+		
+		WhereExpression secondExpression = (WhereExpression) where.nextElement();
+		assertExpression(secondExpression, "a.intValue", "=", "intValue");
+	}
+
+	private void assertExpression(WhereExpression expression, String leftSide, String operator, String rightSide) {
+		ExpressionPath left = (ExpressionPath) expression.getLeft();
+		String[] paths = leftSide.split("\\.");
+		assertEquals(paths.length, left.getPath().size());
+		assertEquals(paths[0], left.getPath().get(0));
+		assertEquals(paths[1], left.getPath().get(1));
+
+		assertEquals(operator, expression.getOperator());
+
+		ExpressionParameter right = (ExpressionParameter) expression.getRight();
+		assertEquals(rightSide, right.getParameterName());
 	}
 }

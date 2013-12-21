@@ -6,6 +6,7 @@ import java.util.Stack;
 import org.raidenjpa.query.parser.WhereElement;
 import org.raidenjpa.query.parser.WhereExpression;
 import org.raidenjpa.query.parser.WhereLogicOperator;
+import org.raidenjpa.util.BadSmell;
 
 public class StackQuery {
 
@@ -56,6 +57,7 @@ public class StackQuery {
 		return StackQueryOperation.NOTHING;
 	}
 
+	@BadSmell("It is not so beautiful, but at least is isolated")
 	private class Element {
 		
 		private Object element;

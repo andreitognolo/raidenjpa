@@ -11,6 +11,10 @@ public class WhereExpression extends WhereElement {
 		this.operator = operator;
 		this.right = ExpressionElement.create(right);
 	}
+	
+	public boolean isExpression() {
+		return true;
+	}
 
 	public ExpressionElement getLeft() {
 		return left;

@@ -7,11 +7,15 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>raidenjpa-core</name>
+	<name>raidenjpa</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+    <prerequisites>
+        <maven>3</maven>
+    </prerequisites>
 
 	<modules>
 		<module>raidenjpa-core</module>

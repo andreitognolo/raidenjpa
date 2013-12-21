@@ -1,18 +1,18 @@
 package org.raidenjpa.query.executor;
 
+import java.util.List;
 import java.util.Stack;
 
-import org.raiden.exception.NotYetImplementedException;
 import org.raidenjpa.query.parser.WhereElement;
 import org.raidenjpa.query.parser.WhereExpression;
 import org.raidenjpa.query.parser.WhereLogicOperator;
 
 public class StackQuery {
 
-	private Stack<WhereElement> stack = new Stack<WhereElement>(); 
+	private Stack<Element> stack = new Stack<Element>(); 
 	
 	public StackQueryOperation push(WhereElement element) {
-		stack.push(element);
+		stack.push(new Element(element));
 		
 		if (element.isLogicOperator()) {
 			return pushLogicOperator((WhereLogicOperator) element);
@@ -32,7 +32,7 @@ public class StackQuery {
 	}
 
 	private boolean isThereOperatorBefore() {
-		WhereElement previousElement = getPreviousElement();
+		Element previousElement = getPreviousElement();
 		if (previousElement == null) {
 			return false;
 		} else {
@@ -40,7 +40,7 @@ public class StackQuery {
 		}
 	}
 
-	private WhereElement getPreviousElement() {
+	private Element getPreviousElement() {
 		if (stack.size() == 1) {
 			return null;
 		}
@@ -56,4 +56,20 @@ public class StackQuery {
 		return StackQueryOperation.NOTHING;
 	}
 
+	private class Element {
+		
+		private Object element;
+		
+		public Element(Object element) {
+			if (element instanceof WhereElement || element instanceof List) {
+				this.element = element;
+			} else {
+				throw new RuntimeException("Only WhereElement or List is acceptable");
+			}
+		}
+
+		public boolean isLogicOperator() {
+			return element instanceof WhereLogicOperator;
+		}
+	}
 }

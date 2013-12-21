@@ -9,7 +9,7 @@ public class WhereClauseTest {
 
 	@Test
 	public void testOneExpression() {
-		String jpql = "SELECT a FROM A a WHERE a.stringValue = :a";
+		String jpql = "SELECT a FROM A a WHERE a.stringValue = :a ORDER BY a.stringValue";
 
 		QueryParser parser = new QueryParser(jpql);
 		WhereClause where = parser.getWhere();
@@ -24,7 +24,7 @@ public class WhereClauseTest {
 	public void testAndExpression() {
 		String jpql;
 		jpql = "SELECT a FROM A a";
-		jpql += " WHERE a.stringValue = :stringValue AND a.intValue = :intValue";
+		jpql += " WHERE a.stringValue = :stringValue AND a.intValue = :intValue ORDER BY a.stringValue";
 
 		QueryParser parser = new QueryParser(jpql);
 		WhereClause where = parser.getWhere();

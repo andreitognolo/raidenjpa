@@ -1,7 +1,7 @@
 Raiden JPA
 =========
 
-A subset implementation of JPA specification which main goal is be really fast in development environments.
+A implementation of JPA subset specification which main goal is be really fast in development environments.
 
 Build Status (by Travis):
 

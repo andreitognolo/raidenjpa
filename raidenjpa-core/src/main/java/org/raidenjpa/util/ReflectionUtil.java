@@ -78,6 +78,11 @@ public class ReflectionUtil {
 		return "" + c + name.substring(4);
 	}
 
+	@FixMe("Find element with @Id")
+	public static Object getBeanId(Object obj) {
+		return getBeanField(obj, "id");
+	}
+	
 	public static Object getBeanField(Object obj, String fieldName) {
 		try {
 			String methodName = toMethodName("get", fieldName);

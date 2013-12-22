@@ -91,6 +91,35 @@ public class WhereStack {
 		filter(parcialResult, expression);
 		stack.push(new Element(parcialResult));
 	}
+	
+	public void reduce() {
+		resolve();
+		
+		List<?> firstResult = (List<?>) stack.pop().getRaw();
+		WhereLogicOperator logicOperator = (WhereLogicOperator) stack.pop().getRaw();
+		String operator = logicOperator.getOperator();
+		List<?> secondResult = (List<?>) stack.pop().getRaw();
+		
+		List<?> result = mergeResults(firstResult, operator, secondResult);
+		stack.push(new Element(result));
+	}
+
+	private List<?> mergeResults(List<?> firstResult, String operator, List<?> secondResult) {
+		if (!operator.equals("AND")) {
+			throw new NotYetImplementedException("Logic Operator " + operator + " not implemented yet");
+		}
+		
+		List<Object> result = new ArrayList<Object>();
+		for (Object first : firstResult) {
+			for (Object second : secondResult) {
+				if (first == second) {
+					result.add(first);
+				}
+			}
+		}
+		
+		return result;
+	}
 
 	private void filter(List<?> parcialResult, WhereExpression expression) {
 		ExpressionPath left = (ExpressionPath) expression.getLeft();
@@ -169,6 +198,7 @@ public class WhereStack {
 	@BadSmell("It is not so beautiful, but at least is isolated")
 	private class Element {
 		
+		// List || WhereElement
 		private Object raw;
 		
 		Element(Object element) {
@@ -187,5 +217,4 @@ public class WhereStack {
 			return raw;
 		}
 	}
-
 }

@@ -68,5 +68,13 @@ public class WhereStackTest {
 		assertEquals(RESOLVE, stackQuery.push(firstExpression));
 		stackQuery.resolve();
 		assertEquals(2, stackQuery.getResultList().size());
+		
+		WhereElement logicOperator = queryParser.getWhere().nextElement();
+		assertEquals(NOTHING, stackQuery.push(logicOperator));
+		
+		WhereElement secondExpression = queryParser.getWhere().nextElement();
+		assertEquals(REDUCE, stackQuery.push(secondExpression));
+		stackQuery.reduce();
+		assertEquals(1, stackQuery.getResultList().size());
 	}
 }

@@ -2,7 +2,6 @@ package org.raidenjpa.query.executor;
 
 import java.util.Stack;
 
-import org.raiden.exception.NotYetImplementedException;
 import org.raidenjpa.query.parser.WhereElement;
 import org.raidenjpa.query.parser.WhereExpression;
 import org.raidenjpa.query.parser.WhereLogicOperator;

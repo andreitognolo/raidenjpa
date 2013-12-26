@@ -1,30 +1,23 @@
 package org.raidenjpa.query.executor;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.raiden.exception.NotYetImplementedException;
-import org.raidenjpa.query.parser.ExpressionParameter;
-import org.raidenjpa.query.parser.ExpressionPath;
 import org.raidenjpa.query.parser.QueryParser;
 import org.raidenjpa.query.parser.WhereElement;
 import org.raidenjpa.query.parser.WhereExpression;
 import org.raidenjpa.query.parser.WhereLogicOperator;
 import org.raidenjpa.util.BadSmell;
-import org.raidenjpa.util.ReflectionUtil;
 
 @BadSmell("Rename to WhereExecutor")
 public class WhereStack {
 
-	private List<?> initialRows;
+	private Object obj;
 	
 	private Stack<Element> stack = new Stack<Element>();
 
+	@BadSmell("We are using just FromClause")
 	private QueryParser queryParser;
 
 	private Map<String, Object> parameters; 
@@ -33,10 +26,15 @@ public class WhereStack {
 		
 	}
 	
-	WhereStack(List<?> rows, QueryParser queryParser, Map<String, Object> parameters) {
+	WhereStack(QueryParser queryParser, Map<String, Object> parameters) {
 		this.queryParser = queryParser;
 		this.parameters = parameters;
-		this.initialRows = Collections.unmodifiableList(rows);
+	}
+	
+	WhereStack(Object obj, QueryParser queryParser, Map<String, Object> parameters) {
+		this.obj = obj;
+		this.queryParser = queryParser;
+		this.parameters = parameters;
 	}
 
 	WhereStackOperation push(WhereElement element) {
@@ -47,7 +45,7 @@ public class WhereStack {
 		} else if (element.isExpression()) {
 			return pushExpression((WhereExpression) element);
 		} else {
-			throw new RuntimeException("Element must be a logicOperator or a expression");
+			throw new RuntimeException("Element must be a logicOperator or an expression");
 		}
 	}
 
@@ -87,122 +85,48 @@ public class WhereStack {
 	public void resolve() {
 		WhereExpression expression = (WhereExpression) stack.pop().getRaw();
 		
-		List<?> parcialResult = new ArrayList<Object>(initialRows);
-		filter(parcialResult, expression);
-		stack.push(new Element(parcialResult));
+		Object match = expression.match(obj, queryParser.getFrom().getAliasName(), parameters);
+		
+		stack.push(new Element(match));
 	}
 	
 	public void reduce() {
 		resolve();
 		
-		List<?> firstResult = (List<?>) stack.pop().getRaw();
+		Boolean firstResult = (Boolean) stack.pop().getRaw();
 		WhereLogicOperator logicOperator = (WhereLogicOperator) stack.pop().getRaw();
-		String operator = logicOperator.getOperator();
-		List<?> secondResult = (List<?>) stack.pop().getRaw();
+		Boolean secondResult = (Boolean) stack.pop().getRaw();
 		
-		List<?> result = mergeResults(firstResult, operator, secondResult);
+		Boolean result = logicOperator.evaluate(firstResult, secondResult); 
+		
 		stack.push(new Element(result));
 	}
 
-	private List<?> mergeResults(List<?> firstResult, String operator, List<?> secondResult) {
-		if (!operator.equals("AND")) {
-			throw new NotYetImplementedException("Logic Operator " + operator + " not implemented yet");
-		}
-		
-		List<Object> result = new ArrayList<Object>();
-		for (Object first : firstResult) {
-			for (Object second : secondResult) {
-				if (first == second) {
-					result.add(first);
-				}
-			}
-		}
-		
-		return result;
-	}
-
-	private void filter(List<?> parcialResult, WhereExpression expression) {
-		ExpressionPath left = (ExpressionPath) expression.getLeft();
-		removeRootAliasPath(left);
-		
-		if (left.getPath().size() > 1) {
-			throw new NotYetImplementedException("Where with two level is not implemented (ex: a.b.name)");
-		}
-		
-		final String attribute = left.getPath().get(0);
-		final String operator = expression.getOperator();
-		
-		ExpressionParameter expressionParameter = (ExpressionParameter) expression.getRight();
-		final Object value = parameters.get(expressionParameter.getParameterName());
-		
-		CollectionUtils.filter(parcialResult, new Predicate() {
-			
-			@SuppressWarnings("unchecked")
-			public boolean evaluate(Object obj) {
-				Comparable<Object> filterValue = (Comparable<Object>) value;
-				Comparable<Object> objValue = (Comparable<Object>) ReflectionUtil.getBeanField(obj, attribute);
-				
-				return isTrue(objValue, operator, filterValue);
-			}
-
-			private boolean isTrue(Comparable<Object> valorObj, String operador, Comparable<Object> valorFiltro) {
-				if ("=".equals(operador)) {
-					if (valorFiltro.equals(valorObj)) {
-						return true;
-					}
-				} else if (">=".equals(operador)) {
-					if (valorObj.compareTo(valorFiltro) >= 0) {
-						return true;
-					}
-				} else if (">".equals(operador)) {
-					if (valorObj.compareTo(valorFiltro) > 0) {
-						return true;
-					}
-				} else if ("<".equals(operador)) {
-					if (valorObj.compareTo(valorFiltro) <= 0) {
-						return true;
-					}
-				} else if ("<=".equals(operador)) {
-					if (valorObj.compareTo(valorFiltro) < 0) {
-						return true;
-					}
-				} else {
-					throw new RuntimeException("Operador " + operador + " not implemented yet");
-				}
-				
-				return false;
-			}
-		});
-	}
-
-	private void removeRootAliasPath(ExpressionPath left) {
-		String rootAlias = queryParser.getFrom().getAliasName();
-		
-		if (left.getPath().indexOf(rootAlias) == 0) {
-			left.getPath().remove(0);
-		}
-	}
-
-	public List<?> getResultList() {
+	public boolean getResult() {
 		if (stack.size() != 1) {
 			throw new RuntimeException("The stack has more than one element");
 		}
 		
-		if (!(stack.get(0).getRaw() instanceof List)) {
-			throw new RuntimeException("The result element is not a List");
+		if (!(stack.get(0).getRaw() instanceof Boolean)) {
+			throw new RuntimeException("The result element is not a Boolean");
 		}
 		
-		return (List<?>) stack.get(0).getRaw();
+		return (Boolean) stack.get(0).getRaw();
 	}
 
+	
+	public int size() {
+		return stack.size();
+	}
+	
 	@BadSmell("It is not so beautiful, but at least is isolated")
 	private class Element {
 		
-		// List || WhereElement
+		// Boolean (when resolved) || WhereLogicOperator || WhereExpression
 		private Object raw;
 		
 		Element(Object element) {
-			if (element instanceof WhereElement || element instanceof List) {
+			if (element instanceof WhereElement || element instanceof List || element instanceof Boolean) {
 				this.raw = element;
 			} else {
 				throw new RuntimeException("Only WhereElement or List is acceptable");

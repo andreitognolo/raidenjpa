@@ -5,9 +5,7 @@ import static org.raidenjpa.query.executor.WhereStackOperation.NOTHING;
 import static org.raidenjpa.query.executor.WhereStackOperation.REDUCE;
 import static org.raidenjpa.query.executor.WhereStackOperation.RESOLVE;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -51,23 +49,18 @@ public class WhereStackTest {
 	@FixMe("After finished, analyse if this one make sense")
 	@Test
 	public void testResolve() {
-		List<A> rows = new ArrayList<A>();
-		rows.add(new A("a", 1));
-		rows.add(new A("a", 2));
-		rows.add(new A("b", 1));
-		
 		String jpql = "SELECT a FROM A a WHERE a.stringValue = :stringValue AND a.intValue = :intValue"; 
 		QueryParser queryParser = new QueryParser(jpql);
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("stringValue", "a");
-		parameters.put("intValue", 2);
+		parameters.put("intValue", 1);
 		
-		WhereStack stackQuery = new WhereStack(rows, queryParser, parameters);
+		WhereStack stackQuery = new WhereStack(new A("a", 1), queryParser, parameters);
 		
 		WhereElement firstExpression = queryParser.getWhere().nextElement();
 		assertEquals(RESOLVE, stackQuery.push(firstExpression));
 		stackQuery.resolve();
-		assertEquals(2, stackQuery.getResultList().size());
+		assertEquals(true, stackQuery.getResult());
 		
 		WhereElement logicOperator = queryParser.getWhere().nextElement();
 		assertEquals(NOTHING, stackQuery.push(logicOperator));
@@ -75,6 +68,6 @@ public class WhereStackTest {
 		WhereElement secondExpression = queryParser.getWhere().nextElement();
 		assertEquals(REDUCE, stackQuery.push(secondExpression));
 		stackQuery.reduce();
-		assertEquals(1, stackQuery.getResultList().size());
+		assertEquals(true, stackQuery.getResult());
 	}
 }

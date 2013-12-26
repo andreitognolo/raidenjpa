@@ -32,7 +32,7 @@ public class QueryResult {
 		
 		where = queryParser.getWhere();
 		if (where != null) {
-			filter(rows, queryParser);
+			filterWhere(rows, queryParser);
 		}
 		
 		rows = limit(rows);
@@ -40,7 +40,7 @@ public class QueryResult {
 		return rows;
 	}
 
-	private void filter(List<Object> rows, QueryParser queryParser) {
+	private void filterWhere(List<Object> rows, QueryParser queryParser) {
 		WhereStack stack = new WhereStack(queryParser, parameters);
 		
 		Iterator<Object> it = rows.iterator();

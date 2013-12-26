@@ -11,7 +11,7 @@ public class SimpleQueryTest extends AbstractTestCase {
 	@Before
 	public void setUp() {
 		super.setUp();
-		loadEntities();
+		createABC();
 	}
 	
 	public void testWithSelectEntity() {

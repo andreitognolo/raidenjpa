@@ -35,7 +35,7 @@ public class AbstractTestCase {
 		EntityManagerUtil.clean();
 	}
 	
-	public void loadEntities() {
+	public void createABC() {
 		A a = new A("a", 1);
 		B b = new B("b");
 		C c = new C("c");
@@ -50,6 +50,17 @@ public class AbstractTestCase {
 		
 		a.setB(b);
 		b.setC(c);
+		
+		tx.commit();
+		em.close();
+	}
+	
+	public void createB(String value) {
+		EntityManager em = EntityManagerUtil.em();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+
+		em.merge(new B(value));
 		
 		tx.commit();
 		em.close();

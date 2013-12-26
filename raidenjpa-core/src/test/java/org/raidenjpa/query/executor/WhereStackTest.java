@@ -27,6 +27,7 @@ public class WhereStackTest {
 		A a = new A("a", 1);
 		
 		WhereStack stackQuery = new WhereStack(queryParser, parameters);
+		stackQuery.initStack();
 		
 		Iterator<WhereElement> it = queryParser.getWhere().iterator();
 		
@@ -53,6 +54,7 @@ public class WhereStackTest {
 		
 		A a = new A("a", 1);
 		WhereStack stackQuery = new WhereStack(queryParser, parameters);
+		stackQuery.initStack();
 		
 		Iterator<WhereElement> it = queryParser.getWhere().iterator();
 		

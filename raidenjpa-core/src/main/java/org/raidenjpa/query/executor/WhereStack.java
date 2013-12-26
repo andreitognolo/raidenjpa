@@ -13,6 +13,7 @@ import org.raidenjpa.util.BadSmell;
 @BadSmell("Rename to WhereExecutor?")
 public class WhereStack {
 
+	@BadSmell("It is a field, but match is that one which set it")
 	private Stack<Element> stack;
 
 	@BadSmell("We are using just FromClause")
@@ -26,7 +27,7 @@ public class WhereStack {
 	}
 	
 	public boolean match(Object obj) {
-		stack = new Stack<Element>();
+		initStack();
 		 
 		for (WhereElement element : queryParser.getWhere()) {
 			WhereStackAction action = push(element);
@@ -38,6 +39,10 @@ public class WhereStack {
 		}
 		
 		return getResult();
+	}
+
+	void initStack() {
+		stack = new Stack<Element>();
 	}
 	
 	WhereStackAction push(WhereElement element) {

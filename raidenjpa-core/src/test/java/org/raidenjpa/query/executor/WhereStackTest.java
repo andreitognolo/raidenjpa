@@ -6,6 +6,7 @@ import static org.raidenjpa.query.executor.WhereStackAction.REDUCE;
 import static org.raidenjpa.query.executor.WhereStackAction.RESOLVE;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.junit.Test;
@@ -27,15 +28,16 @@ public class WhereStackTest {
 		
 		WhereStack stackQuery = new WhereStack(queryParser, parameters);
 		
-		WhereElement firstExpression = queryParser.getWhere().nextElement();
+		Iterator<WhereElement> it = queryParser.getWhere().iterator();
+		
+		WhereElement firstExpression = it.next();
 		assertEquals(RESOLVE, stackQuery.push(firstExpression));
 		stackQuery.resolve(a);
 		assertEquals(true, stackQuery.getResult());
 		
-		WhereElement logicOperator = queryParser.getWhere().nextElement();
+		WhereElement logicOperator = it.next();
 		assertEquals(NOTHING, stackQuery.push(logicOperator));
-		
-		WhereElement secondExpression = queryParser.getWhere().nextElement();
+		WhereElement secondExpression = it.next();
 		assertEquals(REDUCE, stackQuery.push(secondExpression));
 		stackQuery.reduce(a);
 		assertEquals(true, stackQuery.getResult());
@@ -52,15 +54,17 @@ public class WhereStackTest {
 		A a = new A("a", 1);
 		WhereStack stackQuery = new WhereStack(queryParser, parameters);
 		
-		WhereElement firstExpression = queryParser.getWhere().nextElement();
+		Iterator<WhereElement> it = queryParser.getWhere().iterator();
+		
+		WhereElement firstExpression = it.next();
 		assertEquals(RESOLVE, stackQuery.push(firstExpression));
 		stackQuery.resolve(a);
 		assertEquals(true, stackQuery.getResult());
 		
-		WhereElement logicOperator = queryParser.getWhere().nextElement();
+		WhereElement logicOperator = it.next();
 		assertEquals(NOTHING, stackQuery.push(logicOperator));
 		
-		WhereElement secondExpression = queryParser.getWhere().nextElement();
+		WhereElement secondExpression = it.next();
 		assertEquals(REDUCE, stackQuery.push(secondExpression));
 		stackQuery.reduce(a);
 		assertEquals(false, stackQuery.getResult());

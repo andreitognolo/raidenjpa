@@ -60,4 +60,9 @@ public class A extends Entidade {
 		this.intValue = intValue;
 	}
 
+	@Override
+	public String toString() {
+		return "A [id=" + id + ", stringValue=" + stringValue + ", intValue=" + intValue + ", b=" + b + "]";
+	}
+
 }

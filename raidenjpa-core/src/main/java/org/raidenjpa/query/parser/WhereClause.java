@@ -1,11 +1,12 @@
 package org.raidenjpa.query.parser;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-public class WhereClause {
+public class WhereClause implements Iterable<WhereElement> {
 	
-	private Queue<WhereElement> queue = new LinkedList<WhereElement>();
+	private List<WhereElement> queue = new ArrayList<WhereElement>();
 	
 	public int parse(QueryWords words, int position) {
 		if (!"WHERE".equalsIgnoreCase(words.get(position))) {
@@ -45,12 +46,8 @@ public class WhereClause {
 		position++;
 		return position;
 	}
-
-	public WhereElement nextElement() {
-		return queue.poll();
-	}
 	
-	public boolean hasNextElement() {
-		return queue.peek() != null;
+	public Iterator<WhereElement> iterator() {
+		return queue.iterator();
 	}
 }

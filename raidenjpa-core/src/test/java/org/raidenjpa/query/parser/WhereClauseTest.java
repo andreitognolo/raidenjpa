@@ -3,6 +3,8 @@ package org.raidenjpa.query.parser;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import java.util.Iterator;
+
 import org.junit.Test;
 
 public class WhereClauseTest {
@@ -12,12 +14,12 @@ public class WhereClauseTest {
 		String jpql = "SELECT a FROM A a WHERE a.stringValue = :a ORDER BY a.stringValue";
 
 		QueryParser parser = new QueryParser(jpql);
-		WhereClause where = parser.getWhere();
+		Iterator<WhereElement> it = parser.getWhere().iterator();
 
-		WhereExpression expression = (WhereExpression) where.nextElement();
+		WhereExpression expression = (WhereExpression) it.next();
 		assertExpression(expression, "a.stringValue", "=", "a");
 
-		assertFalse(where.hasNextElement());
+		assertFalse(it.hasNext());
 	}
 
 	@Test
@@ -27,15 +29,15 @@ public class WhereClauseTest {
 		jpql += " WHERE a.stringValue = :stringValue AND a.intValue = :intValue ORDER BY a.stringValue";
 
 		QueryParser parser = new QueryParser(jpql);
-		WhereClause where = parser.getWhere();
+		Iterator<WhereElement> it = parser.getWhere().iterator();
 		
-		WhereExpression firstExpression = (WhereExpression) where.nextElement();
+		WhereExpression firstExpression = (WhereExpression) it.next();
 		assertExpression(firstExpression, "a.stringValue", "=", "stringValue");
 		
-		WhereLogicOperator logicOperator = (WhereLogicOperator) where.nextElement();
+		WhereLogicOperator logicOperator = (WhereLogicOperator) it.next();
 		assertEquals("AND", logicOperator.getOperator());
 		
-		WhereExpression secondExpression = (WhereExpression) where.nextElement();
+		WhereExpression secondExpression = (WhereExpression) it.next();
 		assertExpression(secondExpression, "a.intValue", "=", "intValue");
 	}
 

@@ -5,36 +5,31 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.raidenjpa.query.parser.QueryParser;
-import org.raidenjpa.query.parser.WhereClause;
 import org.raidenjpa.query.parser.WhereElement;
 import org.raidenjpa.query.parser.WhereExpression;
 import org.raidenjpa.query.parser.WhereLogicOperator;
 import org.raidenjpa.util.BadSmell;
 
-@BadSmell("Rename to WhereExecutor")
+@BadSmell("Rename to WhereExecutor?")
 public class WhereStack {
 
-	private Stack<Element> stack = new Stack<Element>();
+	private Stack<Element> stack;
 
 	@BadSmell("We are using just FromClause")
 	private QueryParser queryParser;
 
-	private Map<String, Object> parameters; 
+	private Map<String, Object> parameters;
 
-	WhereStack() {
-		
-	}
-	
-	WhereStack(QueryParser queryParser, Map<String, Object> parameters) {
+	public WhereStack(QueryParser queryParser, Map<String, Object> parameters) {
 		this.queryParser = queryParser;
 		this.parameters = parameters;
 	}
 	
 	public boolean match(Object obj) {
-		WhereClause where = queryParser.getWhere();
-		
-		while(where.hasNextElement()) {
-			WhereStackAction action = push(where.nextElement());
+		stack = new Stack<Element>();
+		 
+		for (WhereElement element : queryParser.getWhere()) {
+			WhereStackAction action = push(element);
 			if (action == WhereStackAction.RESOLVE) {
 				resolve(obj);
 			} else if (action == WhereStackAction.REDUCE) {

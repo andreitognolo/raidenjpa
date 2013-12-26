@@ -13,28 +13,16 @@ import javax.persistence.Parameter;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.raiden.exception.NoPlansToImplementException;
 import org.raiden.exception.NotYetImplementedException;
-import org.raidenjpa.db.InMemoryDB;
-import org.raidenjpa.query.parser.ExpressionParameter;
-import org.raidenjpa.query.parser.ExpressionPath;
-import org.raidenjpa.query.parser.FromClause;
-import org.raidenjpa.query.parser.QueryParser;
-import org.raidenjpa.query.parser.WhereClause;
-import org.raidenjpa.query.parser.WhereExpression;
-import org.raidenjpa.util.FixMe;
-import org.raidenjpa.util.ReflectionUtil;
+import org.raidenjpa.query.executor.QueryResult;
 
 public class RaidenQuery implements Query {
 
 	private String jpql;
-	private FromClause from;
-	private WhereClause where;
 	
 	private Map<String, Object> parameters = new HashMap<String, Object>();
-	private Integer maxResult;
+	private Integer maxResults;
 
 	public RaidenQuery(String jpql) {
 		this.jpql = jpql;
@@ -42,57 +30,7 @@ public class RaidenQuery implements Query {
 
 	@SuppressWarnings("rawtypes")
 	public List getResultList() {
-		QueryParser queryParser = new QueryParser(jpql);
-		
-		from = queryParser.getFrom();
-		List<Object> rows = InMemoryDB.me().getAll(from.getClassName());
-		
-		where = queryParser.getWhere();
-		if (where != null) {
-			filter(rows, where);
-		}
-		
-		rows = limit(rows);
-		
-		return rows;
-	}
-
-	private List<Object> limit(List<Object> rows) {
-		if (maxResult == null || maxResult >= rows.size()) {
-			return rows;
-		}
-		
-		return rows.subList(0, maxResult);
-	}
-
-	private void filter(List<Object> rows, WhereClause where) {
-		filterExpression(rows, (WhereExpression) where.nextElement());
-	}
-
-	@FixMe("This cast is not guarantee")
-	private void filterExpression(List<Object> rows, WhereExpression expression) {
-		final ExpressionPath left = (ExpressionPath) expression.getLeft();
-		final String alias = left.getPath().get(0);
-		if (!alias.equals(from.getAliasName())) {
-			throw new RuntimeException("Alias in expression: " + alias + " is not present in from: " + from.getAliasName());
-		}
-		
-		final ExpressionParameter right = (ExpressionParameter) expression.getRight();
-		
-		CollectionUtils.filter(rows, new Predicate() {
-			public boolean evaluate(Object obj) {
-				String fieldName = left.getPath().get(1);
-				
-				Object objectValue = ReflectionUtil.getBeanField(obj, fieldName);
-				Object paramValue = parameters.get(right.getParameterName());
-				
-				if (objectValue.equals(paramValue)) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
+		return new QueryResult(jpql, parameters, maxResults).getResultList();
 	}
 
 	public Object getSingleResult() {
@@ -104,7 +42,7 @@ public class RaidenQuery implements Query {
 	}
 
 	public Query setMaxResults(int maxResult) {
-		this.maxResult = maxResult;
+		this.maxResults = maxResult;
 		return this;
 	}
 

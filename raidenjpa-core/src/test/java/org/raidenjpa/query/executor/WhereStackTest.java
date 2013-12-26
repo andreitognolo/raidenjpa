@@ -1,9 +1,9 @@
 package org.raidenjpa.query.executor;
 
 import static org.junit.Assert.assertEquals;
-import static org.raidenjpa.query.executor.WhereStackOperation.NOTHING;
-import static org.raidenjpa.query.executor.WhereStackOperation.REDUCE;
-import static org.raidenjpa.query.executor.WhereStackOperation.RESOLVE;
+import static org.raidenjpa.query.executor.WhereStackAction.NOTHING;
+import static org.raidenjpa.query.executor.WhereStackAction.REDUCE;
+import static org.raidenjpa.query.executor.WhereStackAction.RESOLVE;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,11 +23,13 @@ public class WhereStackTest {
 		parameters.put("stringValue", "a");
 		parameters.put("intValue", 1);
 		
-		WhereStack stackQuery = new WhereStack(new A("a", 1), queryParser, parameters);
+		A a = new A("a", 1);
+		
+		WhereStack stackQuery = new WhereStack(queryParser, parameters);
 		
 		WhereElement firstExpression = queryParser.getWhere().nextElement();
 		assertEquals(RESOLVE, stackQuery.push(firstExpression));
-		stackQuery.resolve();
+		stackQuery.resolve(a);
 		assertEquals(true, stackQuery.getResult());
 		
 		WhereElement logicOperator = queryParser.getWhere().nextElement();
@@ -35,7 +37,7 @@ public class WhereStackTest {
 		
 		WhereElement secondExpression = queryParser.getWhere().nextElement();
 		assertEquals(REDUCE, stackQuery.push(secondExpression));
-		stackQuery.reduce();
+		stackQuery.reduce(a);
 		assertEquals(true, stackQuery.getResult());
 	}
 	
@@ -47,11 +49,12 @@ public class WhereStackTest {
 		parameters.put("stringValue", "a");
 		parameters.put("intValue", 2);
 		
-		WhereStack stackQuery = new WhereStack(new A("a", 1), queryParser, parameters);
+		A a = new A("a", 1);
+		WhereStack stackQuery = new WhereStack(queryParser, parameters);
 		
 		WhereElement firstExpression = queryParser.getWhere().nextElement();
 		assertEquals(RESOLVE, stackQuery.push(firstExpression));
-		stackQuery.resolve();
+		stackQuery.resolve(a);
 		assertEquals(true, stackQuery.getResult());
 		
 		WhereElement logicOperator = queryParser.getWhere().nextElement();
@@ -59,7 +62,7 @@ public class WhereStackTest {
 		
 		WhereElement secondExpression = queryParser.getWhere().nextElement();
 		assertEquals(REDUCE, stackQuery.push(secondExpression));
-		stackQuery.reduce();
+		stackQuery.reduce(a);
 		assertEquals(false, stackQuery.getResult());
 	}
 }

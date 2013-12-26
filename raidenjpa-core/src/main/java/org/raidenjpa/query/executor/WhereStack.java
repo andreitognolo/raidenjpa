@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.raidenjpa.query.parser.QueryParser;
+import org.raidenjpa.query.parser.WhereClause;
 import org.raidenjpa.query.parser.WhereElement;
 import org.raidenjpa.query.parser.WhereExpression;
 import org.raidenjpa.query.parser.WhereLogicOperator;
@@ -13,8 +14,6 @@ import org.raidenjpa.util.BadSmell;
 @BadSmell("Rename to WhereExecutor")
 public class WhereStack {
 
-	private Object obj;
-	
 	private Stack<Element> stack = new Stack<Element>();
 
 	@BadSmell("We are using just FromClause")
@@ -31,13 +30,22 @@ public class WhereStack {
 		this.parameters = parameters;
 	}
 	
-	WhereStack(Object obj, QueryParser queryParser, Map<String, Object> parameters) {
-		this.obj = obj;
-		this.queryParser = queryParser;
-		this.parameters = parameters;
+	public boolean match(Object obj) {
+		WhereClause where = queryParser.getWhere();
+		
+		while(where.hasNextElement()) {
+			WhereStackAction action = push(where.nextElement());
+			if (action == WhereStackAction.RESOLVE) {
+				resolve(obj);
+			} else if (action == WhereStackAction.REDUCE) {
+				reduce(obj);
+			}
+		}
+		
+		return getResult();
 	}
-
-	WhereStackOperation push(WhereElement element) {
+	
+	WhereStackAction push(WhereElement element) {
 		stack.push(new Element(element));
 		
 		if (element.isLogicOperator()) {
@@ -49,14 +57,22 @@ public class WhereStack {
 		}
 	}
 
-	private WhereStackOperation pushExpression(WhereExpression element) {
+	private WhereStackAction pushExpression(WhereExpression element) {
 		if (isThereOperatorBefore()) {
-			return WhereStackOperation.REDUCE;
+			return WhereStackAction.REDUCE;
 		} else {
-			return WhereStackOperation.RESOLVE;
+			return WhereStackAction.RESOLVE;
 		}
 	}
-
+	
+	private WhereStackAction pushLogicOperator(WhereLogicOperator element) {
+		if (stack.size() == 1) {
+			throw new RuntimeException("First element must be a expression");
+		}
+		
+		return WhereStackAction.NOTHING;
+	}
+	
 	private boolean isThereOperatorBefore() {
 		Element previousElement = getPreviousElement();
 		if (previousElement == null) {
@@ -73,16 +89,8 @@ public class WhereStack {
 		
 		return stack.get(stack.size() - 2);
 	}
-
-	private WhereStackOperation pushLogicOperator(WhereLogicOperator element) {
-		if (stack.size() == 1) {
-			throw new RuntimeException("First element must be a expression");
-		}
-		
-		return WhereStackOperation.NOTHING;
-	}
 	
-	public void resolve() {
+	void resolve(Object obj) {
 		WhereExpression expression = (WhereExpression) stack.pop().getRaw();
 		
 		Object match = expression.match(obj, queryParser.getFrom().getAliasName(), parameters);
@@ -90,8 +98,8 @@ public class WhereStack {
 		stack.push(new Element(match));
 	}
 	
-	public void reduce() {
-		resolve();
+	void reduce(Object obj) {
+		resolve(obj);
 		
 		Boolean firstResult = (Boolean) stack.pop().getRaw();
 		WhereLogicOperator logicOperator = (WhereLogicOperator) stack.pop().getRaw();
@@ -102,7 +110,7 @@ public class WhereStack {
 		stack.push(new Element(result));
 	}
 
-	public boolean getResult() {
+	boolean getResult() {
 		if (stack.size() != 1) {
 			throw new RuntimeException("The stack has more than one element");
 		}

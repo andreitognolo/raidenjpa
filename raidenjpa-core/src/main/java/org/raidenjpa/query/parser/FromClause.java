@@ -16,12 +16,6 @@ public class FromClause {
 		return aliasName;
 	}
 
-	@Override
-	public String toString() {
-		return "FromClause [className=" + className + ", aliasName="
-				+ aliasName + "]";
-	}
-
 	public int parse(QueryWords words, int position) {
 		if (!"FROM".equals(words.get(position))) {
 			throw new RuntimeException("There is no from clause in position " + position + " of jpql '" + words.getJpql());
@@ -45,4 +39,8 @@ public class FromClause {
 		return position;
 	}
 
+	public String toString() {
+		return "FromClause [className=" + className + ", aliasName="
+				+ aliasName + "]";
+	}
 }

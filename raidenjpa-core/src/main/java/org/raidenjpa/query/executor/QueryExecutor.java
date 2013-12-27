@@ -9,7 +9,7 @@ import org.raidenjpa.query.parser.FromClause;
 import org.raidenjpa.query.parser.QueryParser;
 import org.raidenjpa.query.parser.WhereClause;
 
-public class QueryResult {
+public class QueryExecutor {
 
 	private String jpql;
 	private Integer maxResult;
@@ -18,7 +18,7 @@ public class QueryResult {
 	private FromClause from;
 	private WhereClause where;
 	
-	public QueryResult(String jpql, Map<String, Object> parameters, Integer maxResult) {
+	public QueryExecutor(String jpql, Map<String, Object> parameters, Integer maxResult) {
 		this.jpql = jpql;
 		this.parameters = parameters;
 		this.maxResult = maxResult;

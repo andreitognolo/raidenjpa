@@ -15,7 +15,7 @@ import javax.persistence.TemporalType;
 
 import org.raiden.exception.NoPlansToImplementException;
 import org.raiden.exception.NotYetImplementedException;
-import org.raidenjpa.query.executor.QueryResult;
+import org.raidenjpa.query.executor.QueryExecutor;
 
 public class RaidenQuery implements Query {
 
@@ -30,7 +30,7 @@ public class RaidenQuery implements Query {
 
 	@SuppressWarnings("rawtypes")
 	public List getResultList() {
-		return new QueryResult(jpql, parameters, maxResults).getResultList();
+		return new QueryExecutor(jpql, parameters, maxResults).getResultList();
 	}
 
 	public Object getSingleResult() {

@@ -5,7 +5,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.raidenjpa.query.parser.FromClause;
 import org.raidenjpa.query.parser.SelectClause;
+import org.raidenjpa.util.BadSmell;
 
+@BadSmell("Rename to FromClauseTest?")
 public class FromQueryParserTest {
 
 	@Test

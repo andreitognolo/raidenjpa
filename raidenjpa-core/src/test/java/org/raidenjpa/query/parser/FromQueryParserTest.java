@@ -20,8 +20,8 @@ public class FromQueryParserTest {
 		assertEquals("a", select.getElements().get(0));
 		
 		FromClause from = queryParser.getFrom();
-		assertEquals("A", from.getClassName());
-		assertEquals("a", from.getAliasName());
+		assertEquals("A", from.getClassName(0));
+		assertEquals("a", from.getAliasName(0));
 	}
 	
 	@Test

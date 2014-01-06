@@ -28,9 +28,9 @@ public class QueryExecutor {
 		QueryParser queryParser = new QueryParser(jpql);
 		
 		from = queryParser.getFrom();
-		List<Object> rowsInDB = InMemoryDB.me().getAll(from.getClassName());
+		List<Object> rowsInDB = InMemoryDB.me().getAll(from.getClassName(0));
 		
-		QueryResult queryResult = new QueryResult(from.getAliasName(), rowsInDB);
+		QueryResult queryResult = new QueryResult(from.getAliasName(0), rowsInDB);
 		
 		where = queryParser.getWhere();
 		if (where != null) {
@@ -39,7 +39,7 @@ public class QueryExecutor {
 		
 		queryResult.limit(maxResult);
 		
-		return queryResult.getResultList(from.getAliasName());
+		return queryResult.getResultList(from.getAliasName(0));
 	}
 
 	private void filterWhere(QueryResult queryResult, QueryParser queryParser) {

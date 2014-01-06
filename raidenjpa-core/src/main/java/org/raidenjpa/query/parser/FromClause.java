@@ -1,22 +1,25 @@
 package org.raidenjpa.query.parser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.cfg.NotYetImplementedException;
 
 public class FromClause {
-
-	private String className;
 	
-	private String aliasName;
-
-	public String getClassName() {
-		return className;
+	private List<FromClauseItem> itens = new ArrayList<FromClauseItem>();
+	
+	public String getClassName(int index) {
+		return itens.get(index).className;
 	}
-
-	public String getAliasName() {
-		return aliasName;
+	
+	public String getAliasName(int index) {
+		return itens.get(index).aliasName;
 	}
 
 	public int parse(QueryWords words, int position) {
+		itens.add(new FromClauseItem());
+		
 		if (!"FROM".equals(words.get(position))) {
 			throw new RuntimeException("There is no from clause in position " + position + " of jpql '" + words.getJpql());
 		}
@@ -27,12 +30,12 @@ public class FromClause {
 			throw new NotYetImplementedException("Query with more than one entity in from clause");
 		}
 		
-		className = words.get(position);
+		itens.get(0).className = words.get(position);
 		position++;
 		
-		aliasName = null;
+		itens.get(0).aliasName = null;
 		if (words.existAlias(position)) {
-			aliasName = words.get(position);
+			itens.get(0).aliasName = words.get(position);
 			position++;
 		}
 		
@@ -40,7 +43,15 @@ public class FromClause {
 	}
 
 	public String toString() {
-		return "FromClause [className=" + className + ", aliasName="
-				+ aliasName + "]";
+		return "FromClause [className=" + itens.get(0).className + ", aliasName="
+				+ itens.get(0).aliasName + "]";
+	}
+
+	private class FromClauseItem {
+		
+		private String className;
+		
+		private String aliasName;
+		
 	}
 }

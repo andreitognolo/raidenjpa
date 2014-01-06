@@ -30,6 +30,8 @@ public class QueryExecutor {
 		from = queryParser.getFrom();
 		List<Object> rows = InMemoryDB.me().getAll(from.getClassName());
 		
+		new QueryResult(from.getAliasName(), rows);
+		
 		where = queryParser.getWhere();
 		if (where != null) {
 			filterWhere(rows, queryParser);

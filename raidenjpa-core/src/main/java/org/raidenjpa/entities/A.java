@@ -27,6 +27,10 @@ public class A extends Entidade {
 		this.intValue = intValue;
 	}
 
+	public A(String stringValue) {
+		this.stringValue = stringValue;
+	}
+
 	public Long getId() {
 		return id;
 	}

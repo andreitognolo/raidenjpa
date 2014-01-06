@@ -22,10 +22,4 @@ public class RaidenWhereTest extends WhereTest {
 	public void testOneAnd() {
 		super.testOneAnd();
 	}
-	
-	@Ignore
-	@Test
-	public void testTwoFromWithoutWhere() {
-		super.testTwoFromWithoutWhere();
-	}
 }

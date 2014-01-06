@@ -25,4 +25,9 @@ public class HibernateSimplesQueryTest extends SimpleQueryTest {
 	public void testWithoutSelect() {
 		super.testWithoutSelect();
 	}
+
+	@Test
+	public void testTwoFrom() {
+		super.testTwoFrom();
+	}
 }

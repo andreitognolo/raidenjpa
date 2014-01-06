@@ -21,9 +21,4 @@ public class HibernateWhereTest extends WhereTest {
 		super.testOneAnd();
 	}
 
-	@Test
-	public void testTwoFromWithoutWhere() {
-		super.testTwoFromWithoutWhere();
-	}
-
 }

@@ -24,6 +24,22 @@ public class SimpleQueryTest extends AbstractTestCase {
 		assertEquals(1, query.getResultList().size());
 	}
 	
+	public void testTwoFrom() {
+		createB("b2");
+		createB("b3");
+		
+		QueryHelper query;
+		
+		query = new QueryHelper("SELECT a FROM A a, B b");
+		assertEquals(3, query.getResultList().size());
+		
+		query = new QueryHelper("SELECT a, b FROM A a, B b");
+		assertEquals(3, query.getResultList().size());
+
+		query = new QueryHelper("SELECT b FROM A a, B b");
+		assertEquals(3, query.getResultList().size());
+	}
+	
 	public void testWithSelectAttributes() {
 		
 	}

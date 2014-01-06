@@ -26,15 +26,15 @@ public class WhereStack {
 		this.parameters = parameters;
 	}
 	
-	public boolean match(Object obj) {
+	public boolean match(QueryResultRow row) {
 		initStack();
 		 
 		for (WhereElement element : queryParser.getWhere()) {
 			WhereStackAction action = push(element);
 			if (action == WhereStackAction.RESOLVE) {
-				resolve(obj);
+				resolve(row);
 			} else if (action == WhereStackAction.REDUCE) {
-				reduce(obj);
+				reduce(row);
 			}
 		}
 		
@@ -90,16 +90,16 @@ public class WhereStack {
 		return stack.get(stack.size() - 2);
 	}
 	
-	void resolve(Object obj) {
+	void resolve(QueryResultRow row) {
 		WhereExpression expression = (WhereExpression) stack.pop().getRaw();
 		
-		Object match = expression.match(obj, queryParser.getFrom().getAliasName(), parameters);
+		Object match = expression.match(row, queryParser.getFrom().getAliasName(), parameters);
 		
 		stack.push(new Element(match));
 	}
 	
-	void reduce(Object obj) {
-		resolve(obj);
+	void reduce(QueryResultRow row) {
+		resolve(row);
 		
 		Boolean firstResult = (Boolean) stack.pop().getRaw();
 		WhereLogicOperator logicOperator = (WhereLogicOperator) stack.pop().getRaw();

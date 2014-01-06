@@ -3,6 +3,7 @@ package org.raidenjpa.query.parser;
 import java.util.Map;
 
 import org.raiden.exception.NotYetImplementedException;
+import org.raidenjpa.query.executor.QueryResultRow;
 import org.raidenjpa.util.ReflectionUtil;
 
 public class WhereExpression extends WhereElement {
@@ -18,21 +19,20 @@ public class WhereExpression extends WhereElement {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Object match(Object obj, String alias, Map<String, Object> parameters) {
+	public Object match(QueryResultRow row, String alias, Map<String, Object> parameters) {
 		ExpressionPath left = (ExpressionPath) this.left;
-		removeRootAliasPath(left, alias);
 		
-		if (left.getPath().size() > 1) {
+		if (left.getPath().size() > 2) {
 			throw new NotYetImplementedException("Where with two level is not implemented (ex: a.b.name)");
 		}
 		
-		final String attribute = left.getPath().get(0);
+		final String attribute = left.getPath().get(1);
 		
 		ExpressionParameter expressionParameter = (ExpressionParameter) this.right;
 		final Object value = parameters.get(expressionParameter.getParameterName());
 		
 		Comparable<Object> filterValue = (Comparable<Object>) value;
-		Comparable<Object> objValue = (Comparable<Object>) ReflectionUtil.getBeanField(obj, attribute);
+		Comparable<Object> objValue = (Comparable<Object>) ReflectionUtil.getBeanField(row.get(alias), attribute);
 		
 		return isTrue(objValue, operator, filterValue);
 	}
@@ -65,12 +65,6 @@ public class WhereExpression extends WhereElement {
 		return false;
 	}
 	
-	private void removeRootAliasPath(ExpressionPath left, String alias) {
-		if (left.getPath().indexOf(alias) == 0) {
-			left.getPath().remove(0);
-		}
-	}
-
 	public boolean isExpression() {
 		return true;
 	}

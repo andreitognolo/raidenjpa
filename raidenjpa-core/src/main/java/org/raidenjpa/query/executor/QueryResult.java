@@ -17,4 +17,20 @@ public class QueryResult implements Iterable<QueryResultRow> {
 	public Iterator<QueryResultRow> iterator() {
 		return rows.iterator();
 	}
+
+	public void limit(Integer maxResult) {
+		if (maxResult == null || maxResult >= rows.size()) {
+			return;
+		}
+		
+		rows = rows.subList(0, maxResult);
+	}
+
+	public List<?> getResultList(String alias) {
+		List<Object> result = new ArrayList<Object>();
+		for (QueryResultRow row : rows) {
+			result.add(row.get(alias));
+		}
+		return result;
+	}
 }

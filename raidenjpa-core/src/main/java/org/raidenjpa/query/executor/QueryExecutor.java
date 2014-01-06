@@ -28,37 +28,29 @@ public class QueryExecutor {
 		QueryParser queryParser = new QueryParser(jpql);
 		
 		from = queryParser.getFrom();
-		List<Object> rows = InMemoryDB.me().getAll(from.getClassName());
+		List<Object> rowsInDB = InMemoryDB.me().getAll(from.getClassName());
 		
-		new QueryResult(from.getAliasName(), rows);
+		QueryResult queryResult = new QueryResult(from.getAliasName(), rowsInDB);
 		
 		where = queryParser.getWhere();
 		if (where != null) {
-			filterWhere(rows, queryParser);
+			filterWhere(queryResult, queryParser);
 		}
 		
-		rows = limit(rows);
+		queryResult.limit(maxResult);
 		
-		return rows;
+		return queryResult.getResultList(from.getAliasName());
 	}
 
-	private void filterWhere(List<Object> rows, QueryParser queryParser) {
+	private void filterWhere(QueryResult queryResult, QueryParser queryParser) {
 		WhereStack stack = new WhereStack(queryParser, parameters);
 		
-		Iterator<Object> it = rows.iterator();
+		Iterator<QueryResultRow> it = queryResult.iterator();
 		while(it.hasNext()) {
-			Object obj = it.next();
-			if (!stack.match(obj)) {
+			QueryResultRow row = it.next();
+			if (!stack.match(row)) {
 				it.remove();
 			}
 		}
-	}
-
-	private List<Object> limit(List<Object> rows) {
-		if (maxResult == null || maxResult >= rows.size()) {
-			return rows;
-		}
-		
-		return rows.subList(0, maxResult);
 	}
 }

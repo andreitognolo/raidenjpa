@@ -33,14 +33,14 @@ public class WhereStackTest {
 		
 		WhereElement firstExpression = it.next();
 		assertEquals(RESOLVE, stackQuery.push(firstExpression));
-		stackQuery.resolve(a);
+		stackQuery.resolve(new QueryResultRow("a", a));
 		assertEquals(true, stackQuery.getResult());
 		
 		WhereElement logicOperator = it.next();
 		assertEquals(NOTHING, stackQuery.push(logicOperator));
 		WhereElement secondExpression = it.next();
 		assertEquals(REDUCE, stackQuery.push(secondExpression));
-		stackQuery.reduce(a);
+		stackQuery.reduce(new QueryResultRow("a", a));
 		assertEquals(true, stackQuery.getResult());
 	}
 	
@@ -60,7 +60,7 @@ public class WhereStackTest {
 		
 		WhereElement firstExpression = it.next();
 		assertEquals(RESOLVE, stackQuery.push(firstExpression));
-		stackQuery.resolve(a);
+		stackQuery.resolve(new QueryResultRow("a", a));
 		assertEquals(true, stackQuery.getResult());
 		
 		WhereElement logicOperator = it.next();
@@ -68,7 +68,7 @@ public class WhereStackTest {
 		
 		WhereElement secondExpression = it.next();
 		assertEquals(REDUCE, stackQuery.push(secondExpression));
-		stackQuery.reduce(a);
+		stackQuery.reduce(new QueryResultRow("a", a));
 		assertEquals(false, stackQuery.getResult());
 	}
 }

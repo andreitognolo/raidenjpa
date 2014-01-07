@@ -2,13 +2,10 @@ package org.raidenjpa.query.parser;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
-import org.raidenjpa.query.parser.FromClause;
-import org.raidenjpa.query.parser.SelectClause;
-import org.raidenjpa.util.BadSmell;
 
-@BadSmell("Rename to FromClauseTest?")
-public class FromQueryParserTest {
+public class FromClauseTest {
 
 	@Test
 	public void testWithSelectEntityAndAlias() {
@@ -22,6 +19,20 @@ public class FromQueryParserTest {
 		FromClause from = queryParser.getFrom();
 		assertEquals("A", from.getClassName(0));
 		assertEquals("a", from.getAliasName(0));
+	}
+	
+	@Ignore
+	@Test
+	public void testTwoFromWithAlias() {
+		String jpql = "SELECT a FROM A a, B b";
+		QueryParser queryParser = new QueryParser(jpql);
+		
+		FromClause from = queryParser.getFrom();
+		assertEquals("A", from.getClassName(0));
+		assertEquals("a", from.getAliasName(0));
+		
+		assertEquals("B", from.getClassName(1));
+		assertEquals("b", from.getAliasName(1));
 	}
 	
 	@Test

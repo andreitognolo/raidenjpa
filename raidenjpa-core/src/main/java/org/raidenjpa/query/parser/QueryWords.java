@@ -9,13 +9,13 @@ public class QueryWords {
 	private String[] words;
 	private String jpql;
 	
-	private static final String[] POSSIBLE_WORDS_AFTER_FROM = {"INNER", "WHERE", "JOIN", "LEFT"};
+	private static final String[] POSSIBLE_WORDS_AFTER_FROM = {"INNER", "WHERE", "JOIN", "LEFT", ","};
 	private static final String[] POSSIBLE_WORDS_AFTER_WHERE = {"ORDER", "GROUP"};
 	private static final String[] LOGIC_OPERATORS = {"AND", "OR"};
 	
 	public QueryWords(String jpql) {
 		this.jpql = jpql;
-		this.words = jpql.split(" ");
+		this.words = jpql.replace(",", " ,").split(" ");
 	}
 
 	public String get(int index) {

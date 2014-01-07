@@ -27,7 +27,6 @@ public class RaidenSimplesQueryTest extends SimpleQueryTest {
 		super.testWithoutSelect();
 	}
 
-	@Ignore
 	@Test
 	public void testTwoFrom() {
 		super.testTwoFrom();

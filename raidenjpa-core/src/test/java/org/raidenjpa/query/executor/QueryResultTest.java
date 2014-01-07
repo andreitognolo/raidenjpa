@@ -12,12 +12,13 @@ import org.raidenjpa.entities.A;
 public class QueryResultTest {
 
 	@Test
-	public void test() {
+	public void testSimple() {
 		List<A> as = new ArrayList<A>();
 		as.add(new A("a1"));
 		as.add(new A("a2"));
 		
-		QueryResult result = new QueryResult("a", as);
+		QueryResult result = new QueryResult();
+		result.addFrom("a", as);
 		
 		Iterator<QueryResultRow> it = result.iterator();
 		A a1 = (A) it.next().get("a");
@@ -25,5 +26,10 @@ public class QueryResultTest {
 		
 		assertEquals("a1", a1.getStringValue());
 		assertEquals("a2", a2.getStringValue());
+	}
+	
+	@Test
+	public void testAddFromTwice() {
+		
 	}
 }

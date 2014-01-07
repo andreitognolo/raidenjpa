@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.raidenjpa.db.InMemoryDB;
 import org.raidenjpa.query.parser.FromClause;
+import org.raidenjpa.query.parser.FromClauseItem;
 import org.raidenjpa.query.parser.QueryParser;
 import org.raidenjpa.query.parser.WhereClause;
 
@@ -28,9 +29,13 @@ public class QueryExecutor {
 		QueryParser queryParser = new QueryParser(jpql);
 		
 		from = queryParser.getFrom();
-		List<Object> rowsInDB = InMemoryDB.me().getAll(from.getClassName(0));
 		
-		QueryResult queryResult = new QueryResult(from.getAliasName(0), rowsInDB);
+		QueryResult queryResult = new QueryResult();
+		
+		for (FromClauseItem item : from.getItens()) {
+			List<Object> rowsInDB = InMemoryDB.me().getAll(item.getClassName());
+			queryResult.addFrom(item.getAliasName(), rowsInDB);
+		}
 		
 		where = queryParser.getWhere();
 		if (where != null) {

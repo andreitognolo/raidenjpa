@@ -20,20 +20,21 @@ public class FromClause {
 			throw new RuntimeException("There is no from clause in position " + position + " of jpql '" + words.getJpql());
 		}
 		
-		position++;
-		
-		FromClauseItem item = new FromClauseItem();
-		
-		item.className = words.get(position);
-		position++;
-		
-		item.aliasName = null;
-		if (words.existAlias(position)) {
-			item.aliasName = words.get(position);
+		do {
 			position++;
-		}
-		
-		itens.add(item);
+			
+			FromClauseItem item = new FromClauseItem();
+			item.className = words.get(position);
+			position++;
+			
+			item.aliasName = null;
+			if (words.existAlias(position)) {
+				item.aliasName = words.get(position);
+				position++;
+			}
+			
+			itens.add(item);
+		} while (words.hasMoreFromItem(position));
 		
 		return position;
 	}

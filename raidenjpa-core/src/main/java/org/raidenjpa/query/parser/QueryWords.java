@@ -53,4 +53,12 @@ public class QueryWords {
 	public boolean isWhereLogicOperator(int position) {
 		return StringUtil.equalsIgnoreCase(get(position), LOGIC_OPERATORS);
 	}
+
+	public boolean hasMoreFromItem(int position) {
+		if (!hasMoreWord(position)) {
+			return false;
+		}
+		
+		return ",".equals(get(position));
+	}
 }

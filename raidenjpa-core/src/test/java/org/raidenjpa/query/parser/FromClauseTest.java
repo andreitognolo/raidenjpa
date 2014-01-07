@@ -2,7 +2,6 @@ package org.raidenjpa.query.parser;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class FromClauseTest {
@@ -21,7 +20,6 @@ public class FromClauseTest {
 		assertEquals("a", from.getAliasName(0));
 	}
 	
-	@Ignore
 	@Test
 	public void testTwoFromWithAlias() {
 		String jpql = "SELECT a FROM A a, B b";

@@ -22,7 +22,7 @@ public class FromClauseTest {
 	
 	@Test
 	public void testTwoFromWithAlias() {
-		String jpql = "SELECT a FROM A a, B b";
+		String jpql = "SELECT a FROM A a, B b WHERE a.stringValue = :a";
 		QueryParser queryParser = new QueryParser(jpql);
 		
 		FromClause from = queryParser.getFrom();

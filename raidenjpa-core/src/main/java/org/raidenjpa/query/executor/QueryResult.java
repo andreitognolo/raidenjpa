@@ -22,17 +22,21 @@ public class QueryResult implements Iterable<QueryResultRow> {
 
 	@FixMe("Is this logic correct in 3 from cenario?")
 	private void cartesianProduct(String alias, List<?> newElements) {
-		
 		for (QueryResultRow row : new ArrayList<QueryResultRow>(rows)) {
-			for (int i = 0; i < newElements.size() - 1; i++) {
-				duplicate(row);
+			row.put(alias, newElements.get(0));
+			
+			for (int i = 1; i < newElements.size(); i++) {
+				QueryResultRow duplicatedRow = duplicate(row);
+				duplicatedRow.put(alias, newElements.get(i));
 			}
 		}
 	}
 
-	private void duplicate(QueryResultRow row) {
+	private QueryResultRow duplicate(QueryResultRow row) {
 		int index = rows.indexOf(row);
-		rows.add(index, row.duplicate());
+		QueryResultRow duplicatedRow = row.duplicate();
+		rows.add(index + 1, duplicatedRow);
+		return duplicatedRow;
 	}
 
 	private void firstFrom(String alias, List<?> objRows) {

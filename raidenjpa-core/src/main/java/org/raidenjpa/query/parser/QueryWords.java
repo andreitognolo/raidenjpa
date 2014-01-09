@@ -61,4 +61,8 @@ public class QueryWords {
 		
 		return ",".equals(get(position));
 	}
+
+	public boolean hasMoreSelectItem(int position) {
+		return ",".equals(get(position));
+	}
 }

@@ -11,10 +11,6 @@ public class FromClauseTest {
 		String jpql = "SELECT a FROM A a";
 		QueryParser queryParser = new QueryParser(jpql);
 		
-		SelectClause select = queryParser.getSelect();
-		assertEquals(1, select.getElements().size());
-		assertEquals("a", select.getElements().get(0));
-		
 		FromClause from = queryParser.getFrom();
 		assertEquals("A", from.getClassName(0));
 		assertEquals("a", from.getAliasName(0));

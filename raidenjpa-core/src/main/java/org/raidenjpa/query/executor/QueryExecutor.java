@@ -8,16 +8,12 @@ import org.raidenjpa.db.InMemoryDB;
 import org.raidenjpa.query.parser.FromClause;
 import org.raidenjpa.query.parser.FromClauseItem;
 import org.raidenjpa.query.parser.QueryParser;
-import org.raidenjpa.query.parser.WhereClause;
 
 public class QueryExecutor {
 
 	private String jpql;
 	private Integer maxResult;
 	private	Map<String, Object> parameters; 
-	
-	private FromClause from;
-	private WhereClause where;
 	
 	public QueryExecutor(String jpql, Map<String, Object> parameters, Integer maxResult) {
 		this.jpql = jpql;
@@ -28,7 +24,7 @@ public class QueryExecutor {
 	public List<?> getResultList() {
 		QueryParser queryParser = new QueryParser(jpql);
 		
-		from = queryParser.getFrom();
+		FromClause from = queryParser.getFrom();
 		
 		QueryResult queryResult = new QueryResult();
 		

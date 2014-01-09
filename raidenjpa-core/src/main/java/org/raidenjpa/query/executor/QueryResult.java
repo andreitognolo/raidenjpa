@@ -10,26 +10,29 @@ public class QueryResult implements Iterable<QueryResultRow> {
 
 	private List<QueryResultRow> rows = new ArrayList<QueryResultRow>();
 	
-	public QueryResult addFrom(String alias, List<?> resultOfAlias) {
+	public QueryResult addFrom(String alias, List<?> newElements) {
 		if (rows.isEmpty()) {
-			firstFrom(alias, resultOfAlias);
+			firstFrom(alias, newElements);
 		} else {
-			cartesianProduct(alias, resultOfAlias);
+			cartesianProduct(alias, newElements);
 		}
 		
 		return this;
 	}
 
 	@FixMe("Is this logic correct in 3 from cenario?")
-	private void cartesianProduct(String alias, List<?> resultOfAlias) {
-		List<QueryResultRow> rowsAdded = new ArrayList<QueryResultRow>();
-		for (QueryResultRow row : rows) {
-			for (int i = 0; i < resultOfAlias.size() - 1; i++) {
-				rowsAdded.add(row.duplicate());
+	private void cartesianProduct(String alias, List<?> newElements) {
+		
+		for (QueryResultRow row : new ArrayList<QueryResultRow>(rows)) {
+			for (int i = 0; i < newElements.size() - 1; i++) {
+				duplicate(row);
 			}
 		}
-		
-		rows.addAll(rowsAdded);
+	}
+
+	private void duplicate(QueryResultRow row) {
+		int index = rows.indexOf(row);
+		rows.add(index, row.duplicate());
 	}
 
 	private void firstFrom(String alias, List<?> objRows) {
@@ -50,11 +53,15 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		rows = rows.subList(0, maxResult);
 	}
 
-	public List<?> getResultList(String alias) {
+	public List<?> getList(String alias) {
 		List<Object> result = new ArrayList<Object>();
 		for (QueryResultRow row : rows) {
 			result.add(row.get(alias));
 		}
 		return result;
+	}
+	
+	public int size() {
+		return rows.size();
 	}
 }

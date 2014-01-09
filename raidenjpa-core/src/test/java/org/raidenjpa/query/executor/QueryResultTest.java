@@ -44,11 +44,21 @@ public class QueryResultTest {
 		bs.add(new B("b2"));
 		result.addFrom("b", bs);
 		
-		Iterator<QueryResultRow> it = result.iterator();
-		A a1 = (A) it.next().get("a");
-		A a2 = (A) it.next().get("a");
+		assertEquals(6, result.size());
 		
-		assertEquals("a1", a1.getStringValue());
-		assertEquals("a2", a2.getStringValue());
+		Iterator<QueryResultRow> it = result.iterator();
+		QueryResultRow row = null;
+		
+		row = it.next();
+		assertEquals("a1", ((A) row.get("a")).getStringValue());
+//		assertEquals("b1", ((B) row.get("b")).getValue());
+		
+		row = it.next();
+		assertEquals("a1", ((A) row.get("a")).getStringValue());
+//		assertEquals("b2", ((B) row.get("b")).getValue());
+		
+		row = it.next();
+		assertEquals("a2", ((A) row.get("a")).getStringValue());
+//		assertEquals("b1", ((B) row.get("b")).getValue());
 	}
 }

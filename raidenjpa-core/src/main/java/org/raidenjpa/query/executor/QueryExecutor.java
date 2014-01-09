@@ -44,7 +44,7 @@ public class QueryExecutor {
 		
 		queryResult.limit(maxResult);
 		
-		return queryResult.getResultList(from.getAliasName(0));
+		return queryResult.getList(from.getAliasName(0));
 	}
 
 	private void filterWhere(QueryResult queryResult, QueryParser queryParser) {

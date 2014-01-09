@@ -71,7 +71,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 	private List<?> selectMoreThanOneElement(SelectClause select) {
 		List<Object[]> result = new ArrayList<Object[]>();
 		for (QueryResultRow row : rows) {
-			Object[] obj = new Object[row.numberOfColumns()];
+			Object[] obj = new Object[select.getElements().size()];
 			int index = 0;
 			for (SelectElement element : select.getElements()) {
 				obj[index++] = row.get(element);

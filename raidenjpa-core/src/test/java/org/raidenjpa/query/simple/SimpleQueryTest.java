@@ -61,15 +61,22 @@ public class SimpleQueryTest extends AbstractTestCase {
 	}
 	
 	public void testWithSelectAttributes() {
-		
-	}
-	
-	public void testWithoutSelect() {
 		QueryHelper query;
 		List<?> resultList;
 		
 		query = new QueryHelper("SELECT a.stringValue FROM A a");
 		resultList = query.getResultList();
 		assertEquals("a", resultList.get(0));
+		
+		query = new QueryHelper("SELECT a.stringValue, a.intValue, a FROM A a");
+		resultList = query.getResultList();
+		Object[] row = (Object[]) resultList.get(0);
+		assertEquals("a", row[0]);
+		assertEquals(1, row[1]);
+		assertEquals("a", ((A) row[2]).getStringValue());
+	}
+	
+	public void testWithoutSelect() {
+		
 	}
 }

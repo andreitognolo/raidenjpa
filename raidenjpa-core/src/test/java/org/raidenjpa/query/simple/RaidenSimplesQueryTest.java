@@ -1,7 +1,6 @@
 package org.raidenjpa.query.simple;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class RaidenSimplesQueryTest extends SimpleQueryTest {

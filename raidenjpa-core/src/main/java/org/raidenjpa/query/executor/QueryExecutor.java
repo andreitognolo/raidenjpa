@@ -8,6 +8,7 @@ import org.raidenjpa.db.InMemoryDB;
 import org.raidenjpa.query.parser.FromClause;
 import org.raidenjpa.query.parser.FromClauseItem;
 import org.raidenjpa.query.parser.QueryParser;
+import org.raidenjpa.query.parser.SelectClause;
 
 public class QueryExecutor {
 
@@ -39,7 +40,9 @@ public class QueryExecutor {
 		
 		queryResult.limit(maxResult);
 		
-		return queryResult.getList(from.getAliasName(0));
+		SelectClause select = queryParser.getSelect();
+		
+		return queryResult.getList(select.getElements().get(0).getPath().get(0));
 	}
 
 	private void filterWhere(QueryResult queryResult, QueryParser queryParser) {

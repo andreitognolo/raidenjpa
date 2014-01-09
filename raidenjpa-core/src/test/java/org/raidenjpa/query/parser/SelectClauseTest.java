@@ -6,30 +6,6 @@ import org.junit.Test;
 
 public class SelectClauseTest {
 
-	@Test
-	public void testEntity() {
-		String jpql = "SELECT a FROM A a";
-		QueryParser queryParser = new QueryParser(jpql);
-		
-		SelectClause select = queryParser.getSelect();
-		assertEquals(1, select.getElements().size());
-		
-		SelectElement element = select.getElements().get(0);
-		assertEquals("a", element.getPath().get(0));
-	}
-	
-	@Test
-	public void testAttribute() {
-		String jpql = "SELECT a.stringValue FROM A a";
-		QueryParser queryParser = new QueryParser(jpql);
-		
-		SelectClause select = queryParser.getSelect();
-		assertEquals(1, select.getElements().size());
-		
-		SelectElement element = select.getElements().get(0);
-		assertEquals("a", element.getPath().get(0));
-		assertEquals("stringValue", element.getPath().get(1));
-	}
 	
 	@Test
 	public void testMoreThanOneEntity() {
@@ -44,5 +20,26 @@ public class SelectClauseTest {
 		
 		SelectElement second = select.getElements().get(1);
 		assertEquals("b", second.getPath().get(0));
+	}
+	
+	@Test
+	public void testMoreThanOneAttribute() {
+		String jpql = "SELECT a.stringValue, a.intValue, b.value FROM A a, B b";
+		QueryParser queryParser = new QueryParser(jpql);
+		
+		SelectClause select = queryParser.getSelect();
+		assertEquals(3, select.getElements().size());
+		
+		SelectElement first = select.getElements().get(0);
+		assertEquals("a", first.getPath().get(0));
+		assertEquals("stringValue", first.getPath().get(1));
+		
+		SelectElement second = select.getElements().get(1);
+		assertEquals("a", second.getPath().get(0));
+		assertEquals("intValue", second.getPath().get(1));
+		
+		SelectElement third = select.getElements().get(2);
+		assertEquals("b", third.getPath().get(0));
+		assertEquals("value", third.getPath().get(1));
 	}
 }

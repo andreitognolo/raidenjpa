@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.raidenjpa.query.parser.SelectClause;
+import org.raidenjpa.query.parser.SelectElement;
+import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
 
 public class QueryResult implements Iterable<QueryResultRow> {
@@ -57,10 +60,32 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		rows = rows.subList(0, maxResult);
 	}
 
-	public List<?> getList(String alias) {
+	public List<?> getList(SelectClause select) {
+		if (select.getElements().size() == 1) {
+			return selectOneElement(select);
+		} else {
+			return selectMoreThanOneElement(select);
+		}
+	}
+
+	private List<?> selectMoreThanOneElement(SelectClause select) {
+		List<Object[]> result = new ArrayList<Object[]>();
+		for (QueryResultRow row : rows) {
+			Object[] obj = new Object[row.numberOfColumns()];
+			int index = 0;
+			for (SelectElement element : select.getElements()) {
+				obj[index++] = row.get(element.getPath().get(0));
+			}
+			result.add(obj);
+		}
+		return result;
+	}
+
+	@BadSmell("Duplicated code?")
+	private List<?> selectOneElement(SelectClause select) {
 		List<Object> result = new ArrayList<Object>();
 		for (QueryResultRow row : rows) {
-			result.add(row.get(alias));
+			result.add(row.get(select.getElements().get(0).getPath().get(0)));
 		}
 		return result;
 	}

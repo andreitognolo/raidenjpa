@@ -31,4 +31,8 @@ public class QueryResultRow {
 
 		return copy;
 	}
+	
+	public int numberOfColumns() {
+		return columns.size();
+	}
 }

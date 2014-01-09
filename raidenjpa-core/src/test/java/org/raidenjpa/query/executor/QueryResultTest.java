@@ -60,5 +60,9 @@ public class QueryResultTest {
 		row = it.next();
 		assertEquals("a2", ((A) row.get("a")).getStringValue());
 		assertEquals("b1", ((B) row.get("b")).getValue());
+		
+		row = it.next();
+		assertEquals("a2", ((A) row.get("a")).getStringValue());
+		assertEquals("b2", ((B) row.get("b")).getValue());
 	}
 }

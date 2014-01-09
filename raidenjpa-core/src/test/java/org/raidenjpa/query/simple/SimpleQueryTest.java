@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.raidenjpa.AbstractTestCase;
+import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.QueryHelper;
 
 public class SimpleQueryTest extends AbstractTestCase {
@@ -24,6 +25,7 @@ public class SimpleQueryTest extends AbstractTestCase {
 		assertEquals(1, query.getResultList().size());
 	}
 	
+	@FixMe("Finish this test after implement testWithSelectAttributes")
 	public void testTwoFrom() {
 		createB("b2");
 		createB("b3");
@@ -32,14 +34,13 @@ public class SimpleQueryTest extends AbstractTestCase {
 		
 		query = new QueryHelper("SELECT a FROM A a, B b");
 		assertEquals(3, query.getResultList().size());
+
+		query = new QueryHelper("SELECT b FROM A a, B b");
+		assertEquals(3, query.getResultList().size());
 		
 //		query = new QueryHelper("SELECT a, b FROM A a, B b");
 //		assertEquals(3, query.getResultList().size());
-//
-//		query = new QueryHelper("SELECT b FROM A a, B b");
-//		assertEquals(3, query.getResultList().size());
-		
-		// FIXME
+
 //		query = new QueryHelper("SELECT b FROM A a, B b, C c");
 //		assertEquals(3, query.getResultList().size());
 	}

@@ -25,7 +25,7 @@ public class SimpleQueryTest extends AbstractTestCase {
 		assertEquals(1, query.getResultList().size());
 	}
 	
-	@FixMe("Finish this test after implement testWithSelectAttributes")
+	@FixMe("Finish this test")
 	public void testTwoFrom() {
 		createB("b2");
 		createB("b3");

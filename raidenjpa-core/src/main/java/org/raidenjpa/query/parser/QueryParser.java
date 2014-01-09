@@ -22,13 +22,8 @@ public class QueryParser {
 	}
 
 	private int prepareSelect() {
-		if (!"SELECT".equalsIgnoreCase(words.get(0))) {
-			return 0;
-		}
-		
-		select = new SelectClause(words.get(1));
-		
-		return 2;
+		select = new SelectClause();
+		return select.parse(words);
 	}
 
 	@BadSmell("This should be inside FromClause")

@@ -74,7 +74,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			Object[] obj = new Object[row.numberOfColumns()];
 			int index = 0;
 			for (SelectElement element : select.getElements()) {
-				obj[index++] = row.get(element.getPath().get(0));
+				obj[index++] = row.get(element);
 			}
 			result.add(obj);
 		}
@@ -85,7 +85,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 	private List<?> selectOneElement(SelectClause select) {
 		List<Object> result = new ArrayList<Object>();
 		for (QueryResultRow row : rows) {
-			result.add(row.get(select.getElements().get(0).getPath().get(0)));
+			result.add(row.get(select.getElements().get(0)));
 		}
 		return result;
 	}

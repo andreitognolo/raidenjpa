@@ -53,6 +53,8 @@ public class SimpleQueryTest extends AbstractTestCase {
 		assertEquals(Object[].class, resultList.get(0).getClass());
 		assertEquals(B.class, ((Object[]) resultList.get(0))[0].getClass());
 		assertEquals(A.class, ((Object[]) resultList.get(0))[1].getClass());
+
+//		query = new QueryHelper("SELECT a.stringValeu, a.intValue, b FROM A a, B b");
 		
 //		query = new QueryHelper("SELECT b FROM A a, B b, C c");
 //		assertEquals(3, query.getResultList().size());
@@ -63,6 +65,11 @@ public class SimpleQueryTest extends AbstractTestCase {
 	}
 	
 	public void testWithoutSelect() {
+		QueryHelper query;
+		List<?> resultList;
 		
+		query = new QueryHelper("SELECT a.stringValue FROM A a");
+		resultList = query.getResultList();
+		assertEquals("a", resultList.get(0));
 	}
 }

@@ -37,8 +37,7 @@ public class QueryExecutor {
 			queryResult.addFrom(item.getAliasName(), rowsInDB);
 		}
 		
-		where = queryParser.getWhere();
-		if (where != null) {
+		if (queryParser.getWhere().hasElements()) {
 			filterWhere(queryResult, queryParser);
 		}
 		

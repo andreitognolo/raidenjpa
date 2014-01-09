@@ -34,9 +34,6 @@ public class QueryParser {
 
 	@BadSmell("This if should be inside where.parse (do it when create QueryWords)")
 	private int prepareWhere(int position) {
-		if (!words.hasMoreWord(position)) {
-			return position;
-		}
 		
 		where = new WhereClause();
 		return where.parse(words, position);

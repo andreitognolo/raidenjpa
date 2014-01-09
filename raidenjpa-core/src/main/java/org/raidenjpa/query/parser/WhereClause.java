@@ -9,6 +9,10 @@ public class WhereClause implements Iterable<WhereElement> {
 	private List<WhereElement> queue = new ArrayList<WhereElement>();
 	
 	public int parse(QueryWords words, int position) {
+		if (!words.hasMoreWord(position)) {
+			return position;
+		}
+		
 		if (!"WHERE".equalsIgnoreCase(words.get(position))) {
 			throw new RuntimeException("There is no where clause in position " + position + " of jpql '" + words.getJpql());
 		}
@@ -49,5 +53,9 @@ public class WhereClause implements Iterable<WhereElement> {
 	
 	public Iterator<WhereElement> iterator() {
 		return queue.iterator();
+	}
+	
+	public boolean hasElements() {
+		return !queue.isEmpty();
 	}
 }

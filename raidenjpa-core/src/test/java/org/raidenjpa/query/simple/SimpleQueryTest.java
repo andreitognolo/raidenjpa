@@ -54,9 +54,11 @@ public class SimpleQueryTest extends AbstractTestCase {
 
 		query = new QueryHelper("SELECT a.stringValue, a.intValue, b FROM A a, B b");
 		resultList = query.getResultList();
-//		assertEquals("a", resultList.get(0));
-//		assertEquals(1, resultList.get(1));
-//		assertEquals("b", ((B) resultList.get(2)).getValue());
+		assertEquals("a", ((Object[]) resultList.get(0))[0]);
+		assertEquals(1, ((Object[]) resultList.get(0))[1]);
+		assertEquals("b", ((B) ((Object[]) resultList.get(0))[2]).getValue());
+		assertEquals("b2", ((B) ((Object[]) resultList.get(1))[2]).getValue());
+		assertEquals("b3", ((B) ((Object[]) resultList.get(2))[2]).getValue());
 		
 //		query = new QueryHelper("SELECT b FROM A a, B b, C c");
 //		assertEquals(3, query.getResultList().size());

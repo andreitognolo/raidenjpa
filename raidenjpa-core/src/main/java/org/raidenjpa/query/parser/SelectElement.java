@@ -18,4 +18,8 @@ public class SelectElement {
 	public List<String> getPath() {
 		return path;
 	}
+
+	public String toString() {
+		return "SelectElement [path=" + path + "]";
+	}
 }

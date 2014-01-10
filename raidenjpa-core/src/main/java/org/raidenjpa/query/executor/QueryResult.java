@@ -31,6 +31,8 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			for (int i = 1; i < newElements.size(); i++) {
 				QueryResultRow duplicatedRow = duplicate(row);
 				duplicatedRow.put(alias, newElements.get(i));
+				
+				row = duplicatedRow;
 			}
 		}
 	}

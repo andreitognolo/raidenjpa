@@ -27,4 +27,9 @@ public class SelectClause {
 		return elements;
 	}
 
+	@Override
+	public String toString() {
+		return "SelectClause [elements=" + elements + "]";
+	}
+
 }

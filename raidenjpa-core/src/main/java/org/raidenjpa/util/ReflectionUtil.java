@@ -87,6 +87,10 @@ public class ReflectionUtil {
 		try {
 			String methodName = toMethodName("get", fieldName);
 			Method method = getMethod(obj, methodName);
+			
+			if (method == null) {
+				throw new RuntimeException("Class " + obj.getClass().getName() + " doesnt has field " + fieldName);
+			}
 			return method.invoke(obj);
 		} catch (SecurityException e) {
 			throw new RuntimeException(e);

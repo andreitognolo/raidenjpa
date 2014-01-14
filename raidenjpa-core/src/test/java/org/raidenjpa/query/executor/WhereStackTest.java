@@ -21,10 +21,10 @@ public class WhereStackTest {
 		String jpql = "SELECT a FROM A a WHERE a.stringValue = :stringValue AND a.intValue = :intValue"; 
 		QueryParser queryParser = new QueryParser(jpql);
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("stringValue", "a");
+		parameters.put("stringValue", "a1");
 		parameters.put("intValue", 1);
 		
-		A a = new A("a", 1);
+		A a = new A("a1", 1);
 		
 		WhereStack stackQuery = new WhereStack(queryParser, parameters);
 		stackQuery.initStack();
@@ -49,10 +49,10 @@ public class WhereStackTest {
 		String jpql = "SELECT a FROM A a WHERE a.stringValue = :stringValue AND a.intValue = :intValue"; 
 		QueryParser queryParser = new QueryParser(jpql);
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("stringValue", "a");
+		parameters.put("stringValue", "a1");
 		parameters.put("intValue", 2);
 		
-		A a = new A("a", 1);
+		A a = new A("a1", 1);
 		WhereStack stackQuery = new WhereStack(queryParser, parameters);
 		stackQuery.initStack();
 		

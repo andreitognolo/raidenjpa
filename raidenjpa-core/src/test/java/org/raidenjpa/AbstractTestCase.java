@@ -36,9 +36,9 @@ public class AbstractTestCase {
 	}
 	
 	public void createABC() {
-		A a = new A("a", 1);
-		B b = new B("b");
-		C c = new C("c");
+		A a = new A("a1", 1);
+		B b = new B("b1");
+		C c = new C("c1");
 		
 		EntityManager em = EntityManagerUtil.em();
 		EntityTransaction tx = em.getTransaction();

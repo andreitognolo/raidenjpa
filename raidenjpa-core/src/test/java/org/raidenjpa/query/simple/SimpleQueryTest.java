@@ -54,16 +54,16 @@ public class SimpleQueryTest extends AbstractTestCase {
 		query = new QueryHelper(
 				"SELECT a.stringValue, a.intValue, b FROM A a, B b");
 		resultList = query.getResultList();
-		assertEquals("a", get(resultList, 0, 0));
+		assertEquals("a1", get(resultList, 0, 0));
 		assertEquals(1, get(resultList, 0, 1));
-		assertEquals("b", ((B) get(resultList, 0, 2)).getValue());
+		assertEquals("b1", ((B) get(resultList, 0, 2)).getValue());
 		assertEquals("b2", ((B) get(resultList, 1, 2)).getValue());
 		assertEquals("b3", ((B) get(resultList, 2, 2)).getValue());
 
 		query = new QueryHelper("SELECT a, b, c.value FROM A a, B b, C c");
 		resultList = query.getResultList();
 		assertEquals(3, resultList.size());
-		assertEquals("c", get(resultList, 0, 2));
+		assertEquals("c1", get(resultList, 0, 2));
 	}
 
 	@Test
@@ -73,14 +73,14 @@ public class SimpleQueryTest extends AbstractTestCase {
 
 		query = new QueryHelper("SELECT a.stringValue FROM A a");
 		resultList = query.getResultList();
-		assertEquals("a", resultList.get(0));
+		assertEquals("a1", resultList.get(0));
 
 		query = new QueryHelper("SELECT a.stringValue, a.intValue, a FROM A a");
 		resultList = query.getResultList();
 		Object[] row = (Object[]) resultList.get(0);
-		assertEquals("a", row[0]);
+		assertEquals("a1", row[0]);
 		assertEquals(1, row[1]);
-		assertEquals("a", ((A) row[2]).getStringValue());
+		assertEquals("a1", ((A) row[2]).getStringValue());
 	}
 
 	@Test

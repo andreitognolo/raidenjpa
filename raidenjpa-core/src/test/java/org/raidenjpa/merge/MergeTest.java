@@ -14,7 +14,7 @@ import org.raidenjpa.util.EntityManagerUtil;
 public class MergeTest extends AbstractTestCase {
 	
 	public void testSimpleTx() {
-		A a = new A("a", 1);
+		A a = new A("a1", 1);
 		B b = new B("b");
 		C c = new C("c");
 		
@@ -34,7 +34,7 @@ public class MergeTest extends AbstractTestCase {
 		
 		em = EntityManagerUtil.em();
 		a = em.find(A.class, a.getId());
-		assertEquals(a.getStringValue(), "a");
+		assertEquals(a.getStringValue(), "a1");
 		assertEquals(a.getB().getValue(), "b");
 		assertEquals(a.getB().getC().getValue(), "c");
 		em.close();

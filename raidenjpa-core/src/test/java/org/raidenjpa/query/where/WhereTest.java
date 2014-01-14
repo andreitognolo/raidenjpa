@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
+import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.QueryHelper;
 
 public class WhereTest extends AbstractTestCase {
@@ -36,8 +37,21 @@ public class WhereTest extends AbstractTestCase {
 	}
 	
 	@Test
-	public void testTwoFrom() {
+	public void testTwoFromComparingAttributes() {
 		createB("b2");
-		
+	
+		QueryHelper query = new QueryHelper("SELECT a, b FROM A a, B b WHERE a.stringValue = :valueA AND b.value = :valueB");
+		query.parameter("valueA", "a1");
+		query.parameter("valueB", "b2");
+		assertEquals(1, query.getResultList().size());
+	}
+	
+	@FixMe("Compare the entities. Make this test work with merge")
+	@Test
+	public void testTwoFromComparingObjects() {
+		createB("b2");
+	
+		QueryHelper query = new QueryHelper("SELECT a, b FROM A a, B b WHERE a.b.id = b.id");
+		assertEquals(1, query.getResultList().size());
 	}
 }

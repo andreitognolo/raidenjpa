@@ -93,7 +93,7 @@ public class WhereStack {
 	void resolve(QueryResultRow row) {
 		WhereExpression expression = (WhereExpression) stack.pop().getRaw();
 		
-		Object match = expression.match(row, queryParser.getFrom().getAliasName(0), parameters);
+		Object match = expression.match(row, parameters);
 		
 		stack.push(new Element(match));
 	}

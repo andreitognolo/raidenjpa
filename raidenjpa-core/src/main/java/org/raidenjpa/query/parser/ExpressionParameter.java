@@ -11,5 +11,9 @@ public class ExpressionParameter extends ExpressionElement {
 	public String getParameterName() {
 		return parameterName;
 	}
+
+	public boolean isParameter() {
+		return true;
+	}
 	
 }

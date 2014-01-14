@@ -18,4 +18,8 @@ public class ExpressionPath extends ExpressionElement {
 	public List<String> getPath() {
 		return path;
 	}
+	
+	public boolean isPath() {
+		return true;
+	}
 }

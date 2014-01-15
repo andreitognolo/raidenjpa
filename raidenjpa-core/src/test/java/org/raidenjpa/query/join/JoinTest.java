@@ -7,9 +7,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
-import org.raidenjpa.entities.A;
 import org.raidenjpa.entities.B;
-import org.raidenjpa.util.EntityManagerUtil;
 import org.raidenjpa.util.QueryHelper;
 
 public class JoinTest extends AbstractTestCase {

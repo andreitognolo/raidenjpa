@@ -5,8 +5,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.raidenjpa.entities.A;
-
 public class QueryHelper {
 
 	private Query query;
@@ -40,6 +38,7 @@ public class QueryHelper {
 		return query.getResultList().get(0);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> T singleResult(Class<T> clazz, String attribute,
 			String value) {
 		QueryHelper query = create(clazz, attribute, value);

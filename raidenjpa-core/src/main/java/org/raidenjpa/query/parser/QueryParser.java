@@ -1,5 +1,8 @@
 package org.raidenjpa.query.parser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.raidenjpa.util.BadSmell;
 
 public class QueryParser {
@@ -11,6 +14,8 @@ public class QueryParser {
 	private FromClause from;
 
 	private WhereClause where;
+
+	private List<JoinClause> joins = new ArrayList<JoinClause>();
 	
 	public QueryParser(String jpql) {
 		this.words = new QueryWords(jpql);
@@ -18,7 +23,22 @@ public class QueryParser {
 		int position;
 		position = prepareSelect();
 		position = prepareFrom(position);
+		position = prepareJoins(position);
 		position = prepareWhere(position);
+	}
+
+	private int prepareJoins(int position) {
+		if (!words.hasMoreWord(position)) {
+			return position;
+		}
+		
+		while(words.hasMoreJoin(position)) {
+			JoinClause join = new JoinClause();
+			position = join.parse(words, position);
+			joins.add(join);
+		}
+		
+		return position;
 	}
 
 	private int prepareSelect() {
@@ -26,7 +46,6 @@ public class QueryParser {
 		return select.parse(words);
 	}
 
-	@BadSmell("This should be inside FromClause")
 	private int prepareFrom(int position) {
 		from = new FromClause();
 		return from.parse(words, position);
@@ -34,7 +53,6 @@ public class QueryParser {
 
 	@BadSmell("This if should be inside where.parse (do it when create QueryWords)")
 	private int prepareWhere(int position) {
-		
 		where = new WhereClause();
 		return where.parse(words, position);
 	}
@@ -49,5 +67,9 @@ public class QueryParser {
 
 	public WhereClause getWhere() {
 		return where;
+	}
+
+	public List<JoinClause> getJoins() {
+		return joins;
 	}
 }

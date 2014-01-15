@@ -1,5 +1,9 @@
 package org.raidenjpa.query.parser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.StringUtil;
 
@@ -18,6 +22,7 @@ public class QueryWords {
 		this.words = jpql.replace(",", " ,").split(" ");
 	}
 
+	@BadSmell("Instead of get, why not next?")
 	public String get(int index) {
 		return words[index];
 	}
@@ -64,5 +69,17 @@ public class QueryWords {
 
 	public boolean hasMoreSelectItem(int position) {
 		return ",".equals(get(position));
+	}
+
+	boolean hasMoreJoin(int position) {
+		if (!hasMoreWord(position)) {
+			return false;
+		}
+		
+		return StringUtil.equalsIgnoreCase(get(position), "INNER", "JOIN");
+	}
+
+	public List<String> getAsPath(int position) {
+		return new ArrayList<String>(Arrays.asList(get(position).split("\\.")));
 	}
 }

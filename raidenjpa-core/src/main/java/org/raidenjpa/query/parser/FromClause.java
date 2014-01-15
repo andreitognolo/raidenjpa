@@ -48,4 +48,14 @@ public class FromClause {
 		return "FromClause [className=" + itens.get(0).getClassName()
 				+ ", aliasName=" + itens.get(0).getAliasName() + "]";
 	}
+
+	public FromClauseItem getItem(String alias) {
+		for(FromClauseItem item : itens) {
+			if (item.getAliasName().equals(alias)) {
+				return item;
+			}
+		}
+		
+		throw new RuntimeException("There is no from item with alias '" + alias + "'");
+	}
 }

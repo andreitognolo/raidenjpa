@@ -49,4 +49,16 @@ public class QueryResultRow {
 	public int numberOfColumns() {
 		return columns.size();
 	}
+
+	@BadSmell("Inside ExpressionPath?")
+	public Object getObjectFromExpression(List<String> path) {
+		
+		String alias = path.get(0);
+		Object objValue = get(alias);
+		for (int i = 1; i < path.size(); i++) {
+			String attribute = path.get(i);
+			objValue = ReflectionUtil.getBeanField(objValue, attribute);
+		}
+		return objValue;
+	}
 }

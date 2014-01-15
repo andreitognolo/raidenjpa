@@ -24,7 +24,11 @@ public class QueryResult implements Iterable<QueryResultRow> {
 	}
 
 	@FixMe("Is this logic correct in 3 from cenario?")
-	private void cartesianProduct(String alias, List<?> newElements) {
+	public void cartesianProduct(String alias, List<?> newElements) {
+		if (newElements.isEmpty()) {
+			return;
+		}
+		
 		for (QueryResultRow row : new ArrayList<QueryResultRow>(rows)) {
 			row.put(alias, newElements.get(0));
 			

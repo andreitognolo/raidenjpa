@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.raidenjpa.query.executor.QueryResultRow;
 import org.raidenjpa.util.BadSmell;
-import org.raidenjpa.util.ReflectionUtil;
 
 @BadSmell("Rename to WhereCondition")
 public class WhereExpression extends WhereElement {
@@ -30,32 +29,19 @@ public class WhereExpression extends WhereElement {
 	@BadSmell("right and left should be the same thing")
 	private Object rightObject(QueryResultRow row, Map<String, Object> parameters) {
 		if (right.isParameter()) {
-			ExpressionParameter expressionParameter = (ExpressionParameter) this.right;
+			ExpressionParameter expressionParameter = (ExpressionParameter) right;
 			return parameters.get(expressionParameter.getParameterName());
 		} else if (right.isPath()) {
-			return getObjectFromExpression(row, (ExpressionPath) right);
+			return row.getObjectFromExpression(((ExpressionPath) right).getPath());
 		} else {
 			throw new RuntimeException("Expression is neither parameter or path");
 		}
 	}
 
 	private Object leftObject(QueryResultRow row) {
-		return getObjectFromExpression(row, (ExpressionPath) this.left);
+		return row.getObjectFromExpression(((ExpressionPath) left).getPath());
 	}
 
-	@BadSmell("Inside ExpressionPath?")
-	private Object getObjectFromExpression(QueryResultRow row,
-			ExpressionPath left) {
-		
-		String alias = left.getPath().get(0);
-		Object objValue = row.get(alias);
-		for (int i = 1; i < left.getPath().size(); i++) {
-			String attribute = left.getPath().get(i);
-			objValue = ReflectionUtil.getBeanField(objValue, attribute);
-		}
-		return objValue;
-	}
-	
 	private boolean isTrue(Comparable<Object> valorObj, String operador, Comparable<Object> valorFiltro) {
 		if ("=".equals(operador)) {
 			if (valorFiltro.equals(valorObj)) {

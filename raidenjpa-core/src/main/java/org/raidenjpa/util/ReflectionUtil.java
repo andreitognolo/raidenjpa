@@ -184,6 +184,16 @@ public class ReflectionUtil {
 		}
 		return ret;
 	}
+	
+	public static Field getField(Class<?> clazz, String fieldName) {
+		for(Field field : getFields(clazz)) {
+			if (field.getName().equals(fieldName)) {
+				return field;
+			}
+		}
+		
+		throw new RuntimeException("There is no field called '" + fieldName + "' in the class " + clazz.getName());
+	}
 
 	public static List<Method> getDeclaringMethods(Class<?> clazz) {
 		return getDeclaringMethods(clazz, 0xFFFFFFFF);
@@ -333,5 +343,4 @@ public class ReflectionUtil {
 	public static boolean checkClassAnnotated(Class<?> clazz, Class<? extends Annotation> annotation) {
 		return clazz.isAnnotationPresent(annotation);
 	}
-
 }

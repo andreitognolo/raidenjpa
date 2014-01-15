@@ -56,11 +56,15 @@ public class AbstractTestCase {
 	}
 	
 	public void createB(String value) {
+		merge(new B(value));
+	}
+
+	public void merge(Object obj) {
 		EntityManager em = EntityManagerUtil.em();
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 
-		em.merge(new B(value));
+		em.merge(obj);
 		
 		tx.commit();
 		em.close();

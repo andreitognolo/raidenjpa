@@ -1,6 +1,5 @@
 package org.raidenjpa.query.executor;
 
-import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,6 @@ import org.raidenjpa.query.parser.FromClauseItem;
 import org.raidenjpa.query.parser.JoinClause;
 import org.raidenjpa.query.parser.QueryParser;
 import org.raidenjpa.util.BadSmell;
-import org.raidenjpa.util.ReflectionUtil;
 
 public class QueryExecutor {
 
@@ -46,17 +44,7 @@ public class QueryExecutor {
 		FromClause from = queryParser.getFrom();
 		
 		for (JoinClause join : queryParser.getJoins()) {
-			String alias = join.getPath().get(0);
-			String attribute = join.getPath().get(1);
-			
-			FromClauseItem item = from.getItem(alias);
-			Class<?> clazz = InMemoryDB.me().getAll(item.getClassName()).get(0).getClass();
-			Class<?> attributeClass = ReflectionUtil.getField(clazz, attribute).getType();
-			List<Object> rows = InMemoryDB.me().getAll(attributeClass.getSimpleName());
-			
-			queryResult.cartesianProduct(join.getAlias(), rows);
-			
-//			queryResult.filter(alias, attribute, )
+			queryResult.join(from, join);
 		}
 	}
 

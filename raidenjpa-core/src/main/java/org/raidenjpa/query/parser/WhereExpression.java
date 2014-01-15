@@ -2,6 +2,7 @@ package org.raidenjpa.query.parser;
 
 import java.util.Map;
 
+import org.raidenjpa.query.executor.ComparatorUtil;
 import org.raidenjpa.query.executor.QueryResultRow;
 import org.raidenjpa.util.BadSmell;
 
@@ -18,12 +19,10 @@ public class WhereExpression extends WhereElement {
 		this.right = ExpressionElement.create(right);
 	}
 
-	@SuppressWarnings("unchecked")
 	public Object match(QueryResultRow row, Map<String, Object> parameters) {
 		Object leftObject = leftObject(row);
 		Object rightObject = rightObject(row, parameters);
-		
-		return isTrue((Comparable<Object>) leftObject, operator, (Comparable<Object>) rightObject);
+		return ComparatorUtil.isTrue(leftObject, operator, rightObject);
 	}
 
 	@BadSmell("right and left should be the same thing")
@@ -42,34 +41,6 @@ public class WhereExpression extends WhereElement {
 		return row.getObjectFromExpression(((ExpressionPath) left).getPath());
 	}
 
-	private boolean isTrue(Comparable<Object> valorObj, String operador, Comparable<Object> valorFiltro) {
-		if ("=".equals(operador)) {
-			if (valorFiltro.equals(valorObj)) {
-				return true;
-			}
-		} else if (">=".equals(operador)) {
-			if (valorObj.compareTo(valorFiltro) >= 0) {
-				return true;
-			}
-		} else if (">".equals(operador)) {
-			if (valorObj.compareTo(valorFiltro) > 0) {
-				return true;
-			}
-		} else if ("<".equals(operador)) {
-			if (valorObj.compareTo(valorFiltro) <= 0) {
-				return true;
-			}
-		} else if ("<=".equals(operador)) {
-			if (valorObj.compareTo(valorFiltro) < 0) {
-				return true;
-			}
-		} else {
-			throw new RuntimeException("Operador " + operador + " not implemented yet");
-		}
-		
-		return false;
-	}
-	
 	public boolean isExpression() {
 		return true;
 	}

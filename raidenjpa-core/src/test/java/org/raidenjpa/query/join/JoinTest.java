@@ -1,14 +1,15 @@
 package org.raidenjpa.query.join;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
+import org.raidenjpa.entities.A;
 import org.raidenjpa.entities.B;
+import org.raidenjpa.util.EntityManagerUtil;
 import org.raidenjpa.util.QueryHelper;
 
 public class JoinTest extends AbstractTestCase {
@@ -21,7 +22,6 @@ public class JoinTest extends AbstractTestCase {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Ignore
 	@Test
 	public void testInner() {
 		createB("b2");
@@ -30,6 +30,10 @@ public class JoinTest extends AbstractTestCase {
 		List<B> result = (List<B>) query.getResultList();
 		assertEquals(1, result.size());
 		assertEquals("b1", result.get(0).getValue());
+	}
+	
+	public void testInnerWithList() {
+		
 	}
 
 	public void testLeft() {

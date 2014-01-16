@@ -141,6 +141,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			Object item = it.next();
 			QueryResultRow newRow = duplicate(row);
 			newRow.put(join.getAlias(), item);
+			row = newRow;
 		}
 	}
 }

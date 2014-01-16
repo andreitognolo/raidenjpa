@@ -80,7 +80,7 @@ public class AbstractTestCase {
 	public void createA(String value, Integer numberOfItens) {
 		A a = new A(value);
 
-		for(int i = 0; i < numberOfItens; i++) {
+		for(int i = 1; i <= numberOfItens; i++) {
 			a.addItem(new ItemA(value + "." + i));
 		}
 		

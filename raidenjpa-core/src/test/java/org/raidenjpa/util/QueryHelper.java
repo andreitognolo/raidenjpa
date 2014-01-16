@@ -14,6 +14,10 @@ public class QueryHelper {
 		query = em.createQuery(jpql);
 	}
 	
+	public QueryHelper(StringBuilder jpql) {
+		this(jpql.toString());
+	}
+
 	public static QueryHelper create(Class<?> clazz, String attribute, Object value) {
 		String jpql = "SELECT x FROM " + clazz.getSimpleName() + " x WHERE x." + attribute + " = :parameter";
 		QueryHelper query = new QueryHelper(jpql);

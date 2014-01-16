@@ -29,4 +29,8 @@ public class ItemA extends Entidade {
 		this.value = value;
 	}
 
+	public String toString() {
+		return "ItemA [value=" + value + "]";
+	}
+
 }

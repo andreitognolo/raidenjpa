@@ -106,16 +106,11 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		String leftAlias = join.getPath().get(0);
 		String attribute = join.getPath().get(1);
 		
-		List<Object> objectsToJoin = new ArrayList<Object>();
-		for (QueryResultRow row : rows) {
+		for (QueryResultRow row : new ArrayList<QueryResultRow>(rows)) {
 			Object leftObject = row.get(leftAlias);
 			
 			Object obj = ReflectionUtil.getBeanField(leftObject, attribute);
-			if (obj != null) {
-				objectsToJoin.add(obj);
-			}
+			row.put(join.getAlias(), obj);
 		}
-		
-		cartesianProduct(join.getAlias(), objectsToJoin);
 	}
 }

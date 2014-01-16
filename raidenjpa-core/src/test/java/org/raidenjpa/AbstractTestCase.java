@@ -55,6 +55,27 @@ public class AbstractTestCase {
 		em.close();
 	}
 	
+	public void createAB(String aValue, String bValue) {
+		A a = new A(aValue);
+		B b = new B(bValue);
+
+		EntityManager em = EntityManagerUtil.em();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		
+		a = em.merge(a);
+		b = em.merge(b);
+		
+		a.setB(b);
+		
+		tx.commit();
+		em.close();
+	}
+	
+	public void createA(String value) {
+		merge(new A(value));
+	}
+	
 	public void createB(String value) {
 		merge(new B(value));
 	}

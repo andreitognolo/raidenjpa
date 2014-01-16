@@ -23,8 +23,7 @@ public class JoinTest extends AbstractTestCase {
 	@Test
 	public void testInner() {
 		createAB("a2", "b2");
-		// Need to pass with this discommented
-//		createA("a3");
+		createA("a3");
 		
 		QueryHelper query = new QueryHelper("SELECT a FROM A a JOIN a.b b");
 		List<A> result = (List<A>) query.getResultList();

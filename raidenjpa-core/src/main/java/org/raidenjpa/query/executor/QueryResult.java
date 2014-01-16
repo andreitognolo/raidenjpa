@@ -110,6 +110,10 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			Object leftObject = row.get(leftAlias);
 			
 			Object obj = ReflectionUtil.getBeanField(leftObject, attribute);
+			if (obj == null) {
+				rows.remove(row);
+			}
+			
 			row.put(join.getAlias(), obj);
 		}
 	}

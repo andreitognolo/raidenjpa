@@ -60,6 +60,22 @@ public class AbstractTestCase {
 		A a = new A(aValue);
 		B b = new B(bValue);
 
+		createAB(a, b);
+	}
+	
+	public void createAB(String aValue, int numberOfItens, String bValue) {
+		A a = new A(aValue);
+
+		for(int i = 1; i <= numberOfItens; i++) {
+			a.addItem(new ItemA(aValue + "." + i));
+		}
+		
+		B b = new B(bValue);
+
+		createAB(a, b);
+	}
+
+	private void createAB(A a, B b) {
 		EntityManager em = EntityManagerUtil.em();
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();

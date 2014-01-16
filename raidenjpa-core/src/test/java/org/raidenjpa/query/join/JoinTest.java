@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
 import org.raidenjpa.entities.A;
@@ -61,11 +60,12 @@ public class JoinTest extends AbstractTestCase {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Ignore
 	@Test
 	public void testTwoJoins() {
-		createA("a2", 2);
-		createA("a3", 3);
+		createAB("a2", 3, "b2");
+		createA("a3");
+		createB("b3");
+		createAB("a4", 2, "b4");
 		
 		StringBuilder jpql = new StringBuilder();
 		jpql.append("SELECT a, b, item FROM A a");
@@ -75,6 +75,14 @@ public class JoinTest extends AbstractTestCase {
 		QueryHelper query = new QueryHelper(jpql);
 		List<Object[]> result = (List<Object[]>) query.getResultList();
 		assertEquals(5, result.size());
+		
+		assertEquals("a2", ((A) result.get(0)[0]).getStringValue());
+		assertEquals("b2", ((B) result.get(0)[1]).getValue());
+		assertEquals("a2.1", ((ItemA) result.get(0)[2]).getValue());
+		
+		assertEquals("a4", ((A) result.get(4)[0]).getStringValue());
+		assertEquals("b4", ((B) result.get(4)[1]).getValue());
+		assertEquals("a4.2", ((ItemA) result.get(4)[2]).getValue());
 	}
 	
 	public void testJoinClauseWith() {

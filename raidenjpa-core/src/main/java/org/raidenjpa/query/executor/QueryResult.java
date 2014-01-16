@@ -1,6 +1,7 @@
 package org.raidenjpa.query.executor;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 
 	private QueryResultRow duplicate(QueryResultRow row) {
 		int index = rows.indexOf(row);
-		QueryResultRow duplicatedRow = row.duplicate();
+		QueryResultRow duplicatedRow = row.copy();
 		rows.add(index + 1, duplicatedRow);
 		return duplicatedRow;
 	}
@@ -110,11 +111,36 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			Object leftObject = row.get(leftAlias);
 			
 			Object obj = ReflectionUtil.getBeanField(leftObject, attribute);
-			if (obj == null) {
-				rows.remove(row);
+			if (obj instanceof Collection) {
+				joinCollection(join, row, obj);
+			} else {
+				joinObject(join, row, obj);
 			}
-			
+		}
+	}
+
+	private void joinObject(JoinClause join, QueryResultRow row, Object obj) {
+		if (obj == null) {
+			rows.remove(row); // LEFT
+		} else {
 			row.put(join.getAlias(), obj);
+		}
+	}
+
+	private void joinCollection(JoinClause join, QueryResultRow row, Object obj) {
+		Iterator<?> it = ((Collection<?>) obj).iterator();
+		
+		if (!it.hasNext()) {
+			rows.remove(row); // LEFT
+			return;
+		}
+		
+		row.put(join.getAlias(), it.next());
+		
+		while(it.hasNext()) {
+			Object item = it.next();
+			QueryResultRow newRow = duplicate(row);
+			newRow.put(join.getAlias(), item);
 		}
 	}
 }

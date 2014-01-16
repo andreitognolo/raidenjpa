@@ -39,7 +39,7 @@ public class QueryResultRow {
 	}
 
 	@SuppressWarnings("unchecked")
-	public QueryResultRow duplicate() {
+	public QueryResultRow copy() {
 		QueryResultRow copy = new QueryResultRow();
 		copy.columns = (HashMap<String, Object>) this.columns.clone();
 

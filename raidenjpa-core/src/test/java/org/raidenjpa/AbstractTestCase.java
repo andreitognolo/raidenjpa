@@ -19,6 +19,7 @@ import org.raidenjpa.db.InMemoryDB;
 import org.raidenjpa.entities.A;
 import org.raidenjpa.entities.B;
 import org.raidenjpa.entities.C;
+import org.raidenjpa.entities.ItemA;
 import org.raidenjpa.util.EntityManagerUtil;
 import org.raidenjpa.util.Util;
 
@@ -74,6 +75,16 @@ public class AbstractTestCase {
 	
 	public void createA(String value) {
 		merge(new A(value));
+	}
+	
+	public void createA(String value, Integer numberOfItens) {
+		A a = new A(value);
+
+		for(int i = 0; i < numberOfItens; i++) {
+			a.addItem(new ItemA(value + "." + i));
+		}
+		
+		merge(a);
 	}
 	
 	public void createB(String value) {

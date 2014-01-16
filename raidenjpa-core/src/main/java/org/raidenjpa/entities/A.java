@@ -1,8 +1,12 @@
 package org.raidenjpa.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -18,6 +22,9 @@ public class A extends Entidade {
 
 	@OneToOne
 	private B b;
+	
+	@OneToMany
+	private List<ItemA> itens = new ArrayList<ItemA>();
 
 	public A() {
 	}
@@ -29,6 +36,10 @@ public class A extends Entidade {
 
 	public A(String stringValue) {
 		this.stringValue = stringValue;
+	}
+	
+	public void addItem(ItemA item) {
+		itens.add(item);
 	}
 
 	public Long getId() {
@@ -62,6 +73,10 @@ public class A extends Entidade {
 
 	public void setIntValue(int intValue) {
 		this.intValue = intValue;
+	}
+
+	public List<ItemA> getItens() {
+		return itens;
 	}
 
 	@Override

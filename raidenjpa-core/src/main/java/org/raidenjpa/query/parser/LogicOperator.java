@@ -1,10 +1,10 @@
 package org.raidenjpa.query.parser;
 
-public class WhereLogicOperator extends WhereElement {
+public class LogicOperator extends LogicExpressionElement {
 
 	private String operator;
 
-	public WhereLogicOperator(String operator) {
+	public LogicOperator(String operator) {
 		this.operator = operator;
 	}
 	

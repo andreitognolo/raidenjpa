@@ -44,4 +44,8 @@ public class JoinClause {
 		return alias;
 	}
 
+	public WithClause getWith() {
+		return with;
+	}
+
 }

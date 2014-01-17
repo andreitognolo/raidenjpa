@@ -1,7 +1,7 @@
 package org.raidenjpa.query.parser;
 
 
-public abstract class WhereElement {
+public abstract class LogicExpressionElement {
 
 	public boolean isExpression() {
 		return false;

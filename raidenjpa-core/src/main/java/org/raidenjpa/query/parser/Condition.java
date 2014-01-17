@@ -6,7 +6,7 @@ import org.raidenjpa.query.executor.ComparatorUtil;
 import org.raidenjpa.query.executor.QueryResultRow;
 import org.raidenjpa.util.BadSmell;
 
-public class Condition extends WhereElement {
+public class Condition extends LogicExpressionElement {
 
 	private ConditionElement left;
 	private String operator;

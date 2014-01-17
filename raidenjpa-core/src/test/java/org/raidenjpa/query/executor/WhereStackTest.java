@@ -12,7 +12,7 @@ import java.util.Map;
 import org.junit.Test;
 import org.raidenjpa.entities.A;
 import org.raidenjpa.query.parser.QueryParser;
-import org.raidenjpa.query.parser.WhereElement;
+import org.raidenjpa.query.parser.LogicExpressionElement;
 
 public class WhereStackTest {
 
@@ -29,16 +29,16 @@ public class WhereStackTest {
 		WhereStack stackQuery = new WhereStack(queryParser, parameters);
 		stackQuery.initStack();
 		
-		Iterator<WhereElement> it = queryParser.getWhere().iterator();
+		Iterator<LogicExpressionElement> it = queryParser.getWhere().iterator();
 		
-		WhereElement firstExpression = it.next();
+		LogicExpressionElement firstExpression = it.next();
 		assertEquals(RESOLVE, stackQuery.push(firstExpression));
 		stackQuery.resolve(new QueryResultRow("a", a));
 		assertEquals(true, stackQuery.getResult());
 		
-		WhereElement logicOperator = it.next();
+		LogicExpressionElement logicOperator = it.next();
 		assertEquals(NOTHING, stackQuery.push(logicOperator));
-		WhereElement secondExpression = it.next();
+		LogicExpressionElement secondExpression = it.next();
 		assertEquals(REDUCE, stackQuery.push(secondExpression));
 		stackQuery.reduce(new QueryResultRow("a", a));
 		assertEquals(true, stackQuery.getResult());
@@ -56,17 +56,17 @@ public class WhereStackTest {
 		WhereStack stackQuery = new WhereStack(queryParser, parameters);
 		stackQuery.initStack();
 		
-		Iterator<WhereElement> it = queryParser.getWhere().iterator();
+		Iterator<LogicExpressionElement> it = queryParser.getWhere().iterator();
 		
-		WhereElement firstExpression = it.next();
+		LogicExpressionElement firstExpression = it.next();
 		assertEquals(RESOLVE, stackQuery.push(firstExpression));
 		stackQuery.resolve(new QueryResultRow("a", a));
 		assertEquals(true, stackQuery.getResult());
 		
-		WhereElement logicOperator = it.next();
+		LogicExpressionElement logicOperator = it.next();
 		assertEquals(NOTHING, stackQuery.push(logicOperator));
 		
-		WhereElement secondExpression = it.next();
+		LogicExpressionElement secondExpression = it.next();
 		assertEquals(REDUCE, stackQuery.push(secondExpression));
 		stackQuery.reduce(new QueryResultRow("a", a));
 		assertEquals(false, stackQuery.getResult());

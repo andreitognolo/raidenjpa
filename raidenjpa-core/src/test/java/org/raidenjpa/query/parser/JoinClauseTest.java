@@ -32,5 +32,8 @@ public class JoinClauseTest {
 		List<JoinClause> joins = queryParser.getJoins();
 		
 		assertEquals(1, joins.size());
+		
+		WithClause with = joins.get(0).getWith();
+		assertEquals(0, with.getItens().size());
 	}
 }

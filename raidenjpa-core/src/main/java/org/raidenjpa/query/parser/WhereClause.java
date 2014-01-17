@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class WhereClause implements Iterable<WhereElement> {
+public class WhereClause implements Iterable<LogicExpressionElement> {
 	
-	private List<WhereElement> queue = new ArrayList<WhereElement>();
+	private List<LogicExpressionElement> queue = new ArrayList<LogicExpressionElement>();
 	
 	public int parse(QueryWords words, int position) {
 		if (!words.hasMoreWord(position)) {
@@ -46,12 +46,12 @@ public class WhereClause implements Iterable<WhereElement> {
 	}
 
 	private int addElementLogicOperator(QueryWords words, int position) {
-		queue.add(new WhereLogicOperator(words.get(position)));
+		queue.add(new LogicOperator(words.get(position)));
 		position++;
 		return position;
 	}
 	
-	public Iterator<WhereElement> iterator() {
+	public Iterator<LogicExpressionElement> iterator() {
 		return queue.iterator();
 	}
 	

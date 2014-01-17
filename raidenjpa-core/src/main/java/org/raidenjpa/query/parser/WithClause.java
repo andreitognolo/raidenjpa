@@ -1,5 +1,7 @@
 package org.raidenjpa.query.parser;
 
+import java.util.List;
+
 public class WithClause {
 
 	public int parse(QueryWords words, int position) {
@@ -19,6 +21,10 @@ public class WithClause {
 		position++;
 		
 		return position;
+	}
+
+	public List<ConditionElement> getItens() {
+		return null;
 	}
 
 }

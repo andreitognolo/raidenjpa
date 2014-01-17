@@ -5,9 +5,9 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.raidenjpa.query.parser.QueryParser;
-import org.raidenjpa.query.parser.WhereElement;
+import org.raidenjpa.query.parser.LogicExpressionElement;
 import org.raidenjpa.query.parser.Condition;
-import org.raidenjpa.query.parser.WhereLogicOperator;
+import org.raidenjpa.query.parser.LogicOperator;
 import org.raidenjpa.util.BadSmell;
 
 @BadSmell("Rename to WhereExecutor?")
@@ -29,7 +29,7 @@ public class WhereStack {
 	public boolean match(QueryResultRow row) {
 		initStack();
 		 
-		for (WhereElement element : queryParser.getWhere()) {
+		for (LogicExpressionElement element : queryParser.getWhere()) {
 			WhereStackAction action = push(element);
 			if (action == WhereStackAction.RESOLVE) {
 				resolve(row);
@@ -45,11 +45,11 @@ public class WhereStack {
 		stack = new Stack<Element>();
 	}
 	
-	WhereStackAction push(WhereElement element) {
+	WhereStackAction push(LogicExpressionElement element) {
 		stack.push(new Element(element));
 		
 		if (element.isLogicOperator()) {
-			return pushLogicOperator((WhereLogicOperator) element);
+			return pushLogicOperator((LogicOperator) element);
 		} else if (element.isExpression()) {
 			return pushExpression((Condition) element);
 		} else {
@@ -65,7 +65,7 @@ public class WhereStack {
 		}
 	}
 	
-	private WhereStackAction pushLogicOperator(WhereLogicOperator element) {
+	private WhereStackAction pushLogicOperator(LogicOperator element) {
 		if (stack.size() == 1) {
 			throw new RuntimeException("First element must be a expression");
 		}
@@ -102,7 +102,7 @@ public class WhereStack {
 		resolve(row);
 		
 		Boolean firstResult = (Boolean) stack.pop().getRaw();
-		WhereLogicOperator logicOperator = (WhereLogicOperator) stack.pop().getRaw();
+		LogicOperator logicOperator = (LogicOperator) stack.pop().getRaw();
 		Boolean secondResult = (Boolean) stack.pop().getRaw();
 		
 		Boolean result = logicOperator.evaluate(firstResult, secondResult); 
@@ -134,7 +134,7 @@ public class WhereStack {
 		private Object raw;
 		
 		Element(Object element) {
-			if (element instanceof WhereElement || element instanceof List || element instanceof Boolean) {
+			if (element instanceof LogicExpressionElement || element instanceof List || element instanceof Boolean) {
 				this.raw = element;
 			} else {
 				throw new RuntimeException("Only WhereElement or List is acceptable");
@@ -142,7 +142,7 @@ public class WhereStack {
 		}
 
 		boolean isLogicOperator() {
-			return raw instanceof WhereLogicOperator;
+			return raw instanceof LogicOperator;
 		}
 		
 		Object getRaw() {

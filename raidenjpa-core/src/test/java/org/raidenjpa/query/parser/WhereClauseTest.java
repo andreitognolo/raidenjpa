@@ -14,7 +14,7 @@ public class WhereClauseTest {
 		String jpql = "SELECT a FROM A a WHERE a.stringValue = :a ORDER BY a.stringValue";
 
 		QueryParser parser = new QueryParser(jpql);
-		Iterator<WhereElement> it = parser.getWhere().iterator();
+		Iterator<LogicExpressionElement> it = parser.getWhere().iterator();
 
 		Condition condition = (Condition) it.next();
 		assertExpression(condition, "a.stringValue", "=", "a");
@@ -29,12 +29,12 @@ public class WhereClauseTest {
 		jpql += " WHERE a.stringValue = :stringValue AND a.intValue = :intValue ORDER BY a.stringValue";
 
 		QueryParser parser = new QueryParser(jpql);
-		Iterator<WhereElement> it = parser.getWhere().iterator();
+		Iterator<LogicExpressionElement> it = parser.getWhere().iterator();
 		
 		Condition firstExpression = (Condition) it.next();
 		assertExpression(firstExpression, "a.stringValue", "=", "stringValue");
 		
-		WhereLogicOperator logicOperator = (WhereLogicOperator) it.next();
+		LogicOperator logicOperator = (LogicOperator) it.next();
 		assertEquals("AND", logicOperator.getOperator());
 		
 		Condition secondExpression = (Condition) it.next();

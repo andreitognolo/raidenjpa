@@ -1,10 +1,10 @@
 package org.raidenjpa.query.parser;
 
-public class ExpressionParameter extends ExpressionElement {
+public class ConditionParameter extends ConditionElement {
 
 	private String parameterName;
 
-	public ExpressionParameter(String element) {
+	public ConditionParameter(String element) {
 		parameterName = element.substring(1, element.length());
 	}
 

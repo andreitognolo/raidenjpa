@@ -38,8 +38,8 @@ public class WhereClause implements Iterable<WhereElement> {
 		String left = words.get(position);
 		String compare = words.get(position + 1);
 		String right = words.get(position + 2);
-		WhereExpression whereExpression = new WhereExpression(left, compare, right);
-		queue.add(whereExpression);
+		Condition condition = new Condition(left, compare, right);
+		queue.add(condition);
 		
 		position = position + 3;
 		return position;

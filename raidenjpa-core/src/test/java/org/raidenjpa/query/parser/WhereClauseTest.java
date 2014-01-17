@@ -16,8 +16,8 @@ public class WhereClauseTest {
 		QueryParser parser = new QueryParser(jpql);
 		Iterator<WhereElement> it = parser.getWhere().iterator();
 
-		WhereExpression expression = (WhereExpression) it.next();
-		assertExpression(expression, "a.stringValue", "=", "a");
+		Condition condition = (Condition) it.next();
+		assertExpression(condition, "a.stringValue", "=", "a");
 
 		assertFalse(it.hasNext());
 	}
@@ -31,26 +31,26 @@ public class WhereClauseTest {
 		QueryParser parser = new QueryParser(jpql);
 		Iterator<WhereElement> it = parser.getWhere().iterator();
 		
-		WhereExpression firstExpression = (WhereExpression) it.next();
+		Condition firstExpression = (Condition) it.next();
 		assertExpression(firstExpression, "a.stringValue", "=", "stringValue");
 		
 		WhereLogicOperator logicOperator = (WhereLogicOperator) it.next();
 		assertEquals("AND", logicOperator.getOperator());
 		
-		WhereExpression secondExpression = (WhereExpression) it.next();
+		Condition secondExpression = (Condition) it.next();
 		assertExpression(secondExpression, "a.intValue", "=", "intValue");
 	}
 
-	private void assertExpression(WhereExpression expression, String leftSide, String operator, String rightSide) {
-		ExpressionPath left = (ExpressionPath) expression.getLeft();
+	private void assertExpression(Condition condition, String leftSide, String operator, String rightSide) {
+		ConditionPath left = (ConditionPath) condition.getLeft();
 		String[] paths = leftSide.split("\\.");
 		assertEquals(paths.length, left.getPath().size());
 		assertEquals(paths[0], left.getPath().get(0));
 		assertEquals(paths[1], left.getPath().get(1));
 
-		assertEquals(operator, expression.getOperator());
+		assertEquals(operator, condition.getOperator());
 
-		ExpressionParameter right = (ExpressionParameter) expression.getRight();
+		ConditionParameter right = (ConditionParameter) condition.getRight();
 		assertEquals(rightSide, right.getParameterName());
 	}
 }

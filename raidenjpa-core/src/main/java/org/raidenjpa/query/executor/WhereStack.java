@@ -6,7 +6,7 @@ import java.util.Stack;
 
 import org.raidenjpa.query.parser.QueryParser;
 import org.raidenjpa.query.parser.WhereElement;
-import org.raidenjpa.query.parser.WhereExpression;
+import org.raidenjpa.query.parser.Condition;
 import org.raidenjpa.query.parser.WhereLogicOperator;
 import org.raidenjpa.util.BadSmell;
 
@@ -51,13 +51,13 @@ public class WhereStack {
 		if (element.isLogicOperator()) {
 			return pushLogicOperator((WhereLogicOperator) element);
 		} else if (element.isExpression()) {
-			return pushExpression((WhereExpression) element);
+			return pushExpression((Condition) element);
 		} else {
 			throw new RuntimeException("Element must be a logicOperator or an expression");
 		}
 	}
 
-	private WhereStackAction pushExpression(WhereExpression element) {
+	private WhereStackAction pushExpression(Condition element) {
 		if (isThereOperatorBefore()) {
 			return WhereStackAction.REDUCE;
 		} else {
@@ -91,9 +91,9 @@ public class WhereStack {
 	}
 	
 	void resolve(QueryResultRow row) {
-		WhereExpression expression = (WhereExpression) stack.pop().getRaw();
+		Condition condition = (Condition) stack.pop().getRaw();
 		
-		Object match = expression.match(row, parameters);
+		Object match = condition.match(row, parameters);
 		
 		stack.push(new Element(match));
 	}

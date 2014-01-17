@@ -6,12 +6,12 @@ import java.util.List;
 
 import org.raidenjpa.util.BadSmell;
 
-public class ExpressionPath extends ExpressionElement {
+public class ConditionPath extends ConditionElement {
 	
 	private List<String> path;
 
 	@BadSmell("Is it the best way?")
-	public ExpressionPath(String element) {
+	public ConditionPath(String element) {
 		path = new ArrayList<String>(Arrays.asList(element.split("\\.")));
 	}
 

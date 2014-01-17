@@ -6,17 +6,16 @@ import org.raidenjpa.query.executor.ComparatorUtil;
 import org.raidenjpa.query.executor.QueryResultRow;
 import org.raidenjpa.util.BadSmell;
 
-@BadSmell("Rename to WhereCondition")
-public class WhereExpression extends WhereElement {
+public class Condition extends WhereElement {
 
-	private ExpressionElement left;
+	private ConditionElement left;
 	private String operator;
-	private ExpressionElement right;
+	private ConditionElement right;
 
-	public WhereExpression(String left, String operator, String right) {
-		this.left = ExpressionElement.create(left);
+	public Condition(String left, String operator, String right) {
+		this.left = ConditionElement.create(left);
 		this.operator = operator;
-		this.right = ExpressionElement.create(right);
+		this.right = ConditionElement.create(right);
 	}
 
 	public Object match(QueryResultRow row, Map<String, Object> parameters) {
@@ -28,24 +27,24 @@ public class WhereExpression extends WhereElement {
 	@BadSmell("right and left should be the same thing")
 	private Object rightObject(QueryResultRow row, Map<String, Object> parameters) {
 		if (right.isParameter()) {
-			ExpressionParameter expressionParameter = (ExpressionParameter) right;
-			return parameters.get(expressionParameter.getParameterName());
+			ConditionParameter conditionParameter = (ConditionParameter) right;
+			return parameters.get(conditionParameter.getParameterName());
 		} else if (right.isPath()) {
-			return row.getObjectFromExpression(((ExpressionPath) right).getPath());
+			return row.getObjectFromExpression(((ConditionPath) right).getPath());
 		} else {
 			throw new RuntimeException("Expression is neither parameter or path");
 		}
 	}
 
 	private Object leftObject(QueryResultRow row) {
-		return row.getObjectFromExpression(((ExpressionPath) left).getPath());
+		return row.getObjectFromExpression(((ConditionPath) left).getPath());
 	}
 
 	public boolean isExpression() {
 		return true;
 	}
 
-	public ExpressionElement getLeft() {
+	public ConditionElement getLeft() {
 		return left;
 	}
 
@@ -53,7 +52,7 @@ public class WhereExpression extends WhereElement {
 		return operator;
 	}
 
-	public ExpressionElement getRight() {
+	public ConditionElement getRight() {
 		return right;
 	}
 

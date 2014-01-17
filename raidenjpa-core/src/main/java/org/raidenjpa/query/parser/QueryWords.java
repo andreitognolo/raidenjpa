@@ -82,4 +82,12 @@ public class QueryWords {
 	public List<String> getAsPath(int position) {
 		return new ArrayList<String>(Arrays.asList(get(position).split("\\.")));
 	}
+
+	public boolean hasWithClause(int position) {
+		if (!hasMoreWord(position)) {
+			return false;
+		}
+		
+		return get(position).equalsIgnoreCase("WITH");
+	}
 }

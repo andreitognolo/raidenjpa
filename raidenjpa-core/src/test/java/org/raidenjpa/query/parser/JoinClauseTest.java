@@ -24,4 +24,13 @@ public class JoinClauseTest {
 		assertEquals("b", joins.get(1).getPath().get(1));
 		assertEquals("b2", joins.get(1).getAlias());
 	}
+	
+	@Test
+	public void testJoinWithClause() {
+		String jpql = "SELECT a FROM A a JOIN a.b b with b.value = :value";
+		QueryParser queryParser = new QueryParser(jpql);
+		List<JoinClause> joins = queryParser.getJoins();
+		
+		assertEquals(1, joins.size());
+	}
 }

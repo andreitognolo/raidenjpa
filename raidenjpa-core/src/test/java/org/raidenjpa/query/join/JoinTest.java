@@ -85,7 +85,31 @@ public class JoinTest extends AbstractTestCase {
 		assertEquals("a4.2", ((ItemA) result.get(4)[2]).getValue());
 	}
 	
+	@Test
 	public void testJoinClauseWith() {
+		asHibernate();
+		super.setUp();
+		createABC();
+		
+		StringBuilder jpql = new StringBuilder();
+		jpql.append("SELECT a, b FROM A a");
+		jpql.append(" JOIN a.b b with (b.value = :value)");
+		
+		QueryHelper query = new QueryHelper(jpql);
+		query.parameter("value", "b1");
+		assertEquals(1, query.getResultList().size());
+		
+		jpql = new StringBuilder();
+		jpql.append("SELECT a, b FROM A a");
+		jpql.append(" JOIN a.b b with (b.value = :value)");
+		
+		query = new QueryHelper(jpql);
+		query.parameter("value", "wrongValue");
+		assertEquals(0, query.getResultList().size());
+	}
+	
+	@Test
+	public void testJoinClauseWithAndParentheses() {
 		
 	}
 	

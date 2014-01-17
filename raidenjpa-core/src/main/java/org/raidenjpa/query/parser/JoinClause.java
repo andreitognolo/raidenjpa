@@ -9,6 +9,8 @@ public class JoinClause {
 	
 	private String alias;
 
+	private WithClause with;
+
 	public int parse(QueryWords words, int position) {
 		if ("INNER".equalsIgnoreCase(words.get(position))) {
 			position++;
@@ -27,6 +29,9 @@ public class JoinClause {
 		alias = words.get(position);
 		
 		position++;
+		
+		with = new WithClause();
+		position = with.parse(words, position);
 		
 		return position;
 	}

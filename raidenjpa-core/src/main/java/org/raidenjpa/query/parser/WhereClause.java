@@ -14,7 +14,7 @@ public class WhereClause implements Iterable<WhereElement> {
 		}
 		
 		if (!"WHERE".equalsIgnoreCase(words.get(position))) {
-			throw new RuntimeException("There is no where clause in position " + position + " of jpql '" + words.getJpql());
+			throw new RuntimeException("There is no WHERE clause in position " + position + " of jpql '" + words.getJpql());
 		}
 		
 		position++;

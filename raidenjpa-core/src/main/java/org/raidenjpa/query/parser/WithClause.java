@@ -4,23 +4,21 @@ import java.util.List;
 
 public class WithClause {
 
-	public int parse(QueryWords words, int position) {
-		if (!words.hasWithClause(position)) {
-			return position;
+	public void parse(QueryWords words) {
+		if (!words.hasWithClause()) {
+			return;
 		}
 		
-		position++;
+		words.next();
 		
 		// left
-		position++;
+		words.next();
 		
 		// operation
-		position++;
+		words.next();
 		
 		// right
-		position++;
-		
-		return position;
+		words.next();
 	}
 
 	public List<ConditionElement> getItens() {

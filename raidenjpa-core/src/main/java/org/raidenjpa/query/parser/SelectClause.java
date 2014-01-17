@@ -3,24 +3,23 @@ package org.raidenjpa.query.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.raidenjpa.util.BadSmell;
+
 public class SelectClause {
 
 	List<SelectElement> elements = new ArrayList<SelectElement>();
 	
-	public int parse(QueryWords words) {
+	@BadSmell("Maybe words.require")
+	public void parse(QueryWords words) {
 		if (!"SELECT".equalsIgnoreCase(words.get(0))) {
-			return 0;
+			return;
 		}
 		
-		int position = 0;
-		
 		do {
-			position++;
-			elements.add(new SelectElement(words.get(position)));
-			position++;
-		} while(words.hasMoreSelectItem(position));
-		
-		return position;
+			// @BadSmell - Maybe a require(",")
+			words.next();
+			elements.add(new SelectElement(words.next()));
+		} while(words.hasMoreSelectItem());
 	}
 	
 	public List<SelectElement> getElements() {

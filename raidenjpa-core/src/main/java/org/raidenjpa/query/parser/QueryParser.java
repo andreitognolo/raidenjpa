@@ -20,41 +20,38 @@ public class QueryParser {
 	public QueryParser(String jpql) {
 		this.words = new QueryWords(jpql);
 		
-		int position;
-		position = prepareSelect();
-		position = prepareFrom(position);
-		position = prepareJoins(position);
-		position = prepareWhere(position);
+		prepareSelect();
+		prepareFrom();
+		prepareJoins();
+		prepareWhere();
 	}
 
-	private int prepareJoins(int position) {
-		if (!words.hasMoreWord(position)) {
-			return position;
+	private void prepareJoins() {
+		if (!words.hasMoreWord()) {
+			return;
 		}
 		
-		while(words.hasMoreJoin(position)) {
+		while(words.hasMoreJoin()) {
 			JoinClause join = new JoinClause();
-			position = join.parse(words, position);
+			join.parse(words);
+			
 			joins.add(join);
 		}
-		
-		return position;
 	}
 
-	private int prepareSelect() {
+	private void prepareSelect() {
 		select = new SelectClause();
-		return select.parse(words);
+		select.parse(words);
 	}
 
-	private int prepareFrom(int position) {
+	private void prepareFrom() {
 		from = new FromClause();
-		return from.parse(words, position);
+		from.parse(words);
 	}
 
-	@BadSmell("This if should be inside where.parse (do it when create QueryWords)")
-	private int prepareWhere(int position) {
+	private void prepareWhere() {
 		where = new WhereClause();
-		return where.parse(words, position);
+		where.parse(words);
 	}
 
 	public SelectClause getSelect() {

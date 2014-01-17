@@ -4,51 +4,47 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.raidenjpa.util.FixMe;
+
 public class WhereClause implements Iterable<LogicExpressionElement> {
 	
 	private List<LogicExpressionElement> queue = new ArrayList<LogicExpressionElement>();
 	
-	public int parse(QueryWords words, int position) {
-		if (!words.hasMoreWord(position)) {
-			return position;
+	public void parse(QueryWords words) {
+		if (!words.hasMoreWord()) {
+			return;
 		}
 		
-		if (!"WHERE".equalsIgnoreCase(words.get(position))) {
-			throw new RuntimeException("There is no WHERE clause in position " + position + " of jpql '" + words.getJpql());
+		if (!"WHERE".equalsIgnoreCase(words.get(words.getPosition()))) {
+			throw new RuntimeException("There is no WHERE clause in position " + words.getPosition() + " of jpql '" + words.getJpql());
 		}
 		
-		position++;
+		words.next();
 		
-		while (words.isThereMoreWhereElements(position)) {
-			position = addElement(words, position);
+		while (words.isThereMoreWhereElements()) {
+			addElement(words);
 		}
-		
-		return position;
 	}
 
-	private int addElement(QueryWords words, int position) {
-		if (words.isWhereLogicOperator(position)) {
-			return addElementLogicOperator(words, position);
+	@FixMe("Make it be the same to with")
+	private void addElement(QueryWords words) {
+		if (words.isLogicOperator()) {
+			addElementLogicOperator(words);
 		} else {
-			return addElementExpression(words, position);
+			addElementExpression(words);
 		}
 	}
 
-	private int addElementExpression(QueryWords words, int position) {
-		String left = words.get(position);
-		String compare = words.get(position + 1);
-		String right = words.get(position + 2);
+	private void addElementExpression(QueryWords words) {
+		String left = words.next();
+		String compare = words.next();
+		String right = words.next();
 		Condition condition = new Condition(left, compare, right);
 		queue.add(condition);
-		
-		position = position + 3;
-		return position;
 	}
 
-	private int addElementLogicOperator(QueryWords words, int position) {
-		queue.add(new LogicOperator(words.get(position)));
-		position++;
-		return position;
+	private void addElementLogicOperator(QueryWords words) {
+		queue.add(new LogicOperator(words.next()));
 	}
 	
 	public Iterator<LogicExpressionElement> iterator() {

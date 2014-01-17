@@ -7,29 +7,25 @@ public class FromClause {
 
 	private List<FromClauseItem> itens = new ArrayList<FromClauseItem>();
 
-	public int parse(QueryWords words, int position) {
-		if (!"FROM".equals(words.get(position))) {
+	public void parse(QueryWords words) {
+		if (!"FROM".equals(words.get(words.getPosition()))) {
 			throw new RuntimeException("There is no from clause in position "
-					+ position + " of jpql '" + words.getJpql());
+					+ words.getPosition() + " of jpql '" + words.getJpql());
 		}
 
 		do {
-			position++;
-
+			words.next();
+			
 			FromClauseItem item = new FromClauseItem();
-			item.setClassName(words.get(position));
-			position++;
+			item.setClassName(words.next());
 
 			item.setAliasName(null);
-			if (words.existAlias(position)) {
-				item.setAliasName(words.get(position));
-				position++;
+			if (words.existAlias()) {
+				item.setAliasName(words.next());
 			}
 
 			itens.add(item);
-		} while (words.hasMoreFromItem(position));
-
-		return position;
+		} while (words.hasMoreFromItem());
 	}
 
 	public List<FromClauseItem> getItens() {

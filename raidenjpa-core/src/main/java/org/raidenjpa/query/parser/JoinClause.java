@@ -3,8 +3,6 @@ package org.raidenjpa.query.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.raidenjpa.util.BadSmell;
-
 public class JoinClause {
 
 	private List<String> path = new ArrayList<String>();
@@ -13,20 +11,16 @@ public class JoinClause {
 
 	private WithClause with;
 
-	@BadSmell("words.get(words.getPosition())) is weird")
 	public void parse(QueryWords words) {
-		if ("INNER".equalsIgnoreCase(words.get(words.getPosition()))) {
+		if ("INNER".equalsIgnoreCase(words.current())) {
 			words.next();
 		}
 		
-		if (!"JOIN".equalsIgnoreCase(words.next())) {
-			throw new RuntimeException("JOIN expected at position " + words.getPosition() + " in jpql: " + words);
-		}
+		words.require("JOIN");
+		words.next();
 		
 		path = words.getAsPath();
-		
 		alias = words.next();
-		
 		with = new WithClause();
 		with.parse(words);
 	}

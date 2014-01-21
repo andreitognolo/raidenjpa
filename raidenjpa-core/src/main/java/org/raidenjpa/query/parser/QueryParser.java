@@ -3,8 +3,6 @@ package org.raidenjpa.query.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.raidenjpa.util.BadSmell;
-
 public class QueryParser {
 	
 	private QueryWords words;

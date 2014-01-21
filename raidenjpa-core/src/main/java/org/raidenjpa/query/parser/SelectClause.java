@@ -11,7 +11,7 @@ public class SelectClause {
 	
 	@BadSmell("Maybe words.require")
 	public void parse(QueryWords words) {
-		if (!"SELECT".equalsIgnoreCase(words.get(0))) {
+		if (!"SELECT".equalsIgnoreCase(words.current())) {
 			return;
 		}
 		

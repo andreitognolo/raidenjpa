@@ -7,7 +7,6 @@ import java.util.List;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.StringUtil;
 
-@BadSmell("Methods that receive position is wrong")
 public class QueryWords {
 
 	private int position;
@@ -28,6 +27,10 @@ public class QueryWords {
 		return words[index];
 	}
 	
+	public String current() {
+		return words[position];
+	}
+	
 	public String next() {
 		return words[position++]; 
 	}
@@ -40,120 +43,72 @@ public class QueryWords {
 		return words.length;
 	}
 	
-	public boolean hasMoreWord(int position) {
-		return length() > position;
-	}
-	
 	public boolean hasMoreWord() {
 		return length() > position;
 	}
 
-	boolean existAlias(int position) {
-		if (!hasMoreWord(position)) {
-			return false;
-		}
-		
-		return !StringUtil.equalsIgnoreCase(get(position), POSSIBLE_WORDS_AFTER_FROM);
-	}
-	
 	boolean existAlias() {
-		if (!hasMoreWord(position)) {
+		if (!hasMoreWord()) {
 			return false;
 		}
 		
-		return !StringUtil.equalsIgnoreCase(get(position), POSSIBLE_WORDS_AFTER_FROM);
+		return !StringUtil.equalsIgnoreCase(current(), POSSIBLE_WORDS_AFTER_FROM);
 	}
 
-	public boolean isThereMoreWhereElements(int position) {
-		if (!hasMoreWord(position)) {
-			return false;
-		}
-		
-		return !StringUtil.equalsIgnoreCase(get(position), POSSIBLE_WORDS_AFTER_WHERE);
-	}
-	
 	public boolean isThereMoreWhereElements() {
-		if (!hasMoreWord(position)) {
+		if (!hasMoreWord()) {
 			return false;
 		}
 		
-		return !StringUtil.equalsIgnoreCase(get(position), POSSIBLE_WORDS_AFTER_WHERE);
+		return !StringUtil.equalsIgnoreCase(current(), POSSIBLE_WORDS_AFTER_WHERE);
 	}
 
-	public boolean isLogicOperator(int position) {
-		return StringUtil.equalsIgnoreCase(get(position), LOGIC_OPERATORS);
-	}
-	
 	public boolean isLogicOperator() {
-		return StringUtil.equalsIgnoreCase(get(position), LOGIC_OPERATORS);
+		return StringUtil.equalsIgnoreCase(current(), LOGIC_OPERATORS);
 	}
 
-	public boolean hasMoreFromItem(int position) {
-		if (!hasMoreWord(position)) {
-			return false;
-		}
-		
-		return ",".equals(get(position));
-	}
-	
 	public boolean hasMoreFromItem() {
-		if (!hasMoreWord(position)) {
+		if (!hasMoreWord()) {
 			return false;
 		}
 		
-		return ",".equals(get(position));
+		return ",".equals(current());
 	}
 
-	public boolean hasMoreSelectItem(int position) {
-		return ",".equals(get(position));
-	}
-	
 	public boolean hasMoreSelectItem() {
-		return ",".equals(get(position));
+		return ",".equals(current());
 	}
 
-	boolean hasMoreJoin(int position) {
-		if (!hasMoreWord(position)) {
-			return false;
-		}
-		
-		return StringUtil.equalsIgnoreCase(get(position), "INNER", "JOIN");
-	}
-	
 	boolean hasMoreJoin() {
-		if (!hasMoreWord(position)) {
+		if (!hasMoreWord()) {
 			return false;
 		}
 		
-		return StringUtil.equalsIgnoreCase(get(position), "INNER", "JOIN");
+		return StringUtil.equalsIgnoreCase(current(), "INNER", "JOIN");
 	}
 
-	public List<String> getAsPath(int position) {
-		return new ArrayList<String>(Arrays.asList(get(position).split("\\.")));
-	}
-	
 	public List<String> getAsPath() {
 		return new ArrayList<String>(Arrays.asList(next().split("\\.")));
 	}
 
-	public boolean hasWithClause(int position) {
-		if (!hasMoreWord(position)) {
-			return false;
-		}
-		
-		return get(position).equalsIgnoreCase("WITH");
-	}
-	
 	public boolean hasWithClause() {
-		if (!hasMoreWord(position)) {
+		if (!hasMoreWord()) {
 			return false;
 		}
 		
-		return get(position).equalsIgnoreCase("WITH");
+		return current().equalsIgnoreCase("WITH");
 	}
 
 	public int getPosition() {
 		return position;
+	}
+
+	@BadSmell("current or next?")
+	public void require(String value) {
+		if (!value.equalsIgnoreCase(current())) {
+			throw new RuntimeException("Was expected '" + value + "' in position "
+					+ position + ", but found " + current() + " in jpql '" + jpql + "'");
+		}
 	}
 
 }

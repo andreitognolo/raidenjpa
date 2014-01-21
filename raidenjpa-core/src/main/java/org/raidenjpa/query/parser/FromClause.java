@@ -8,10 +8,7 @@ public class FromClause {
 	private List<FromClauseItem> itens = new ArrayList<FromClauseItem>();
 
 	public void parse(QueryWords words) {
-		if (!"FROM".equals(words.get(words.getPosition()))) {
-			throw new RuntimeException("There is no from clause in position "
-					+ words.getPosition() + " of jpql '" + words.getJpql());
-		}
+		words.require("FROM");
 
 		do {
 			words.next();

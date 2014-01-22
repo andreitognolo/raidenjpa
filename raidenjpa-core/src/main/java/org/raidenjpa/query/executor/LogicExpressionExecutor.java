@@ -4,32 +4,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import org.raidenjpa.query.parser.QueryParser;
+import org.raidenjpa.query.parser.LogicExpression;
 import org.raidenjpa.query.parser.LogicExpressionElement;
 import org.raidenjpa.query.parser.Condition;
 import org.raidenjpa.query.parser.LogicOperator;
 import org.raidenjpa.util.BadSmell;
 
-@BadSmell("Rename to WhereExecutor?")
-public class WhereStack {
+public class LogicExpressionExecutor {
 
 	@BadSmell("It is a field, but match is that one which set it")
 	private Stack<Element> stack;
 
-	@BadSmell("We are using just FromClause")
-	private QueryParser queryParser;
+	private LogicExpression logicExpression;
 
 	private Map<String, Object> parameters;
 
-	public WhereStack(QueryParser queryParser, Map<String, Object> parameters) {
-		this.queryParser = queryParser;
+	public LogicExpressionExecutor(LogicExpression logicExpression, Map<String, Object> parameters) {
 		this.parameters = parameters;
+		this.logicExpression = logicExpression;
 	}
 	
 	public boolean match(QueryResultRow row) {
 		initStack();
 		 
-		for (LogicExpressionElement element : queryParser.getWhere()) {
+		for (LogicExpressionElement element : logicExpression.getElements()) {
 			WhereStackAction action = push(element);
 			if (action == WhereStackAction.RESOLVE) {
 				resolve(row);

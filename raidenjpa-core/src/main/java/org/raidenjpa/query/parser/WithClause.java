@@ -1,8 +1,9 @@
 package org.raidenjpa.query.parser;
 
-import java.util.List;
 
 public class WithClause {
+
+	private LogicExpression logicExpression;
 
 	public void parse(QueryWords words) {
 		if (!words.hasWithClause()) {
@@ -11,18 +12,11 @@ public class WithClause {
 		
 		words.next();
 		
-		// left
-		words.next();
-		
-		// operation
-		words.next();
-		
-		// right
-		words.next();
+		logicExpression = new LogicExpression(words);
 	}
 
-	public List<ConditionElement> getItens() {
-		return null;
+	public LogicExpression getLogicExpression() {
+		return logicExpression;
 	}
 
 }

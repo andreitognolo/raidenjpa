@@ -14,7 +14,7 @@ public class QueryWords {
 	private String jpql;
 	
 	private static final String[] POSSIBLE_WORDS_AFTER_FROM = {"INNER", "WHERE", "JOIN", "LEFT", ","};
-	private static final String[] POSSIBLE_WORDS_AFTER_WHERE = {"ORDER", "GROUP"};
+	private static final String[] POSSIBLE_WORDS_AFTER_LOGIC_EXPRESSION = {"INNER", "LEFT", "RIGHT", "JOIN", "WHERE", "ORDER", "GROUP"};
 	private static final String[] LOGIC_OPERATORS = {"AND", "OR"};
 	
 	public QueryWords(String jpql) {
@@ -60,7 +60,7 @@ public class QueryWords {
 			return false;
 		}
 		
-		return !StringUtil.equalsIgnoreCase(current(), POSSIBLE_WORDS_AFTER_WHERE);
+		return !StringUtil.equalsIgnoreCase(current(), POSSIBLE_WORDS_AFTER_LOGIC_EXPRESSION);
 	}
 
 	public boolean isLogicOperator() {

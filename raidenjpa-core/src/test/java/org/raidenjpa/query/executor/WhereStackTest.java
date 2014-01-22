@@ -6,13 +6,13 @@ import static org.raidenjpa.query.executor.WhereStackAction.REDUCE;
 import static org.raidenjpa.query.executor.WhereStackAction.RESOLVE;
 
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
 import org.raidenjpa.entities.A;
-import org.raidenjpa.query.parser.QueryParser;
 import org.raidenjpa.query.parser.LogicExpressionElement;
+import org.raidenjpa.query.parser.QueryParser;
 
 public class WhereStackTest {
 
@@ -26,22 +26,22 @@ public class WhereStackTest {
 		
 		A a = new A("a1", 1);
 		
-		WhereStack stackQuery = new WhereStack(queryParser, parameters);
-		stackQuery.initStack();
+		LogicExpressionExecutor logicExpressionExecutor = new LogicExpressionExecutor(queryParser.getWhere().getLogicExpression(), parameters);
+		logicExpressionExecutor.initStack();
 		
-		Iterator<LogicExpressionElement> it = queryParser.getWhere().iterator();
+		List<LogicExpressionElement> elements = queryParser.getWhere().getLogicExpression().getElements();
 		
-		LogicExpressionElement firstExpression = it.next();
-		assertEquals(RESOLVE, stackQuery.push(firstExpression));
-		stackQuery.resolve(new QueryResultRow("a", a));
-		assertEquals(true, stackQuery.getResult());
+		LogicExpressionElement firstExpression = elements.get(0);
+		assertEquals(RESOLVE, logicExpressionExecutor.push(firstExpression));
+		logicExpressionExecutor.resolve(new QueryResultRow("a", a));
+		assertEquals(true, logicExpressionExecutor.getResult());
 		
-		LogicExpressionElement logicOperator = it.next();
-		assertEquals(NOTHING, stackQuery.push(logicOperator));
-		LogicExpressionElement secondExpression = it.next();
-		assertEquals(REDUCE, stackQuery.push(secondExpression));
-		stackQuery.reduce(new QueryResultRow("a", a));
-		assertEquals(true, stackQuery.getResult());
+		LogicExpressionElement logicOperator = elements.get(1);
+		assertEquals(NOTHING, logicExpressionExecutor.push(logicOperator));
+		LogicExpressionElement secondExpression = elements.get(2);
+		assertEquals(REDUCE, logicExpressionExecutor.push(secondExpression));
+		logicExpressionExecutor.reduce(new QueryResultRow("a", a));
+		assertEquals(true, logicExpressionExecutor.getResult());
 	}
 	
 	@Test
@@ -53,22 +53,22 @@ public class WhereStackTest {
 		parameters.put("intValue", 2);
 		
 		A a = new A("a1", 1);
-		WhereStack stackQuery = new WhereStack(queryParser, parameters);
-		stackQuery.initStack();
+		LogicExpressionExecutor logicExpressionExecutor = new LogicExpressionExecutor(queryParser.getWhere().getLogicExpression(), parameters);
+		logicExpressionExecutor.initStack();
 		
-		Iterator<LogicExpressionElement> it = queryParser.getWhere().iterator();
+		List<LogicExpressionElement> elements = queryParser.getWhere().getLogicExpression().getElements();
 		
-		LogicExpressionElement firstExpression = it.next();
-		assertEquals(RESOLVE, stackQuery.push(firstExpression));
-		stackQuery.resolve(new QueryResultRow("a", a));
-		assertEquals(true, stackQuery.getResult());
+		LogicExpressionElement firstExpression = elements.get(0);
+		assertEquals(RESOLVE, logicExpressionExecutor.push(firstExpression));
+		logicExpressionExecutor.resolve(new QueryResultRow("a", a));
+		assertEquals(true, logicExpressionExecutor.getResult());
 		
-		LogicExpressionElement logicOperator = it.next();
-		assertEquals(NOTHING, stackQuery.push(logicOperator));
+		LogicExpressionElement logicOperator = elements.get(1);
+		assertEquals(NOTHING, logicExpressionExecutor.push(logicOperator));
 		
-		LogicExpressionElement secondExpression = it.next();
-		assertEquals(REDUCE, stackQuery.push(secondExpression));
-		stackQuery.reduce(new QueryResultRow("a", a));
-		assertEquals(false, stackQuery.getResult());
+		LogicExpressionElement secondExpression = elements.get(2);
+		assertEquals(REDUCE, logicExpressionExecutor.push(secondExpression));
+		logicExpressionExecutor.reduce(new QueryResultRow("a", a));
+		assertEquals(false, logicExpressionExecutor.getResult());
 	}
 }

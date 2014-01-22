@@ -68,12 +68,12 @@ public class QueryExecutor {
 	}
 
 	private void filterWhere(QueryResult queryResult, QueryParser queryParser) {
-		WhereStack stack = new WhereStack(queryParser, parameters);
+		LogicExpressionExecutor logicExpressionExecutor = new LogicExpressionExecutor(queryParser.getWhere().getLogicExpression(), parameters);
 		
 		Iterator<QueryResultRow> it = queryResult.iterator();
 		while(it.hasNext()) {
 			QueryResultRow row = it.next();
-			if (!stack.match(row)) {
+			if (!logicExpressionExecutor.match(row)) {
 				it.remove();
 			}
 		}

@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
+import org.raidenjpa.util.FixMe;
 
 public class JoinClauseTest {
 
@@ -26,16 +26,16 @@ public class JoinClauseTest {
 		assertEquals("b2", joins.get(1).getAlias());
 	}
 	
-	@Ignore
+	@FixMe("Be concerned about parentheses")
 	@Test
 	public void testJoinWithClause() {
-		String jpql = "SELECT a FROM A a JOIN a.b b with b.value = :value";
+		String jpql = "SELECT a FROM A a JOIN a.b b with b.value = :value AND b.value = a.value WHERE a.id = :id";
 		QueryParser queryParser = new QueryParser(jpql);
 		List<JoinClause> joins = queryParser.getJoins();
 		
 		assertEquals(1, joins.size());
 		
 		WithClause with = joins.get(0).getWith();
-		assertEquals(0, with.getItens().size());
+		assertEquals(3, with.getLogicExpression().getElements().size());
 	}
 }

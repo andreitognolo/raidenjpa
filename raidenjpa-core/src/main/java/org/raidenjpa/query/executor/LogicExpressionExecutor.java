@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import org.raidenjpa.query.parser.Condition;
 import org.raidenjpa.query.parser.LogicExpression;
 import org.raidenjpa.query.parser.LogicExpressionElement;
-import org.raidenjpa.query.parser.Condition;
 import org.raidenjpa.query.parser.LogicOperator;
 import org.raidenjpa.util.BadSmell;
 
+@BadSmell("Should we put it in LogicExpression")
 public class LogicExpressionExecutor {
 
 	@BadSmell("It is a field, but match is that one which set it")
@@ -23,7 +24,7 @@ public class LogicExpressionExecutor {
 		this.parameters = parameters;
 		this.logicExpression = logicExpression;
 	}
-	
+
 	public boolean match(QueryResultRow row) {
 		initStack();
 		 

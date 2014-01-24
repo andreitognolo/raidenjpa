@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.raidenjpa.query.parser.FromClause;
 import org.raidenjpa.query.parser.JoinClause;
@@ -103,7 +104,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		return rows.size();
 	}
 
-	void join(FromClause from, JoinClause join) {
+	void join(FromClause from, JoinClause join, Map<String, Object> parameters) {
 		String leftAlias = join.getPath().get(0);
 		String attribute = join.getPath().get(1);
 		
@@ -114,16 +115,21 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			if (obj instanceof Collection) {
 				joinCollection(join, row, obj);
 			} else {
-				joinObject(join, row, obj);
+				joinObject(join, row, obj, parameters);
 			}
 		}
 	}
 
-	private void joinObject(JoinClause join, QueryResultRow row, Object obj) {
+	private void joinObject(JoinClause join, QueryResultRow row, Object obj, Map<String, Object> parameters) {
 		if (obj == null) {
-			rows.remove(row); // LEFT
+			rows.remove(row); // TODO: Beware about LEFT
 		} else {
 			row.put(join.getAlias(), obj);
+			LogicExpressionExecutor executor = new LogicExpressionExecutor(join.getWith().getLogicExpression(), parameters);
+			if (executor.match(row)) {
+			} else {
+				rows.remove(row);
+			}
 		}
 	}
 
@@ -131,7 +137,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		Iterator<?> it = ((Collection<?>) obj).iterator();
 		
 		if (!it.hasNext()) {
-			rows.remove(row); // LEFT
+			rows.remove(row); // TODO: Beware about LEFT
 			return;
 		}
 		

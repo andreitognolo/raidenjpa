@@ -5,12 +5,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
 import org.raidenjpa.entities.A;
 import org.raidenjpa.entities.B;
 import org.raidenjpa.entities.ItemA;
+import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.QueryHelper;
 
 public class JoinTest extends AbstractTestCase {
@@ -86,16 +86,12 @@ public class JoinTest extends AbstractTestCase {
 		assertEquals("a4.2", ((ItemA) result.get(4)[2]).getValue());
 	}
 	
-	@Ignore
+	@FixMe("Teste with list")
 	@Test
 	public void testJoinClauseWith() {
-		asHibernate();
-		super.setUp();
-		createABC();
-		
 		StringBuilder jpql = new StringBuilder();
 		jpql.append("SELECT a, b FROM A a");
-		jpql.append(" JOIN a.b b with (b.value = :value)");
+		jpql.append(" JOIN a.b b with b.value = :value");
 		
 		QueryHelper query = new QueryHelper(jpql);
 		query.parameter("value", "b1");
@@ -103,7 +99,7 @@ public class JoinTest extends AbstractTestCase {
 		
 		jpql = new StringBuilder();
 		jpql.append("SELECT a, b FROM A a");
-		jpql.append(" JOIN a.b b with (b.value = :value)");
+		jpql.append(" JOIN a.b b with b.value = :value");
 		
 		query = new QueryHelper(jpql);
 		query.parameter("value", "wrongValue");

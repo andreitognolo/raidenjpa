@@ -31,7 +31,8 @@ public class LogicExpression {
 		getElements().add(new LogicOperator(words.next()));
 	}
 
-	@FixMe("Make it be the same to with") void addElement(QueryWords words) {
+	@FixMe("Make it be the same to with") 
+	void addElement(QueryWords words) {
 		if (words.isLogicOperator()) {
 			addElementLogicOperator(words);
 		} else {

@@ -25,7 +25,7 @@ public class QueryResultTest {
 		A a1 = (A) it.next().get("a");
 		A a2 = (A) it.next().get("a");
 		
-		assertEquals("a1", a1.getStringValue());
+		assertEquals("a2", a1.getStringValue());
 		assertEquals("a2", a2.getStringValue());
 	}
 	

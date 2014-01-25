@@ -125,10 +125,12 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			rows.remove(row); // TODO: Beware about LEFT
 		} else {
 			row.put(join.getAlias(), obj);
-			LogicExpressionExecutor executor = new LogicExpressionExecutor(join.getWith().getLogicExpression(), parameters);
-			if (executor.match(row)) {
-			} else {
-				rows.remove(row);
+			if (join.getWith().getLogicExpression() != null) {
+				LogicExpressionExecutor executor = new LogicExpressionExecutor(join.getWith().getLogicExpression(), parameters);
+				if (executor.match(row)) {
+				} else {
+					rows.remove(row);
+				}
 			}
 		}
 	}

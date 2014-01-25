@@ -3,6 +3,7 @@ package org.raidenjpa.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,7 +24,7 @@ public class A extends Entidade {
 	@OneToOne
 	private B b;
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<ItemA> itens = new ArrayList<ItemA>();
 
 	public A() {

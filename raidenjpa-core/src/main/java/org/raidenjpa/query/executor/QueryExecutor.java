@@ -41,10 +41,8 @@ public class QueryExecutor {
 			return;
 		}
 		
-		FromClause from = queryParser.getFrom();
-		
 		for (JoinClause join : queryParser.getJoins()) {
-			queryResult.join(from, join, parameters);
+			queryResult.join(join, parameters);
 		}
 	}
 

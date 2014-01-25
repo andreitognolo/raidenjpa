@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.raidenjpa.query.parser.FromClause;
 import org.raidenjpa.query.parser.JoinClause;
 import org.raidenjpa.query.parser.SelectClause;
 import org.raidenjpa.query.parser.SelectElement;
@@ -104,7 +103,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		return rows.size();
 	}
 
-	void join(FromClause from, JoinClause join, Map<String, Object> parameters) {
+	void join(JoinClause join, Map<String, Object> parameters) {
 		String leftAlias = join.getPath().get(0);
 		String attribute = join.getPath().get(1);
 		

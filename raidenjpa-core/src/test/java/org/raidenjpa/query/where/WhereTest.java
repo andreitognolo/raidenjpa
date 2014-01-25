@@ -12,11 +12,10 @@ public class WhereTest extends AbstractTestCase {
 	
 	@Before
 	public void setUp() {
-		asRaiden();
 		super.setUp();
 		createABC();
 	}
-
+	
 	@Test
 	public void testOneValue() {
 		QueryHelper query = new QueryHelper("SELECT a FROM A a WHERE a.stringValue = :a");

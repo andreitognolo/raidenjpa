@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
 import org.raidenjpa.entities.A;
 import org.raidenjpa.util.EntityManagerUtil;
@@ -12,6 +13,7 @@ import org.raidenjpa.util.QueryHelper;
 
 public class LimitTest extends AbstractTestCase {
 
+	@Test
 	public void testLimit() {
 		createThreeAs();
 		

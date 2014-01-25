@@ -13,6 +13,9 @@ public class ItemA extends Entidade {
 
 	private String value;
 	
+	public ItemA() {
+	}
+	
 	public ItemA(String value) {
 		this.value = value;
 	}

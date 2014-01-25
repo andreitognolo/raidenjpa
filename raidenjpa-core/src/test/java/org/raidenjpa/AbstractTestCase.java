@@ -28,6 +28,12 @@ public class AbstractTestCase {
 
 	@Before
 	public void setUp() {
+		if (System.getProperty("hibernate") != null) {
+			asHibernate();
+		} else {
+			asRaiden();
+		}
+		
 		truncate();
 	}
 	

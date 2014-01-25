@@ -17,11 +17,10 @@ public class JoinTest extends AbstractTestCase {
 
 	@Before
 	public void setUp() {
-		asRaiden();
 		super.setUp();
 		createABC();
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testInnerToOne() {

@@ -15,11 +15,10 @@ public class SimpleQueryTest extends AbstractTestCase {
 
 	@Before
 	public void setUp() {
-		asRaiden();
 		super.setUp();
 		createABC();
 	}
-
+	
 	@Test
 	public void testWithSelectEntity() {
 		QueryHelper query;

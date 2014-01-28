@@ -108,22 +108,18 @@ public class JoinTest extends AbstractTestCase {
 	public void testJoinToManyAndWithClause() {
 		createA("a2", 3);
 		
-		StringBuilder jpql = new StringBuilder();
-		jpql.append("SELECT a, i FROM A a");
-		jpql.append(" JOIN a.itens i with i.value = :itemValue");
-		
-		QueryHelper query = new QueryHelper(jpql);
-		query.parameter("itemValue", "a2.1");
-		List<Object[]> result = (List<Object[]>) query.getResultList();
-		assertEquals(1, result.size());
-		assertEquals("a2.1", ((ItemA) result.get(0)[1]).getValue());
-		
-		// TODO: jpql.append(" JOIN a.itens i with a.stringValue = :value and i.value = :itemValue");
+		StringBuilder jpql;
+		QueryHelper query;
+		List<Object[]> result;
 		
 		jpql = new StringBuilder();
 		jpql.append("SELECT a, i FROM A a");
-		jpql.append(" JOIN a.itens i with a.value = i.value");
-		// TODO: 
+		jpql.append(" JOIN a.itens i with i.value = :itemValue");
+		query = new QueryHelper(jpql);
+		query.parameter("itemValue", "a2.1");
+		result = (List<Object[]>) query.getResultList();
+		assertEquals(1, result.size());
+		assertEquals("a2.1", ((ItemA) result.get(0)[1]).getValue());
 	}
 	
 	@Test

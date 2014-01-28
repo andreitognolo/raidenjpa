@@ -17,7 +17,7 @@ public class LogicOperator extends LogicExpressionElement {
 	}
 
 	public Boolean evaluate(Boolean firstResult, Boolean secondResult) {
-		if ("AND".equals(operator)) {
+		if ("AND".equalsIgnoreCase(operator)) {
 			return firstResult && secondResult;
 		} else {
 			throw new RuntimeException("Operator "  + operator + " not yet implemented");

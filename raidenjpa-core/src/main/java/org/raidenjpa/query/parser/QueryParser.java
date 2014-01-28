@@ -3,6 +3,8 @@ package org.raidenjpa.query.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.raidenjpa.util.BadSmell;
+
 public class QueryParser {
 	
 	private QueryWords words;
@@ -27,6 +29,7 @@ public class QueryParser {
 		prepareGroupBy();
 	}
 
+	@BadSmell("Call parse in groupBy")
 	private void prepareGroupBy() {
 		if(!words.hasMoreWord() || !"GROUP".equalsIgnoreCase(words.current())) {
 			return;

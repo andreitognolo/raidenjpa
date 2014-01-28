@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.raidenjpa.query.parser.GroupByClause;
 import org.raidenjpa.query.parser.JoinClause;
 import org.raidenjpa.query.parser.SelectClause;
 import org.raidenjpa.query.parser.SelectElement;
@@ -70,12 +71,25 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		rows = rows.subList(0, maxResult);
 	}
 
-	public List<?> getList(SelectClause select) {
-		if (select.getElements().size() == 1) {
-			return selectOneElement(select);
+	@BadSmell("This double verification in groupBy is only necessary because of bad design")
+	public List<?> getList(SelectClause select, GroupByClause groupBy) {
+		if (groupBy == null || groupBy.getElements().isEmpty()) {
+			if (select.getElements().size() == 1) {
+				return selectOneElement(select);
+			} else {
+				return selectMoreThanOneElement(select);
+			}
 		} else {
-			return selectMoreThanOneElement(select);
+			return selectGroupedBy(select, groupBy);
 		}
+	}
+
+	private List<?> selectGroupedBy(SelectClause select, GroupByClause groupBy) {
+		if ("count(*)".equalsIgnoreCase(select.getElements().get(0).getPath().get(0))) {
+			throw new RuntimeException("Not yet implemented");
+		}
+		
+		return Arrays.asList(rows.size());
 	}
 
 	private List<?> selectMoreThanOneElement(SelectClause select) {

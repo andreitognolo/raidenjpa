@@ -10,6 +10,7 @@ import org.raidenjpa.query.parser.FromClauseItem;
 import org.raidenjpa.query.parser.JoinClause;
 import org.raidenjpa.query.parser.QueryParser;
 import org.raidenjpa.util.BadSmell;
+import org.raidenjpa.util.FixMe;
 
 public class QueryExecutor {
 
@@ -32,7 +33,7 @@ public class QueryExecutor {
 		executeWhere(queryParser, queryResult);
 		executeLimit(queryResult);
 		
-		return queryResult.getList(queryParser.getSelect());
+		return queryResult.getList(queryParser.getSelect(), queryParser.getGroupBy());
 	}
 
 	@BadSmell("It is kind of confused. Put it in QueryResult")
@@ -46,6 +47,7 @@ public class QueryExecutor {
 		}
 	}
 
+	@FixMe("Execute limit before than group by is correct?")
 	private void executeLimit(QueryResult queryResult) {
 		queryResult.limit(maxResult);
 	}

@@ -14,6 +14,8 @@ public class QueryParser {
 	private WhereClause where;
 
 	private List<JoinClause> joins = new ArrayList<JoinClause>();
+
+	private GroupByClause groupBy;
 	
 	public QueryParser(String jpql) {
 		this.words = new QueryWords(jpql);
@@ -66,5 +68,9 @@ public class QueryParser {
 
 	public List<JoinClause> getJoins() {
 		return joins;
+	}
+
+	public GroupByClause getGroupBy() {
+		return groupBy;
 	}
 }

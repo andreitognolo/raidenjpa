@@ -96,7 +96,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 	private List<?> selectUsingAggregation(SelectClause select, GroupByClause groupBy) {
 		
 		
-		return Arrays.asList(rows.size());
+		return Arrays.asList(new Long(rows.size()));
 	}
 
 	private List<?> selectMoreThanOneElement(SelectClause select) {

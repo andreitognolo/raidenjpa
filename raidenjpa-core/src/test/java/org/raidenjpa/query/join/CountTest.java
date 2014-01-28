@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
 import org.raidenjpa.util.QueryHelper;
@@ -24,9 +25,10 @@ public class CountTest extends AbstractTestCase {
 		query = new QueryHelper(jpql);
 		result = query.getResultList();
 		assertEquals(1, result.size());
-		assertEquals(3, result.get(0));
+		assertEquals(3l, result.get(0));
 	}
 	
+	@Ignore
 	@Test
 	public void testCountWithGroupBy() {
 		createABC();

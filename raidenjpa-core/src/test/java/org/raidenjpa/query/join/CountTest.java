@@ -16,11 +16,18 @@ public class CountTest extends AbstractTestCase {
 		createA("a1");
 		createA("a2");
 		
-		String jpql = "SELECT count(*) FROM A a";
-		QueryHelper query = new QueryHelper(jpql);
-		List<?> result = query.getResultList();
-		assertEquals(3, result.size());
+		String jpql;
+		QueryHelper query;
+		List<?> result;
+		
+		jpql = "SELECT count(*) FROM A a";
+		query = new QueryHelper(jpql);
+		result = query.getResultList();
+		assertEquals(1, result.size());
 		
 		jpql = "SELECT count(*), a.stringValue FROM A a";
+		query = new QueryHelper(jpql);
+		result = query.getResultList();
+		assertEquals(1, result.size());
 	}
 }

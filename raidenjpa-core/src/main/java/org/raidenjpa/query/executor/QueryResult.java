@@ -73,20 +73,29 @@ public class QueryResult implements Iterable<QueryResultRow> {
 
 	@BadSmell("This double verification in groupBy is only necessary because of bad design")
 	public List<?> getList(SelectClause select, GroupByClause groupBy) {
-		if (groupBy == null || groupBy.getElements().isEmpty()) {
+		if (isThereAggregationFunction(select)) {
+			return selectUsingAggregation(select, groupBy);
+		} else {
 			if (select.getElements().size() == 1) {
 				return selectOneElement(select);
 			} else {
 				return selectMoreThanOneElement(select);
 			}
-		} else {
-			return selectGroupedBy(select, groupBy);
 		}
 	}
 
-	private List<?> selectGroupedBy(SelectClause select, GroupByClause groupBy) {
-		if ("count(*)".equalsIgnoreCase(select.getElements().get(0).getPath().get(0))) {
-			throw new RuntimeException("Not yet implemented");
+	private boolean isThereAggregationFunction(SelectClause select) {
+		for (SelectElement element : select.getElements()) {
+			if ("count(*)".equalsIgnoreCase(element.getPath().get(0))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private List<?> selectUsingAggregation(SelectClause select, GroupByClause groupBy) {
+		if (!"count(*)".equalsIgnoreCase(select.getElements().get(0).getPath().get(0))) {
+			throw new RuntimeException("Not yet implemented: " + select.getElements().get(0).getPath().get(0));
 		}
 		
 		return Arrays.asList(rows.size());

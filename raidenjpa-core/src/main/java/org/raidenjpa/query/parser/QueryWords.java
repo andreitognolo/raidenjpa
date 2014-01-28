@@ -111,4 +111,12 @@ public class QueryWords {
 		}
 	}
 
+	public boolean hasMoreGroupByElements() {
+		if (!hasMoreWord()) {
+			return false;
+		}
+		
+		return ",".equalsIgnoreCase(current());
+	}
+
 }

@@ -6,11 +6,9 @@ public class WhereClause {
 	private LogicExpression logicExpression;
 	
 	public void parse(QueryWords words) {
-		if (!words.hasMoreWord()) {
+		if (!words.hasMoreWord() || !"WHERE".equalsIgnoreCase(words.current())) {
 			return;
 		}
-		
-		words.require("WHERE");
 		
 		words.next();
 		

@@ -24,6 +24,15 @@ public class QueryParser {
 		prepareFrom();
 		prepareJoins();
 		prepareWhere();
+		prepareGroupBy();
+	}
+
+	private void prepareGroupBy() {
+		if(!words.hasMoreWord() || !"GROUP".equalsIgnoreCase(words.current())) {
+			return;
+		}
+		
+		groupBy = new GroupByClause(words);
 	}
 
 	private void prepareJoins() {

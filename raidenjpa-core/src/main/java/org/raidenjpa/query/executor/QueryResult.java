@@ -1,6 +1,7 @@
 package org.raidenjpa.query.executor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -112,7 +113,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			
 			Object obj = ReflectionUtil.getBeanField(leftObject, attribute);
 			if (obj instanceof Collection) {
-				joinCollection(join, row, obj);
+				joinCollection(join, row, obj, parameters);
 			} else {
 				joinObject(join, row, obj, parameters);
 			}
@@ -124,17 +125,12 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			rows.remove(row); // TODO: Beware about LEFT
 		} else {
 			row.put(join.getAlias(), obj);
-			if (join.getWith().getLogicExpression() != null) {
-				LogicExpressionExecutor executor = new LogicExpressionExecutor(join.getWith().getLogicExpression(), parameters);
-				if (executor.match(row)) {
-				} else {
-					rows.remove(row);
-				}
-			}
+			removeRowsNoMatchWith(join, parameters, Arrays.asList(row));
 		}
 	}
 
-	private void joinCollection(JoinClause join, QueryResultRow row, Object obj) {
+	@BadSmell("We could avoid some parameters making this attributes")
+	private void joinCollection(JoinClause join, QueryResultRow row, Object obj, Map<String, Object> parameters) {
 		Iterator<?> it = ((Collection<?>) obj).iterator();
 		
 		if (!it.hasNext()) {
@@ -142,13 +138,33 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			return;
 		}
 		
+		List<QueryResultRow> rowsInJoin = new ArrayList<QueryResultRow>();
+		rowsInJoin.add(row);
+		
 		row.put(join.getAlias(), it.next());
 		
 		while(it.hasNext()) {
 			Object item = it.next();
 			QueryResultRow newRow = duplicate(row);
 			newRow.put(join.getAlias(), item);
+			rowsInJoin.add(newRow);
 			row = newRow;
+		}
+		
+		removeRowsNoMatchWith(join, parameters, rowsInJoin);
+	}
+
+	private void removeRowsNoMatchWith(JoinClause join, Map<String, Object> parameters, List<QueryResultRow> rowsInJoin) {
+		if (join.getWith().getLogicExpression() == null) {
+			return;
+		}
+		
+		LogicExpressionExecutor executor = new LogicExpressionExecutor(join.getWith().getLogicExpression(), parameters);
+		for (QueryResultRow rowInJoin : rowsInJoin) {
+			if (executor.match(rowInJoin)) {
+			} else {
+				rows.remove(rowInJoin);
+			}
 		}
 	}
 }

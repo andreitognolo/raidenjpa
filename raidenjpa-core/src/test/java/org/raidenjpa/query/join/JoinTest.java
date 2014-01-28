@@ -5,12 +5,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
 import org.raidenjpa.entities.A;
 import org.raidenjpa.entities.B;
 import org.raidenjpa.entities.ItemA;
-import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.QueryHelper;
 
 public class JoinTest extends AbstractTestCase {
@@ -85,9 +85,8 @@ public class JoinTest extends AbstractTestCase {
 		assertEquals("a4.2", ((ItemA) result.get(4)[2]).getValue());
 	}
 	
-	@FixMe("Teste with list")
 	@Test
-	public void testJoinClauseWith() {
+	public void testJoinToOneAndWithClause() {
 		StringBuilder jpql = new StringBuilder();
 		jpql.append("SELECT a, b FROM A a");
 		jpql.append(" JOIN a.b b with b.value = :value");
@@ -103,6 +102,30 @@ public class JoinTest extends AbstractTestCase {
 		query = new QueryHelper(jpql);
 		query.parameter("value", "wrongValue");
 		assertEquals(0, query.getResultList().size());
+	}
+	
+	@Ignore
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testJoinToManyAndWithClause() {
+		createA("a2", 3);
+		
+		StringBuilder jpql = new StringBuilder();
+		jpql.append("SELECT a, i FROM A a");
+		jpql.append(" JOIN a.itens i with i.value = :itemValue");
+		
+		QueryHelper query = new QueryHelper(jpql);
+		query.parameter("itemValue", "a2.1");
+		List<Object[]> result = (List<Object[]>) query.getResultList();
+		assertEquals(1, result.size());
+		assertEquals("a2.1", ((ItemA) result.get(0)[1]).getValue());
+		
+		// TODO: jpql.append(" JOIN a.itens i with a.stringValue = :value and i.value = :itemValue");
+		
+		jpql = new StringBuilder();
+		jpql.append("SELECT a, i FROM A a");
+		jpql.append(" JOIN a.itens i with a.value = i.value");
+		// TODO: 
 	}
 	
 	@Test

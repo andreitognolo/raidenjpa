@@ -24,10 +24,29 @@ public class CountTest extends AbstractTestCase {
 		query = new QueryHelper(jpql);
 		result = query.getResultList();
 		assertEquals(1, result.size());
+		assertEquals(3, result.get(0));
+	}
+	
+	@Test
+	public void testCountWithGroupBy() {
+		createABC();
+		createA("a1");
+		createA("a2");
 		
-		jpql = "SELECT count(*), a.stringValue FROM A a GROUP BY a.stringValue";
+		String jpql;
+		QueryHelper query;
+		List<?> result;
+		
+		jpql = "SELECT count(*) FROM A a GROUP BY a.stringValue";
 		query = new QueryHelper(jpql);
 		result = query.getResultList();
 		assertEquals(1, result.size());
+		
+		jpql = "SELECT count(*), a.stringValue FROM A a GROUP BY a.stringValue";
+	}
+	
+	@Test
+	public void testErrorMessageIfNotContainsItensInGroupBy() {
+		
 	}
 }

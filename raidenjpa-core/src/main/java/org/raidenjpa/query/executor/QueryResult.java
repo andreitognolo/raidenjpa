@@ -94,9 +94,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 	}
 
 	private List<?> selectUsingAggregation(SelectClause select, GroupByClause groupBy) {
-		if (!"count(*)".equalsIgnoreCase(select.getElements().get(0).getPath().get(0))) {
-			throw new RuntimeException("Not yet implemented: " + select.getElements().get(0).getPath().get(0));
-		}
+		
 		
 		return Arrays.asList(rows.size());
 	}

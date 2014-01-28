@@ -25,7 +25,7 @@ public class CountTest extends AbstractTestCase {
 		result = query.getResultList();
 		assertEquals(1, result.size());
 		
-		jpql = "SELECT count(*), a.stringValue FROM A a";
+		jpql = "SELECT count(*), a.stringValue FROM A a GROUP BY a.stringValue";
 		query = new QueryHelper(jpql);
 		result = query.getResultList();
 		assertEquals(1, result.size());

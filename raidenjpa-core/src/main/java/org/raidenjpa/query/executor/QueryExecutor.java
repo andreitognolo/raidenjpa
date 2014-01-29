@@ -14,18 +14,17 @@ import org.raidenjpa.util.FixMe;
 
 public class QueryExecutor {
 
-	private String jpql;
 	private Integer maxResult;
-	private	Map<String, Object> parameters; 
+	private	Map<String, Object> parameters;
+	private QueryParser queryParser; 
 	
 	public QueryExecutor(String jpql, Map<String, Object> parameters, Integer maxResult) {
-		this.jpql = jpql;
+		this.queryParser = new QueryParser(jpql);
 		this.parameters = parameters;
 		this.maxResult = maxResult;
 	}
 
 	public List<?> getResultList() {
-		QueryParser queryParser = new QueryParser(jpql);
 		QueryResult queryResult = new QueryResult();
 		
 		executeFrom(queryParser, queryResult);

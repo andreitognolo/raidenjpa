@@ -31,8 +31,10 @@ public class Condition extends LogicExpressionElement {
 			return parameters.get(conditionParameter.getParameterName());
 		} else if (right.isPath()) {
 			return row.getObject(((ConditionPath) right).getPath());
+		} else if (right.isSubQuery()) {
+			return ((ConditionSubQuery) right).getResultList(row, parameters);
 		} else {
-			throw new RuntimeException("Expression is neither parameter or path");
+			throw new RuntimeException("Expression is neither parameter nor path nor subQuery");
 		}
 	}
 

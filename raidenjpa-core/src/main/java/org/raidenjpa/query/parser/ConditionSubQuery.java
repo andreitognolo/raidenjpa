@@ -1,5 +1,10 @@
 package org.raidenjpa.query.parser;
 
+import java.util.List;
+import java.util.Map;
+
+import org.raidenjpa.query.executor.QueryExecutor;
+import org.raidenjpa.query.executor.QueryResultRow;
 import org.raidenjpa.util.FixMe;
 
 @FixMe("Beware about subQuery that needs alias from principal query")
@@ -22,9 +27,14 @@ public class ConditionSubQuery extends ConditionElement {
 		
 		queryParser = new QueryParser(jpql);
 	}
+	
+	public List<?> getResultList(QueryResultRow row, Map<String, Object> parameters) {
+//		new QueryExecutor(jpql, parameters, maxResult);
+		return null;
+	}
 
 	public boolean isSubQuery() {
-		return false;
+		return true;
 	}
 
 	public QueryParser getQueryParser() {

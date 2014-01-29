@@ -99,7 +99,7 @@ public class AbstractTestCase {
 		merge(new A(value));
 	}
 	
-	public void create(String value, Integer intValue) {
+	public void createA(String value, Integer intValue) {
 		A a = new A(value, intValue);
 		merge(a);
 	}

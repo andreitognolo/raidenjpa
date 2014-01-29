@@ -49,7 +49,7 @@ public class WhereClauseTest {
 		List<LogicExpressionElement> elements = parser.getWhere().getLogicExpression().getElements();
 		assertEquals(1, elements.size());
 		Condition firstExpression = (Condition) elements.get(0);
-		assertExpression(firstExpression, "a.intValue", "IN", "(values)");
+		assertExpression(firstExpression, "a.intValue", "IN", "values");
 	}
 	
 	private void assertExpression(Condition condition, String leftSide, String operator, String parameterName) {

@@ -5,7 +5,12 @@ public class ConditionParameter extends ConditionElement {
 	private String parameterName;
 
 	public ConditionParameter(String element) {
-		parameterName = element.replace(":", "");
+		element = element.replace(":", "");
+		
+		// because of - IN (:values)
+		element = element.replace("(", "").replace(")", "");
+		
+		parameterName = element;
 	}
 
 	public String getParameterName() {

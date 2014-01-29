@@ -101,10 +101,28 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			return Arrays.asList(new Long(rows.size()));
 		}
 
-		List<Long> result = new ArrayList<Long>();
 		Map<String, List<QueryResultRow>> aggregateRows = aggregateRows(groupBy);
+		if (select.getElements().size() == 1) {
+			List<Long> result = new ArrayList<Long>();
+			for (Entry<String, List<QueryResultRow>> entry : aggregateRows.entrySet()) {
+				result.add(new Long(entry.getValue().size()));
+			}
+			return result;
+		}
+		
+		List<Object[]> result = new ArrayList<Object[]>();
 		for (Entry<String, List<QueryResultRow>> entry : aggregateRows.entrySet()) {
-			result.add(new Long(entry.getValue().size()));
+			Object[] resultRow = new Object[select.getElements().size()];
+			for (int i = 0; i < select.getElements().size(); i++) {
+				SelectElement selectElement = select.getElements().get(i);
+				
+				if ("count(*)".equalsIgnoreCase(selectElement.getPath().get(0))) {
+					resultRow[i] = new Long(entry.getValue().size()); 
+				} else {
+					resultRow[i] = entry.getValue().get(0).get(selectElement);
+				}
+			}
+			result.add(resultRow);
 		}
 		
 		return result;

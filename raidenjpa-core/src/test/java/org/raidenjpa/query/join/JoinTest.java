@@ -40,8 +40,8 @@ public class JoinTest extends AbstractTestCase {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testInnerToMany() {
-		createA("a2", 2);
-		createA("a3", 3);
+		createAwithItens("a2", 2);
+		createAwithItens("a3", 3);
 		
 		QueryHelper query = new QueryHelper("SELECT a, item FROM A a JOIN a.itens item");
 		List<Object[]> result = (List<Object[]>) query.getResultList();
@@ -106,7 +106,7 @@ public class JoinTest extends AbstractTestCase {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testJoinToManyAndWithClause() {
-		createA("a2", 3);
+		createAwithItens("a2", 3);
 		
 		StringBuilder jpql;
 		QueryHelper query;

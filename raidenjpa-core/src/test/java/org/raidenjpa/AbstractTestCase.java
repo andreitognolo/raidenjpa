@@ -99,7 +99,12 @@ public class AbstractTestCase {
 		merge(new A(value));
 	}
 	
-	public void createA(String value, Integer numberOfItens) {
+	public void create(String value, Integer intValue) {
+		A a = new A(value, intValue);
+		merge(a);
+	}
+	
+	public void createAwithItens(String value, Integer numberOfItens) {
 		A a = new A(value);
 
 		for(int i = 1; i <= numberOfItens; i++) {

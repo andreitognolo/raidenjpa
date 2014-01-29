@@ -5,7 +5,7 @@ public class ConditionParameter extends ConditionElement {
 	private String parameterName;
 
 	public ConditionParameter(String element) {
-		parameterName = element.substring(1, element.length());
+		parameterName = element.replace(":", "");
 	}
 
 	public String getParameterName() {

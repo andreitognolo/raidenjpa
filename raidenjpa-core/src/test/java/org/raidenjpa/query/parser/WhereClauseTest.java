@@ -38,8 +38,21 @@ public class WhereClauseTest {
 		Condition secondExpression = (Condition) elements.get(2);
 		assertExpression(secondExpression, "a.intValue", "=", "intValue");
 	}
+	
+	@Test
+	public void testInOperator() {
+		String jpql;
+		jpql = "SELECT a FROM A a";
+		jpql += " WHERE a.intValue IN (:values)";
 
-	private void assertExpression(Condition condition, String leftSide, String operator, String rightSide) {
+		QueryParser parser = new QueryParser(jpql);
+		List<LogicExpressionElement> elements = parser.getWhere().getLogicExpression().getElements();
+		assertEquals(1, elements.size());
+		Condition firstExpression = (Condition) elements.get(0);
+		assertExpression(firstExpression, "a.intValue", "IN", "(values)");
+	}
+	
+	private void assertExpression(Condition condition, String leftSide, String operator, String parameterName) {
 		ConditionPath left = (ConditionPath) condition.getLeft();
 		String[] paths = leftSide.split("\\.");
 		assertEquals(paths.length, left.getPath().size());
@@ -49,6 +62,6 @@ public class WhereClauseTest {
 		assertEquals(operator, condition.getOperator());
 
 		ConditionParameter right = (ConditionParameter) condition.getRight();
-		assertEquals(rightSide, right.getParameterName());
+		assertEquals(parameterName, right.getParameterName());
 	}
 }

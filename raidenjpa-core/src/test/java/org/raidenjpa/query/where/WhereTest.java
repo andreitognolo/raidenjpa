@@ -2,7 +2,10 @@ package org.raidenjpa.query.where;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
+
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
 import org.raidenjpa.util.FixMe;
@@ -51,6 +54,14 @@ public class WhereTest extends AbstractTestCase {
 		createB("b2");
 	
 		QueryHelper query = new QueryHelper("SELECT a, b FROM A a, B b WHERE a.b.id = b.id");
+		assertEquals(1, query.getResultList().size());
+	}
+
+	@Ignore
+	@Test
+	public void testInOperator() {
+		QueryHelper query = new QueryHelper("SELECT a FROM A a WHERE a.intValue IN (:values)");
+		query.parameter("values", Arrays.asList(1, 3, 5));
 		assertEquals(1, query.getResultList().size());
 	}
 }

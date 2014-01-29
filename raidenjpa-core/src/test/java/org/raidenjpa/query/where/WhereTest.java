@@ -66,4 +66,9 @@ public class WhereTest extends AbstractTestCase {
 		query.parameter("values", Arrays.asList(1, 3, 5));
 		assertEquals(2, query.getResultList().size());
 	}
+	
+	@Test
+	public void testInOperatorWithSubselect() {
+		
+	}
 }

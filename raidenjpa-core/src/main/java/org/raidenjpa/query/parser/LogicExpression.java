@@ -20,11 +20,7 @@ public class LogicExpression {
 	}
 
 	void addElementExpression(QueryWords words) {
-		String left = words.next();
-		String compare = words.next();
-		String right = words.next();
-		Condition condition = new Condition(left, compare, right);
-		getElements().add(condition);
+		getElements().add(new Condition(words));
 	}
 
 	void addElementLogicOperator(QueryWords words) {

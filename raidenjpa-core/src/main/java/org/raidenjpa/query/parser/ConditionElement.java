@@ -4,13 +4,17 @@ import org.hibernate.cfg.NotYetImplementedException;
 
 public abstract class ConditionElement {
  
-	public static ConditionElement create(String element) {
-		if (element.contains(":")) {
-			return new ConditionParameter(element);
-		} else if (element.contains(".")) {
-			return new ConditionPath(element);
+	public static ConditionElement create(QueryWords words) {
+		String current = words.current();
+		
+		if (current.contains(":")) {
+			return new ConditionParameter(words.next());
+		} else if (current.contains(".")) {
+			return new ConditionPath(words.next());
+		} else if (current.toUpperCase().contains("(SELECT")) {
+			return new ConditionSubQuery(words);
 		} else {
-			throw new NotYetImplementedException("ConditionElement '" + element + "' doesnt have alias. It is not yet implemented");
+			throw new NotYetImplementedException("ConditionElement '" + current + "' doesnt have alias. It is not yet implemented");
 		}
 	}
 	
@@ -19,6 +23,10 @@ public abstract class ConditionElement {
 	}
 
 	public boolean isPath() {
+		return false;
+	}
+	
+	public boolean isSubQuery() {
 		return false;
 	}
 }

@@ -30,7 +30,7 @@ public class QueryWords {
 	public String current() {
 		return words[position];
 	}
-	
+
 	public String next() {
 		return words[position++]; 
 	}

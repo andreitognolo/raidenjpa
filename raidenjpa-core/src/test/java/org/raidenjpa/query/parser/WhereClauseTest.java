@@ -52,6 +52,23 @@ public class WhereClauseTest {
 		assertExpression(firstExpression, "a.intValue", "IN", "values");
 	}
 	
+	@Test
+	public void testInOperatorWithSubselect() {
+		String jpql;
+		jpql = "SELECT a FROM A a";
+		jpql += " WHERE a.id IN (SELECT a.id FROM A a WHERE a.stringValue = :stringValue)";
+
+		QueryParser parser = new QueryParser(jpql);
+		List<LogicExpressionElement> elements = parser.getWhere().getLogicExpression().getElements();
+		assertEquals(1, elements.size());
+		ConditionSubQuery subQuery = (ConditionSubQuery) ((Condition) elements.get(0)).getRight();
+		
+		QueryParser queryParser = subQuery.getQueryParser();
+		assertEquals(1, queryParser.getSelect().getElements().size());
+		assertEquals("A", queryParser.getFrom().getItem("a").getClassName());
+		assertEquals(1, queryParser.getWhere().getLogicExpression().getElements().size());
+	}
+	
 	private void assertExpression(Condition condition, String leftSide, String operator, String parameterName) {
 		ConditionPath left = (ConditionPath) condition.getLeft();
 		String[] paths = leftSide.split("\\.");

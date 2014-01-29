@@ -12,10 +12,10 @@ public class Condition extends LogicExpressionElement {
 	private String operator;
 	private ConditionElement right;
 
-	public Condition(String left, String operator, String right) {
-		this.left = ConditionElement.create(left);
-		this.operator = operator;
-		this.right = ConditionElement.create(right);
+	public Condition(QueryWords words) {
+		this.left = ConditionElement.create(words);
+		this.operator = words.next();
+		this.right = ConditionElement.create(words);
 	}
 
 	public Object match(QueryResultRow row, Map<String, Object> parameters) {

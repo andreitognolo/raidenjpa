@@ -2,6 +2,7 @@ package org.raidenjpa.query.join;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -41,10 +42,18 @@ public class CountTest extends AbstractTestCase {
 		query = new QueryHelper(jpql);
 		result = query.getResultList();
 		assertEquals(2, result.size());
+		sort(result);
+		assertEquals(1l, result.get(0));
+		assertEquals(2l, result.get(1));
 		
 		jpql = "SELECT count(*), a.stringValue FROM A a GROUP BY a.stringValue";
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void sort(List<?> result) {
+		Collections.sort((List<Comparable>) result);
+	}
+
 	@Test
 	public void testErrorMessageIfNotContainsItensInGroupBy() {
 		

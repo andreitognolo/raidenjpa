@@ -24,6 +24,11 @@ public class QueryExecutor {
 		this.maxResult = maxResult;
 	}
 
+	public QueryExecutor(QueryParser queryParser, Map<String, Object> parameters) {
+		this.queryParser = queryParser;
+		this.parameters = parameters;
+	}
+
 	public List<?> getResultList() {
 		QueryResult queryResult = new QueryResult();
 		

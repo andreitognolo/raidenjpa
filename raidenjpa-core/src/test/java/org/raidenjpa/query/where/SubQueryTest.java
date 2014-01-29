@@ -4,14 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
 import org.raidenjpa.util.QueryHelper;
 
 public class SubQueryTest extends AbstractTestCase {
 
-	@Ignore
 	@Test
 	public void testInOperatorWithSubselect() {
 		createABC();

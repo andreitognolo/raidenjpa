@@ -107,7 +107,7 @@ public class QueryWords {
 	public void require(String value) {
 		if (!value.equalsIgnoreCase(current())) {
 			throw new RuntimeException("Was expected '" + value + "' in position "
-					+ position + ", but found " + current() + " in jpql '" + jpql + "'");
+					+ position + ", but found '" + current() + "' in jpql '" + jpql + "'");
 		}
 	}
 

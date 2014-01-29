@@ -1,5 +1,6 @@
 package org.raidenjpa.db;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,7 +15,6 @@ import javax.persistence.ElementCollection;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
-import org.raidenjpa.entities.Entidade;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.ReflectionUtil;
@@ -28,7 +28,7 @@ public class InMemoryDB {
 	
 	private Long sequence = 1L;
 	
-	private Map<String, List<Entidade>> data = new HashMap<String, List<Entidade>>();
+	private Map<String, List<Object>> data = new HashMap<String, List<Object>>();
 
 	private InMemoryDB() {
 	}
@@ -38,13 +38,15 @@ public class InMemoryDB {
 		return (List<T>) rows(table);
 	}
 
+	@FixMe("Get the @Id property instead of id attribute")
 	@SuppressWarnings("unchecked")
 	public <T> List<T> get(Class<T> table, Collection<Object> ids) {
-		List<Entidade> rows = rows(table);
+		List<Object> rows = rows(table);
 
 		List<T> result = new ArrayList<T>();
-		for (Entidade entidade : rows) {
-			if (ids.contains(entidade.getId())) {
+		for (Object entidade : rows) {
+			Object beanId = ReflectionUtil.getBeanField(entidade, "id");
+			if (ids.contains(beanId)) {
 				result.add((T) entidade);
 			}
 		}
@@ -52,28 +54,30 @@ public class InMemoryDB {
 		return result;
 	}
 
-	private <T> List<Entidade> rows(Class<T> table) {
+	private <T> List<Object> rows(Class<T> table) {
 		return rows(table.getSimpleName());
 	}
 	
 	@BadSmell("Primitive obssession, nao deveria ser um map, deveria ser uma classe tabelas")
-	private <T> List<Entidade> rows(String table) {
-		List<Entidade> rows = data.get(table);
+	private <T> List<Object> rows(String table) {
+		List<Object> rows = data.get(table);
 		if (rows == null) {
-			rows = new ArrayList<Entidade>();
+			rows = new ArrayList<Object>();
 			data.put(table, rows);
 		}
 		return rows;
 	}
 
-	@FixMe("Programmer should not be forced to implements Cloneable")
+	@FixMe("Programmer should not be forced to override clone method")
 	@SuppressWarnings("unchecked")
 	public <T> T put(T t) {
-		Entidade originalEntidade = (Entidade) t;
+		Object originalObject = (Object) t;
 		
-		Entidade entidade = (Entidade) originalEntidade.clone();
-		if (entidade.getId() == null) {
-			entidade.setId(nextSequence());
+		Method cloneMethod = ReflectionUtil.getMethod(originalObject, "clone");
+		Object entidade = ReflectionUtil.invoke(originalObject, cloneMethod);
+
+		if (ReflectionUtil.getBeanField(entidade, "id") == null) {
+			ReflectionUtil.setBeanField(entidade, "id", nextSequence());
 			rows(entidade.getClass()).add(entidade);
 		} else {
 			replace(rows(entidade.getClass()), entidade);
@@ -82,18 +86,18 @@ public class InMemoryDB {
 		return (T) entidade;
 	}
 	
-	public void replace(List<Entidade> rows, Entidade newEntidade) {
-		Iterator<Entidade> it = rows.iterator();
+	public void replace(List<Object> rows, Object newObject) {
+		Iterator<Object> it = rows.iterator();
 		while (it.hasNext()) {
-			Entidade entidade = it.next();
-			if (entidade.getId().equals(newEntidade.getId())) {
+			Object entidade = it.next();
+			if (ReflectionUtil.getBeanField(entidade, "id").equals(ReflectionUtil.getBeanField(newObject, "id"))) {
 				rows.remove(entidade);
-				rows.add(newEntidade);
+				rows.add(newObject);
 				return;
 			}
 		}
 		
-		rows.add(newEntidade);
+		rows.add(newObject);
 	}
 	
 	public Long nextSequence() {
@@ -113,7 +117,7 @@ public class InMemoryDB {
 	}
 	
 	public <T> Resultado<T> query(final Consulta<T> consulta) {
-		List<Entidade> rows = new ArrayList<Entidade>(rows(consulta.getType()));
+		List<Object> rows = new ArrayList<Object>(rows(consulta.getType()));
 		filter(rows, new ArrayList<Filtro>(consulta.getFiltros()));
 		
 		order(rows, new ArrayList<Ordem>(consulta.getOrdems()));
@@ -123,7 +127,7 @@ public class InMemoryDB {
 		return new ResultadoInMemory<T>(rows);
 	}
 
-	private List<Entidade> limit(List<Entidade> rows, Long limit) {
+	private List<Object> limit(List<Object> rows, Long limit) {
 		if (limit == null || limit < 0 || limit >= rows.size()) {
 			return rows;
 		}
@@ -131,14 +135,14 @@ public class InMemoryDB {
 		return rows.subList(0, limit.intValue());
 	}
 
-	private void order(List<Entidade> rows, final List<Ordem> ordems) {
+	private void order(List<Object> rows, final List<Ordem> ordems) {
 		if (ordems.isEmpty()) {
 			return;
 		}
 		
-		Collections.sort(rows, new Comparator<Entidade>() {
+		Collections.sort(rows, new Comparator<Object>() {
 			@SuppressWarnings({ "unchecked" })
-			public int compare(Entidade o1, Entidade o2) {
+			public int compare(Object o1, Object o2) {
 				for (Ordem ordem : ordems) {
 					Comparable<Object> value1 = (Comparable<Object>) ReflectionUtil.getBeanField(o1, ordem.getAtributo());
 					Comparable<Object> value2 = (Comparable<Object>) ReflectionUtil.getBeanField(o2, ordem.getAtributo());
@@ -160,12 +164,13 @@ public class InMemoryDB {
 	}
 
 	public void remove(Class<?> table, Object id) {
-		List<Entidade> rows = rows(table);
+		List<Object> rows = rows(table);
 		
-		Iterator<Entidade> it = rows.iterator();
+		Iterator<Object> it = rows.iterator();
 		while (it.hasNext()) {
-			Entidade entidade = it.next();
-			if (entidade.getId().equals(id)) {
+			Object entidade = it.next();
+			Object entidadeId = ReflectionUtil.getBeanField(entidade, "id");
+			if (entidadeId.equals(id)) { 
 				it.remove();
 				return;
 			}
@@ -174,7 +179,7 @@ public class InMemoryDB {
 		throw new IllegalArgumentException("Cannot delete: Table " + table.getSimpleName() + " nao contem o id " + id);
 	}
 	
-	private <T> void filter(final List<Entidade> rows, final List<Filtro> filtros) {
+	private <T> void filter(final List<Object> rows, final List<Filtro> filtros) {
 		if (filtros.isEmpty()) {
 			return;
 		}
@@ -250,15 +255,15 @@ public class InMemoryDB {
 	}
 
 	public int count() {
-		Collection<List<Entidade>> tabelas = data.values();
+		Collection<List<Object>> tabelas = data.values();
 		int count = 0;
-		for (List<Entidade> rows : tabelas) {
+		for (List<Object> rows : tabelas) {
 			count += rows.size(); 
 		}
 		return count;
 	}
 
 	public void truncate() {
-		data = new HashMap<String, List<Entidade>>();
+		data = new HashMap<String, List<Object>>();
 	}
 }

@@ -12,19 +12,35 @@ public class SubQueryTest extends AbstractTestCase {
 
 	@Test
 	public void testInOperatorWithSubselect() {
-		createABC();
-		createA("a1");
-		createA("a1");
-		createA("a2");
-		createA("a2");
+		createA("a1", 1);
+		createA("a1", 2);
+		createA("a1", 3);
+		createA("a2", 4);
+		createA("a2", 5);
 		
 		String jpql;
+		QueryHelper query;
+		List<?> result;
+		
 		jpql = "SELECT a FROM A a";
 		jpql += " WHERE a.id IN (SELECT a.id FROM A a WHERE a.stringValue = :stringValue)";
-
-		QueryHelper query = new QueryHelper(jpql);	
+		query = new QueryHelper(jpql);	
 		query.parameter("stringValue", "a2");
-		List<?> result = query.getResultList();
+		result = query.getResultList();
 		assertEquals(2, result.size());
+		
+		jpql = "SELECT a FROM A a";
+		jpql += " WHERE a.intValue IN (SELECT a.intValue FROM A a WHERE a.stringValue = :stringValue)";
+		query = new QueryHelper(jpql);
+		query.parameter("stringValue", "a2");
+		result = query.getResultList();
+		assertEquals(2, result.size());
+		
+		jpql = "SELECT a FROM A a";
+		jpql += " WHERE a.intValue IN (SELECT a.intValue FROM A a)";
+		query = new QueryHelper(jpql);
+		query.parameter("stringValue", "a2");
+		result = query.getResultList();
+		assertEquals(5, result.size());
 	}
 }

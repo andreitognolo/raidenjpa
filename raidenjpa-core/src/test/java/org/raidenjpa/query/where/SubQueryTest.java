@@ -39,7 +39,6 @@ public class SubQueryTest extends AbstractTestCase {
 		jpql = "SELECT a FROM A a";
 		jpql += " WHERE a.intValue IN (SELECT a.intValue FROM A a)";
 		query = new QueryHelper(jpql);
-		query.parameter("stringValue", "a2");
 		result = query.getResultList();
 		assertEquals(5, result.size());
 	}

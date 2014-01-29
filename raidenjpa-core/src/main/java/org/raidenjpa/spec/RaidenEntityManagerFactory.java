@@ -33,7 +33,7 @@ public class RaidenEntityManagerFactory implements EntityManagerFactory {
 	}
 
 	public void close() {
-		throw new NotYetImplementedException();
+		
 	}
 
 	public Map<String, Object> getProperties() {

@@ -16,6 +16,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.raidenjpa.entities.Entidade;
 import org.raidenjpa.util.BadSmell;
+import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.ReflectionUtil;
 
 @BadSmell("Singleton dont allow multi thread")
@@ -65,6 +66,7 @@ public class InMemoryDB {
 		return rows;
 	}
 
+	@FixMe("Programmer should not be forced to implements Cloneable")
 	@SuppressWarnings("unchecked")
 	public <T> T put(T t) {
 		Entidade originalEntidade = (Entidade) t;

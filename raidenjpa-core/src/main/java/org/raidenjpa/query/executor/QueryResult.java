@@ -3,11 +3,14 @@ package org.raidenjpa.query.executor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.raidenjpa.query.parser.GroupByClause;
+import org.raidenjpa.query.parser.GroupByElements;
 import org.raidenjpa.query.parser.JoinClause;
 import org.raidenjpa.query.parser.SelectClause;
 import org.raidenjpa.query.parser.SelectElement;
@@ -94,9 +97,36 @@ public class QueryResult implements Iterable<QueryResultRow> {
 	}
 
 	private List<?> selectUsingAggregation(SelectClause select, GroupByClause groupBy) {
+		if (groupBy == null) {
+			return Arrays.asList(new Long(rows.size()));
+		}
+
+		List<Long> result = new ArrayList<Long>();
+		Map<String, List<QueryResultRow>> aggregateRows = aggregateRows(groupBy);
+		for (Entry<String, List<QueryResultRow>> entry : aggregateRows.entrySet()) {
+			result.add(new Long(entry.getValue().size()));
+		}
 		
+		return result;
+	}
+
+	private Map<String, List<QueryResultRow>> aggregateRows(GroupByClause groupBy) {
+		Map<String, List<QueryResultRow>> map = new HashMap<String, List<QueryResultRow>>();
 		
-		return Arrays.asList(new Long(rows.size()));
+		for (QueryResultRow row : rows) {
+			String key = "";
+			for (GroupByElements element : groupBy.getElements()) {
+				key += ";" + element.getPath() + "=" + row.getObject(element.getPath());
+			}
+			
+			List<QueryResultRow> aggregatedRows = map.get(key);
+			if (aggregatedRows == null) {
+				aggregatedRows = new ArrayList<QueryResultRow>();
+			}
+			aggregatedRows.add(row);
+			map.put(key, aggregatedRows);
+		}
+		return map;
 	}
 
 	private List<?> selectMoreThanOneElement(SelectClause select) {

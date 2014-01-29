@@ -27,6 +27,7 @@ public class QueryResultRow {
 		return columns.get(alias);
 	}
 	
+	@BadSmell("Duplicated to getObjectFromExpression?")
 	public Object get(SelectElement selectElement) {
 		List<String> path = selectElement.getPath();
 		Object obj = columns.get(path.get(0));
@@ -51,7 +52,7 @@ public class QueryResultRow {
 	}
 
 	@BadSmell("Inside ExpressionPath?")
-	public Object getObjectFromExpression(List<String> path) {
+	public Object getObject(List<String> path) {
 		
 		String alias = path.get(0);
 		Object objValue = get(alias);

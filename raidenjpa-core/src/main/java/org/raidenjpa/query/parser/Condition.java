@@ -30,14 +30,14 @@ public class Condition extends LogicExpressionElement {
 			ConditionParameter conditionParameter = (ConditionParameter) right;
 			return parameters.get(conditionParameter.getParameterName());
 		} else if (right.isPath()) {
-			return row.getObjectFromExpression(((ConditionPath) right).getPath());
+			return row.getObject(((ConditionPath) right).getPath());
 		} else {
 			throw new RuntimeException("Expression is neither parameter or path");
 		}
 	}
 
 	private Object leftObject(QueryResultRow row) {
-		return row.getObjectFromExpression(((ConditionPath) left).getPath());
+		return row.getObject(((ConditionPath) left).getPath());
 	}
 
 	public boolean isExpression() {

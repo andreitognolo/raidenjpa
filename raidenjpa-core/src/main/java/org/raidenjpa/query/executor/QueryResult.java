@@ -3,6 +3,8 @@ package org.raidenjpa.query.executor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.Map.Entry;
 import org.raidenjpa.query.parser.GroupByClause;
 import org.raidenjpa.query.parser.GroupByElements;
 import org.raidenjpa.query.parser.JoinClause;
+import org.raidenjpa.query.parser.OrderByClause;
+import org.raidenjpa.query.parser.OrderByElement;
 import org.raidenjpa.query.parser.SelectClause;
 import org.raidenjpa.query.parser.SelectElement;
 import org.raidenjpa.util.BadSmell;
@@ -235,5 +239,29 @@ public class QueryResult implements Iterable<QueryResultRow> {
 				rows.remove(rowInJoin);
 			}
 		}
+	}
+
+	public void sort(final OrderByClause orderBy) {
+		Collections.sort(rows, new Comparator<QueryResultRow>() {
+			@SuppressWarnings({ "unchecked" })
+			public int compare(QueryResultRow row1, QueryResultRow row2) {
+				for (OrderByElement orderByElement : orderBy.getElements()) {
+					Comparable<Object> value1 = (Comparable<Object>) row1.getObject(orderByElement.getPath());
+					Comparable<Object> value2 = (Comparable<Object>) row2.getObject(orderByElement.getPath());
+					
+					if (value1.equals(value2)) {
+						continue;
+					}
+					
+					if (orderByElement.getOrientation().equals("ASC")) {
+						return value1.compareTo(value2);
+					} else {
+						return value2.compareTo(value1);
+					}
+				}
+				
+				return 0;
+			}
+		});
 	}
 }

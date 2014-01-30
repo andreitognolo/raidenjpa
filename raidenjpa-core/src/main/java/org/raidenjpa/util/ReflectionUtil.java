@@ -82,6 +82,13 @@ public class ReflectionUtil {
 	public static Object getBeanId(Object obj) {
 		return getBeanField(obj, "id");
 	}
+
+	public static Object getBeanField(Object obj, List<String> path) {
+		for (int i = 1; i < path.size(); i++) {
+			obj = ReflectionUtil.getBeanField(obj, path.get(i));
+		}
+		return obj;
+	}
 	
 	public static Object getBeanField(Object obj, String fieldName) {
 		try {

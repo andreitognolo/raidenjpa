@@ -19,7 +19,7 @@ import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.ReflectionUtil;
 
-@BadSmell("Singleton dont allow multi thread")
+@BadSmell("1) Singleton dont allow multi thread - 2) Is it really necessary?")
 public class InMemoryDB {
 
 	private static InMemoryDB me;

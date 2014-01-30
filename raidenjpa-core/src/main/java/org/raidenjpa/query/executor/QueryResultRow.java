@@ -31,12 +31,7 @@ public class QueryResultRow {
 	public Object get(SelectElement selectElement) {
 		List<String> path = selectElement.getPath();
 		Object obj = columns.get(path.get(0));
-		
-		for (int i = 1; i < path.size(); i++) {
-			obj = ReflectionUtil.getBeanField(obj, path.get(i));
-		}
-		
-		return obj;
+		return ReflectionUtil.getBeanField(obj, path);
 	}
 
 	@SuppressWarnings("unchecked")

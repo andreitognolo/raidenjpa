@@ -82,7 +82,7 @@ public class A extends Entidade {
 
 	@Override
 	public String toString() {
-		return "A [id=" + id + ", stringValue=" + stringValue + ", intValue=" + intValue + ", b.id=" + b.getId() + "]";
+		return "A [id=" + id + ", stringValue=" + stringValue + ", intValue=" + intValue + ", b.id=" + (b == null ? "" : b.getId()) + "]";
 	}
 
 }

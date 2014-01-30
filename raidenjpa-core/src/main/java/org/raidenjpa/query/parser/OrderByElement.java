@@ -8,11 +8,18 @@ public class OrderByElement {
 
 	private List<String> path = new ArrayList<String>();
 	
-	public OrderByElement(String element) {
-		path = new ArrayList<String>(Arrays.asList(element.split("\\.")));
+	private String orientation;
+	
+	public OrderByElement(String element, String orientation) {
+		this.orientation = orientation;
+		this.path = new ArrayList<String>(Arrays.asList(element.split("\\.")));
 	}
 
 	public List<String> getPath() {
 		return path;
+	}
+	
+	public String getOrientation() {
+		return orientation;
 	}
 }

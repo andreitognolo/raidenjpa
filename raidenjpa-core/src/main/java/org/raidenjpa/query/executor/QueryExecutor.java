@@ -29,15 +29,21 @@ public class QueryExecutor {
 		this.parameters = parameters;
 	}
 
+	@FixMe("Which one is the first, group or order?")
 	public List<?> getResultList() {
 		QueryResult queryResult = new QueryResult();
 		
 		executeFrom(queryParser, queryResult);
 		executeJoin(queryParser, queryResult);
 		executeWhere(queryParser, queryResult);
+		executeOrderBy(queryParser, queryResult);
 		executeLimit(queryResult);
 		
 		return queryResult.getList(queryParser.getSelect(), queryParser.getGroupBy());
+	}
+
+	private void executeOrderBy(QueryParser queryParser, QueryResult queryResult) {
+		queryResult.sort(queryParser.getOrderBy());
 	}
 
 	@BadSmell("It is kind of confused. Put it in QueryResult")

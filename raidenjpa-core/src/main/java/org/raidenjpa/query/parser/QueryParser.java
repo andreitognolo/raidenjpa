@@ -23,6 +23,10 @@ public class QueryParser {
 	private OrderByClause orderBy;
 	
 	public QueryParser(String jpql) {
+		jpql = ajust(jpql);
+		
+		System.out.println(jpql);
+		
 		this.words = new QueryWords(jpql);
 		
 		prepareSelect();
@@ -31,6 +35,11 @@ public class QueryParser {
 		prepareWhere();
 		prepareGroupBy();
 		prepareOrderBy();
+	}
+	
+	@BadSmell("There is no test for this one")
+	private String ajust(String jpql) {
+		return jpql.replaceAll(" ,", ",");
 	}
 
 	private void prepareOrderBy() {

@@ -3,6 +3,7 @@ package org.raidenjpa.query.parser;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.raidenjpa.util.FixMe;
 
 public class SelectClauseTest {
 
@@ -50,5 +51,18 @@ public class SelectClauseTest {
 		SelectClause select = queryParser.getSelect();
 		assertEquals(1, select.getElements().size());
 		assertEquals("count(*)", select.getElements().get(0).getPath().get(0));
+	}
+	
+	@FixMe("Implement last test")
+	@Test
+	public void testWithouSelectClause() {
+		String jpql = "FROM A a";
+		QueryParser queryParser = new QueryParser(jpql);
+
+		SelectClause select = queryParser.getSelect();
+		assertEquals(1, select.getElements().size());
+		assertEquals("a", select.getElements().get(0).getPath().get(0));
+		
+		jpql = "FROM A a, B b";
 	}
 }

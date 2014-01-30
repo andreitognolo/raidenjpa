@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.raidenjpa.util.BadSmell;
+import org.raidenjpa.util.FixMe;
 
 public class QueryParser {
 	
@@ -56,9 +57,14 @@ public class QueryParser {
 		select.parse(words);
 	}
 
+	@FixMe("Beware about more than one from without select")
 	private void prepareFrom() {
 		from = new FromClause();
 		from.parse(words);
+		
+		if (select.getElements().isEmpty()) {
+			select.addElement(from.getAliasName(0));
+		}
 	}
 
 	private void prepareWhere() {

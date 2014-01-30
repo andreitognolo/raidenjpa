@@ -22,6 +22,10 @@ public class SelectClause {
 		} while(words.hasMoreSelectItem());
 	}
 	
+	public void addElement(String word) {
+		elements.add(new SelectElement(word));
+	}
+	
 	public List<SelectElement> getElements() {
 		return elements;
 	}

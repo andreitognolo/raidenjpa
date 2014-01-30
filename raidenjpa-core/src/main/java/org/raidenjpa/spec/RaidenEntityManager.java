@@ -13,7 +13,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.metamodel.Metamodel;
 
+import org.raiden.exception.NotYetImplementedException;
 import org.raidenjpa.db.InMemoryDB;
+import org.raidenjpa.util.FixMe;
 
 public class RaidenEntityManager implements EntityManager {
 
@@ -36,8 +38,7 @@ public class RaidenEntityManager implements EntityManager {
 
 	@Override
 	public <T> T find(Class<T> entityClass, Object primaryKey) {
-		// TODO Auto-generated method stub
-		return null;
+		return InMemoryDB.me().get(entityClass, primaryKey);
 	}
 
 	@Override
@@ -189,9 +190,8 @@ public class RaidenEntityManager implements EntityManager {
 	}
 
 	@Override
-	public Query createNativeQuery(String sqlString) {
-		// TODO Auto-generated method stub
-		return null;
+	public Query createNativeQuery(String sql) {
+		throw new NotYetImplementedException();
 	}
 
 	@SuppressWarnings("rawtypes")

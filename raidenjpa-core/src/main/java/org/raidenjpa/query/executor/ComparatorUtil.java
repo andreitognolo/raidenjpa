@@ -18,11 +18,11 @@ public class ComparatorUtil {
 				return true;
 			}
 		} else if ("<".equals(operador)) {
-			if (compareTo(objValue, filterValue) <= 0) {
+			if (compareTo(objValue, filterValue) < 0) {
 				return true;
 			}
 		} else if ("<=".equals(operador)) {
-			if (compareTo(objValue, filterValue) < 0) {
+			if (compareTo(objValue, filterValue) <= 0) {
 				return true;
 			}
 		} else if ("IN".equalsIgnoreCase(operador)) {

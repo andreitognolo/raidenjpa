@@ -34,7 +34,7 @@ public class RaidenQuery implements Query {
 	}
 
 	public Object getSingleResult() {
-		throw new NotYetImplementedException();
+		return getResultList().get(0);
 	}
 
 	public int executeUpdate() {

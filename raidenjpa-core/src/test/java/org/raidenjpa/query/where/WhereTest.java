@@ -20,13 +20,27 @@ public class WhereTest extends AbstractTestCase {
 	
 	@Test
 	public void testOneValue() {
-		QueryHelper query = new QueryHelper("SELECT a FROM A a WHERE a.stringValue = :a");
+		QueryHelper query;
+		
+		query = new QueryHelper("SELECT a FROM A a WHERE a.stringValue = :a");
 		query.parameter("a", "a1");
 		assertEquals(1, query.getResultList().size());
 		
 		query = new QueryHelper("SELECT a FROM A a WHERE a.stringValue = :a");
 		query.parameter("a", "wrongValue");
 		assertEquals(0, query.getResultList().size());
+		
+		query = new QueryHelper("SELECT a FROM A a WHERE a.intValue >= :intValue");
+		query.parameter("intValue", 1);
+		assertEquals(1, query.getResultList().size());
+		
+		query = new QueryHelper("SELECT a FROM A a WHERE a.intValue > :intValue");
+		query.parameter("intValue", 1);
+		assertEquals(0, query.getResultList().size());
+		
+		query = new QueryHelper("FROM A a WHERE a.intValue >= :um AND a.intValue <= :um");
+		query.parameter("um", 1);
+		assertEquals(1, query.getResultList().size());
 	}
 	
 	@Test

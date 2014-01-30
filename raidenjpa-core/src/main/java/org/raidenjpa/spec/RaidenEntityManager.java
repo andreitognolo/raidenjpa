@@ -15,7 +15,7 @@ import javax.persistence.metamodel.Metamodel;
 
 import org.raiden.exception.NotYetImplementedException;
 import org.raidenjpa.db.InMemoryDB;
-import org.raidenjpa.util.FixMe;
+import org.raidenjpa.util.ReflectionUtil;
 
 public class RaidenEntityManager implements EntityManager {
 
@@ -32,8 +32,16 @@ public class RaidenEntityManager implements EntityManager {
 
 	@Override
 	public void remove(Object entity) {
-		// TODO Auto-generated method stub
-
+		if (entity == null) {
+			throw new IllegalArgumentException();
+		}
+		
+		Object id = ReflectionUtil.getBeanId(entity);
+		if (find(entity.getClass(), id) == null) {
+			throw new IllegalArgumentException();
+		}
+		
+		InMemoryDB.me().remove(entity.getClass(), id);
 	}
 
 	@Override

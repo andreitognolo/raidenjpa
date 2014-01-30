@@ -80,4 +80,21 @@ public class WhereTest extends AbstractTestCase {
 		query.parameter("values", Arrays.asList(1, 3, 5));
 		assertEquals(2, query.getResultList().size());
 	}
+	
+	@Test
+	public void testEntityComparation() {
+		createA("a2");
+		
+		QueryHelper query = new QueryHelper("SELECT a1 FROM A a1, A a2 WHERE a1 = a2");
+		assertEquals(2, query.getResultList().size());
+		
+		query = new QueryHelper("SELECT a FROM A a, B b WHERE a = b");
+		assertEquals(0, query.getResultList().size());
+	}
+	
+	@FixMe("Implement")
+	@Test
+	public void testEntityComparationByParameter() {
+		
+	}
 }

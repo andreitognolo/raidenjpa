@@ -25,8 +25,6 @@ public class QueryParser {
 	public QueryParser(String jpql) {
 		jpql = ajust(jpql);
 		
-		System.out.println(jpql);
-		
 		this.words = new QueryWords(jpql);
 		
 		prepareSelect();

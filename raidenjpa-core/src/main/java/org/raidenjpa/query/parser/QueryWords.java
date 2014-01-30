@@ -119,4 +119,12 @@ public class QueryWords {
 		return ",".equalsIgnoreCase(current());
 	}
 
+	public boolean hasMoreOrderByElements() {
+		if (!hasMoreWord()) {
+			return false;
+		}
+		
+		return ",".equalsIgnoreCase(current());
+	}
+
 }

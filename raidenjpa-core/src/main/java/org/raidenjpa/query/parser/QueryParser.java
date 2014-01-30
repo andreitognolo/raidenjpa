@@ -19,6 +19,8 @@ public class QueryParser {
 	private List<JoinClause> joins = new ArrayList<JoinClause>();
 
 	private GroupByClause groupBy;
+
+	private OrderByClause orderBy;
 	
 	public QueryParser(String jpql) {
 		this.words = new QueryWords(jpql);
@@ -28,6 +30,12 @@ public class QueryParser {
 		prepareJoins();
 		prepareWhere();
 		prepareGroupBy();
+		prepareOrderBy();
+	}
+
+	private void prepareOrderBy() {
+		orderBy = new OrderByClause();
+		orderBy.parse(words);
 	}
 
 	@BadSmell("Call parse in groupBy")
@@ -90,5 +98,9 @@ public class QueryParser {
 
 	public GroupByClause getGroupBy() {
 		return groupBy;
+	}
+
+	public OrderByClause getOrderBy() {
+		return orderBy;
 	}
 }

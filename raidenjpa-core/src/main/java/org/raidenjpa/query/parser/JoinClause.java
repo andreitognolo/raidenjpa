@@ -37,4 +37,16 @@ public class JoinClause {
 		return with;
 	}
 
+	public void setPath(List<String> path) {
+		this.path = path;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
+	public void setWith(WithClause with) {
+		this.with = with;
+	}
+
 }

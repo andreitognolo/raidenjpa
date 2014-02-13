@@ -9,6 +9,7 @@ import org.raidenjpa.query.parser.FromClause;
 import org.raidenjpa.query.parser.FromClauseItem;
 import org.raidenjpa.query.parser.JoinClause;
 import org.raidenjpa.query.parser.QueryParser;
+import org.raidenjpa.query.parser.WithClause;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
 
@@ -55,6 +56,17 @@ public class QueryExecutor {
 		for (JoinClause join : queryParser.getJoins()) {
 			queryResult.join(join, parameters);
 		}
+		
+		// @FixMe - There is some case when IN is not equals to JOIN
+		for (FromClauseItem item : queryParser.getFrom().getItens()) {
+			if (item.isInFrom()) {
+				JoinClause join = new JoinClause();
+				join.setAlias(item.getAliasName());
+				join.setPath(item.getInPath());
+				join.setWith(new WithClause());
+				queryResult.join(join, parameters);
+			}
+		}
 	}
 
 	@FixMe("Execute limit before than group by is correct?")
@@ -68,12 +80,15 @@ public class QueryExecutor {
 		}
 	}
 
+	@BadSmell("Refactory")
 	private void executeFrom(QueryParser queryParser, QueryResult queryResult) {
 		FromClause from = queryParser.getFrom();
 		
 		for (FromClauseItem item : from.getItens()) {
-			List<Object> rowsInDB = InMemoryDB.me().getAll(item.getClassName());
-			queryResult.addFrom(item.getAliasName(), rowsInDB);
+			if (!item.isInFrom()) {
+				List<Object> rowsInDB = InMemoryDB.me().getAll(item.getClassName());
+				queryResult.addFrom(item.getAliasName(), rowsInDB);
+			}
 		}
 	}
 

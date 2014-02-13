@@ -9,8 +9,10 @@ import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
 import org.raidenjpa.entities.A;
 import org.raidenjpa.entities.B;
+import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.QueryHelper;
 
+@BadSmell("Rename")
 public class SimpleQueryTest extends AbstractTestCase {
 
 	@Before
@@ -82,6 +84,17 @@ public class SimpleQueryTest extends AbstractTestCase {
 		assertEquals("a1", ((A) row[2]).getStringValue());
 	}
 
+	@Test
+	public void testInFrom() {
+		createAwithItens("a2", 3);
+		QueryHelper query;
+		List<?> resultList;
+
+		query = new QueryHelper("SELECT a.stringValue, item.value FROM A a, IN (a.itens) item");
+		resultList = query.getResultList();
+		assertEquals(3, resultList.size());	
+	}
+	
 	@Test
 	public void testWithoutSelect() {
 

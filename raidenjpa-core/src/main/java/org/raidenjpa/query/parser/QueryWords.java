@@ -11,15 +11,29 @@ public class QueryWords {
 
 	private int position;
 	private String[] words;
-	private String jpql;
+	private String originalJpql;
 	
 	private static final String[] POSSIBLE_WORDS_AFTER_FROM = {"INNER", "WHERE", "JOIN", "LEFT", ","};
 	private static final String[] POSSIBLE_WORDS_AFTER_LOGIC_EXPRESSION = {"INNER", "LEFT", "RIGHT", "JOIN", "WHERE", "ORDER", "GROUP"};
 	private static final String[] LOGIC_OPERATORS = {"AND", "OR"};
 	
+	@BadSmell("There is no test for the jpql ajust")
 	public QueryWords(String jpql) {
-		this.jpql = jpql;
-		this.words = jpql.replace(",", " ,").split(" ");
+		this.originalJpql = jpql;
+		
+		jpql = ajust(jpql);
+		
+		System.out.println("jpql = " + jpql);
+		
+		this.words = jpql.split(" ");
+	}
+
+	private String ajust(String jpql) {
+		jpql = jpql.replaceAll("  ", " ");
+		jpql = jpql.replaceAll(" ,", ",");
+		jpql = jpql.replaceAll(",", " ,");
+		jpql = jpql.replaceAll("in\\(", "in (");
+		return jpql;
 	}
 
 	@BadSmell("This should not receive the index")
@@ -36,7 +50,7 @@ public class QueryWords {
 	}
 
 	public String getJpql() {
-		return jpql;
+		return originalJpql;
 	}
 
 	public int length() {
@@ -107,7 +121,7 @@ public class QueryWords {
 	public void require(String value) {
 		if (!value.equalsIgnoreCase(current())) {
 			throw new RuntimeException("Was expected '" + value + "' in position "
-					+ position + ", but found '" + current() + "' in jpql '" + jpql + "'");
+					+ position + ", but found '" + current() + "' in jpql '" + originalJpql + "'");
 		}
 	}
 

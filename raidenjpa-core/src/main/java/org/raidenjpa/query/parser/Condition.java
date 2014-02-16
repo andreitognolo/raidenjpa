@@ -19,9 +19,15 @@ public class Condition extends LogicExpressionElement {
 		this.right = ConditionElement.create(words);
 	}
 
-	public Object match(QueryResultRow row, Map<String, Object> parameters) {
+	public boolean match(QueryResultRow row, Map<String, Object> parameters) {
 		Object leftObject = leftObject(row);
 		Object rightObject = rightObject(row, parameters);
+		
+		// @BadSmell (When we are executing where in join process it could not have this one yet)
+		if (leftObject == null || rightObject == null) {
+			return true;
+		}
+		
 		return ComparatorUtil.isTrue(leftObject, operator, rightObject);
 	}
 

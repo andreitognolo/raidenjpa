@@ -12,6 +12,7 @@ import org.raidenjpa.query.parser.QueryParser;
 import org.raidenjpa.query.parser.WithClause;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
+import org.raidenjpa.util.Profiler;
 
 public class QueryExecutor {
 
@@ -52,19 +53,19 @@ public class QueryExecutor {
 		if (queryResult.size() == 0) {
 			return;
 		}
-		
+
 		for (JoinClause join : queryParser.getJoins()) {
-			queryResult.join(join, parameters);
+			queryResult.join(join, queryParser.getWhere(), parameters);
 		}
 		
-		// @FixMe - There is some case when IN is not equals to JOIN
+		// @FixMe - There is some case when IN is not equals to JOIN, study it
 		for (FromClauseItem item : queryParser.getFrom().getItens()) {
 			if (item.isInFrom()) {
 				JoinClause join = new JoinClause();
 				join.setAlias(item.getAliasName());
 				join.setPath(item.getInPath());
 				join.setWith(new WithClause());
-				queryResult.join(join, parameters);
+				queryResult.join(join, queryParser.getWhere(), parameters);
 			}
 		}
 	}
@@ -75,8 +76,18 @@ public class QueryExecutor {
 	}
 
 	private void executeWhere(QueryParser queryParser, QueryResult queryResult) {
-		if (queryParser.getWhere().hasElements()) {
-			filterWhere(queryResult, queryParser);
+		if (!queryParser.getWhere().hasElements()) {
+			return;
+		}
+		
+		LogicExpressionExecutor logicExpressionExecutor = new LogicExpressionExecutor(queryParser.getWhere().getLogicExpression(), parameters);
+		
+		Iterator<QueryResultRow> it = queryResult.iterator();
+		while(it.hasNext()) {
+			QueryResultRow row = it.next();
+			if (!logicExpressionExecutor.match(row)) {
+				it.remove();
+			}
 		}
 	}
 
@@ -88,18 +99,6 @@ public class QueryExecutor {
 			if (!item.isInFrom()) {
 				List<Object> rowsInDB = InMemoryDB.me().getAll(item.getClassName());
 				queryResult.addFrom(item.getAliasName(), rowsInDB);
-			}
-		}
-	}
-
-	private void filterWhere(QueryResult queryResult, QueryParser queryParser) {
-		LogicExpressionExecutor logicExpressionExecutor = new LogicExpressionExecutor(queryParser.getWhere().getLogicExpression(), parameters);
-		
-		Iterator<QueryResultRow> it = queryResult.iterator();
-		while(it.hasNext()) {
-			QueryResultRow row = it.next();
-			if (!logicExpressionExecutor.match(row)) {
-				it.remove();
 			}
 		}
 	}

@@ -27,7 +27,7 @@ public class LogicExpressionExecutor {
 
 	public boolean match(QueryResultRow row) {
 		initStack();
-		 
+		
 		for (LogicExpressionElement element : logicExpression.getElements()) {
 			WhereStackAction action = push(element);
 			if (action == WhereStackAction.RESOLVE) {
@@ -92,7 +92,7 @@ public class LogicExpressionExecutor {
 	void resolve(QueryResultRow row) {
 		Condition condition = (Condition) stack.pop().getRaw();
 		
-		Object match = condition.match(row, parameters);
+		boolean match = condition.match(row, parameters);
 		
 		stack.push(new Element(match));
 	}

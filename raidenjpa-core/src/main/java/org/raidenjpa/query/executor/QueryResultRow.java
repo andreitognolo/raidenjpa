@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.raidenjpa.query.parser.SelectElement;
 import org.raidenjpa.util.BadSmell;
+import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.ReflectionUtil;
 
+@FixMe("It needs to be a hierarchical representation in order to have a lighter cartesian product")
 public class QueryResultRow {
 
 	@BadSmell("Need be a HashMap because of clone. Is it weird?")
@@ -19,7 +21,7 @@ public class QueryResultRow {
 	private QueryResultRow() {
 	}
 
-	public void put(String alias, Object obj) {
+	public void column(String alias, Object obj) {
 		columns.put(alias, obj);
 	}
 
@@ -51,6 +53,12 @@ public class QueryResultRow {
 		
 		String alias = path.get(0);
 		Object objValue = get(alias);
+		
+		// @BadSmell (When we are executing where in join process it could not have this one yet)
+		if (objValue == null) {
+			return null;
+		}
+		
 		for (int i = 1; i < path.size(); i++) {
 			String attribute = path.get(i);
 			objValue = ReflectionUtil.getBeanField(objValue, attribute);

@@ -18,6 +18,7 @@ import org.raidenjpa.query.parser.OrderByClause;
 import org.raidenjpa.query.parser.OrderByElement;
 import org.raidenjpa.query.parser.SelectClause;
 import org.raidenjpa.query.parser.SelectElement;
+import org.raidenjpa.query.parser.WhereClause;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.ReflectionUtil;
@@ -36,18 +37,17 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		return this;
 	}
 
-	@FixMe("Is this logic correct in 3 from cenario?")
 	public void cartesianProduct(String alias, List<?> newElements) {
 		if (newElements.isEmpty()) {
 			return;
 		}
 		
 		for (QueryResultRow row : new ArrayList<QueryResultRow>(rows)) {
-			row.put(alias, newElements.get(0));
+			row.column(alias, newElements.get(0));
 			
 			for (int i = 1; i < newElements.size(); i++) {
 				QueryResultRow duplicatedRow = duplicate(row);
-				duplicatedRow.put(alias, newElements.get(i));
+				duplicatedRow.column(alias, newElements.get(i));
 				row = duplicatedRow;
 			}
 		}
@@ -177,34 +177,37 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		return rows.size();
 	}
 
-	void join(JoinClause join, Map<String, Object> parameters) {
+	@BadSmell("It is weird to recive where")
+	void join(JoinClause join, WhereClause where, Map<String, Object> parameters) {
 		String leftAlias = join.getPath().get(0);
 		String attribute = join.getPath().get(1);
 		
+		System.out.println("rows.size = " + rows.size());
 		for (QueryResultRow row : new ArrayList<QueryResultRow>(rows)) {
 			Object leftObject = row.get(leftAlias);
 			
 			Object obj = ReflectionUtil.getBeanField(leftObject, attribute);
 			if (obj instanceof Collection) {
-				joinCollection(join, row, obj, parameters);
+				joinCollection(join, where, row, (Collection<?>) obj, parameters);
 			} else {
 				joinObject(join, row, obj, parameters);
 			}
 		}
 	}
 
+	@FixMe("Receive where, like joinCollection")
 	private void joinObject(JoinClause join, QueryResultRow row, Object obj, Map<String, Object> parameters) {
 		if (obj == null) {
 			rows.remove(row); // TODO: Beware about LEFT
 		} else {
-			row.put(join.getAlias(), obj);
+			row.column(join.getAlias(), obj);
 			removeRowsNoMatchWith(join, parameters, Arrays.asList(row));
 		}
 	}
 
 	@BadSmell("We could avoid some parameters making this attributes")
-	private void joinCollection(JoinClause join, QueryResultRow row, Object obj, Map<String, Object> parameters) {
-		Iterator<?> it = ((Collection<?>) obj).iterator();
+	private void joinCollection(JoinClause join, WhereClause where, QueryResultRow row, Collection<?> itensToAdd, Map<String, Object> parameters) {
+		Iterator<?> it = itensToAdd.iterator();
 		
 		if (!it.hasNext()) {
 			rows.remove(row); // TODO: Beware about LEFT
@@ -214,17 +217,34 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		List<QueryResultRow> rowsInJoin = new ArrayList<QueryResultRow>();
 		rowsInJoin.add(row);
 		
-		row.put(join.getAlias(), it.next());
+		row.column(join.getAlias(), it.next());
 		
 		while(it.hasNext()) {
-			Object item = it.next();
+			Object itemToAdd = it.next();
 			QueryResultRow newRow = duplicate(row);
-			newRow.put(join.getAlias(), item);
+			newRow.column(join.getAlias(), itemToAdd);
 			rowsInJoin.add(newRow);
 			row = newRow;
 		}
 		
+		// @FixMe(We should not add)
 		removeRowsNoMatchWith(join, parameters, rowsInJoin);
+		removeRowsNoMatchWhere(where, parameters, rowsInJoin);
+	}
+
+	@BadSmell("Duplicate removeRowsNoMatchWith")
+	private void removeRowsNoMatchWhere(WhereClause where, Map<String, Object> parameters, List<QueryResultRow> rowsInJoin) {
+		if (where == null || where.getLogicExpression() == null) {
+			return;
+		}
+		
+		LogicExpressionExecutor executor = new LogicExpressionExecutor(where.getLogicExpression(), parameters);
+		for (QueryResultRow rowInJoin : rowsInJoin) {
+			if (executor.match(rowInJoin)) {
+			} else {
+				rows.remove(rowInJoin);
+			}
+		}
 	}
 
 	private void removeRowsNoMatchWith(JoinClause join, Map<String, Object> parameters, List<QueryResultRow> rowsInJoin) {
@@ -248,6 +268,18 @@ public class QueryResult implements Iterable<QueryResultRow> {
 				for (OrderByElement orderByElement : orderBy.getElements()) {
 					Comparable<Object> value1 = (Comparable<Object>) row1.getObject(orderByElement.getPath());
 					Comparable<Object> value2 = (Comparable<Object>) row2.getObject(orderByElement.getPath());
+					
+					if (value1 == null && value2 == null) {
+						continue;
+					}
+					
+					if (value1 == null && value2 != null) {
+						return value2.compareTo(value1);
+					}
+					
+					if (value1 != null && value2 == null) {
+						return value1.compareTo(value2);
+					}
 					
 					if (value1.equals(value2)) {
 						continue;

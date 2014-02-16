@@ -25,15 +25,15 @@ public class LogicExpressionExecutor {
 		this.logicExpression = logicExpression;
 	}
 
-	public boolean match(QueryResultRow row) {
+	public boolean match(QueryResultRow row, boolean executingWhere) {
 		initStack();
 		
 		for (LogicExpressionElement element : logicExpression.getElements()) {
 			WhereStackAction action = push(element);
 			if (action == WhereStackAction.RESOLVE) {
-				resolve(row);
+				resolve(row, executingWhere);
 			} else if (action == WhereStackAction.REDUCE) {
-				reduce(row);
+				reduce(row, executingWhere);
 			}
 		}
 		
@@ -89,16 +89,16 @@ public class LogicExpressionExecutor {
 		return stack.get(stack.size() - 2);
 	}
 	
-	void resolve(QueryResultRow row) {
+	void resolve(QueryResultRow row, boolean executingWhere) {
 		Condition condition = (Condition) stack.pop().getRaw();
 		
-		boolean match = condition.match(row, parameters);
+		boolean match = condition.match(row, parameters, executingWhere);
 		
 		stack.push(new Element(match));
 	}
 	
-	void reduce(QueryResultRow row) {
-		resolve(row);
+	void reduce(QueryResultRow row, boolean executingWhere) {
+		resolve(row, executingWhere);
 		
 		Boolean firstResult = (Boolean) stack.pop().getRaw();
 		LogicOperator logicOperator = (LogicOperator) stack.pop().getRaw();

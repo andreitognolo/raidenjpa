@@ -7,7 +7,6 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
-import org.raidenjpa.query.parser.QueryParser;
 import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.QueryHelper;
 

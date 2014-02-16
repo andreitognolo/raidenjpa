@@ -33,14 +33,14 @@ public class WhereStackTest {
 		
 		LogicExpressionElement firstExpression = elements.get(0);
 		assertEquals(RESOLVE, logicExpressionExecutor.push(firstExpression));
-		logicExpressionExecutor.resolve(new QueryResultRow("a", a));
+		logicExpressionExecutor.resolve(new QueryResultRow("a", a), true);
 		assertEquals(true, logicExpressionExecutor.getResult());
 		
 		LogicExpressionElement logicOperator = elements.get(1);
 		assertEquals(NOTHING, logicExpressionExecutor.push(logicOperator));
 		LogicExpressionElement secondExpression = elements.get(2);
 		assertEquals(REDUCE, logicExpressionExecutor.push(secondExpression));
-		logicExpressionExecutor.reduce(new QueryResultRow("a", a));
+		logicExpressionExecutor.reduce(new QueryResultRow("a", a), true);
 		assertEquals(true, logicExpressionExecutor.getResult());
 	}
 	
@@ -60,7 +60,7 @@ public class WhereStackTest {
 		
 		LogicExpressionElement firstExpression = elements.get(0);
 		assertEquals(RESOLVE, logicExpressionExecutor.push(firstExpression));
-		logicExpressionExecutor.resolve(new QueryResultRow("a", a));
+		logicExpressionExecutor.resolve(new QueryResultRow("a", a), true);
 		assertEquals(true, logicExpressionExecutor.getResult());
 		
 		LogicExpressionElement logicOperator = elements.get(1);
@@ -68,7 +68,7 @@ public class WhereStackTest {
 		
 		LogicExpressionElement secondExpression = elements.get(2);
 		assertEquals(REDUCE, logicExpressionExecutor.push(secondExpression));
-		logicExpressionExecutor.reduce(new QueryResultRow("a", a));
+		logicExpressionExecutor.reduce(new QueryResultRow("a", a), true);
 		assertEquals(false, logicExpressionExecutor.getResult());
 	}
 }

@@ -240,7 +240,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		
 		LogicExpressionExecutor executor = new LogicExpressionExecutor(where.getLogicExpression(), parameters);
 		for (QueryResultRow rowInJoin : rowsInJoin) {
-			if (executor.match(rowInJoin)) {
+			if (executor.match(rowInJoin, false)) {
 			} else {
 				rows.remove(rowInJoin);
 			}
@@ -254,7 +254,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		
 		LogicExpressionExecutor executor = new LogicExpressionExecutor(join.getWith().getLogicExpression(), parameters);
 		for (QueryResultRow rowInJoin : rowsInJoin) {
-			if (executor.match(rowInJoin)) {
+			if (executor.match(rowInJoin, false)) {
 			} else {
 				rows.remove(rowInJoin);
 			}

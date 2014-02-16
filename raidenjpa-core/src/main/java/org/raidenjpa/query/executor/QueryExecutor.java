@@ -12,7 +12,6 @@ import org.raidenjpa.query.parser.QueryParser;
 import org.raidenjpa.query.parser.WithClause;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
-import org.raidenjpa.util.Profiler;
 
 public class QueryExecutor {
 
@@ -85,7 +84,7 @@ public class QueryExecutor {
 		Iterator<QueryResultRow> it = queryResult.iterator();
 		while(it.hasNext()) {
 			QueryResultRow row = it.next();
-			if (!logicExpressionExecutor.match(row)) {
+			if (!logicExpressionExecutor.match(row, true)) {
 				it.remove();
 			}
 		}

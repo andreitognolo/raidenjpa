@@ -37,6 +37,7 @@ public class QueryParser {
 	
 	@BadSmell("There is no test for this one")
 	private String ajust(String jpql) {
+		jpql = jpql.replaceAll("  ", " ");
 		return jpql.replaceAll(" ,", ",");
 	}
 

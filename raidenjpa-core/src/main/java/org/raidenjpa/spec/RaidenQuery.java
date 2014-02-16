@@ -16,6 +16,7 @@ import javax.persistence.TemporalType;
 import org.raiden.exception.NoPlansToImplementException;
 import org.raiden.exception.NotYetImplementedException;
 import org.raidenjpa.query.executor.QueryExecutor;
+import org.raidenjpa.util.BadSmell;
 
 public class RaidenQuery implements Query {
 
@@ -28,8 +29,10 @@ public class RaidenQuery implements Query {
 		this.jpql = jpql;
 	}
 
+	@BadSmell("Log")
 	@SuppressWarnings("rawtypes")
 	public List getResultList() {
+		System.out.println("Raiden JPQL: '" + jpql + "'");
 		return new QueryExecutor(jpql, parameters, maxResults).getResultList();
 	}
 

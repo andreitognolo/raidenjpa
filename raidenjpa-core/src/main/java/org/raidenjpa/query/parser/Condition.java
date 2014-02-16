@@ -5,6 +5,7 @@ import java.util.Map;
 import org.raidenjpa.query.executor.ComparatorUtil;
 import org.raidenjpa.query.executor.QueryResultRow;
 import org.raidenjpa.util.BadSmell;
+import org.raidenjpa.util.Util;
 
 public class Condition extends LogicExpressionElement {
 
@@ -24,10 +25,13 @@ public class Condition extends LogicExpressionElement {
 		return ComparatorUtil.isTrue(leftObject, operator, rightObject);
 	}
 
-	@BadSmell("right and left should be the same thing")
+	@BadSmell("1) right and left should be the same thing. 2) literal")
 	private Object rightObject(QueryResultRow row, Map<String, Object> parameters) {
 		if (right.isParameter()) {
 			ConditionParameter conditionParameter = (ConditionParameter) right;
+			if (Util.isInteger(conditionParameter.getParameterName())) {
+				return new Integer(conditionParameter.getParameterName());
+			}
 			return parameters.get(conditionParameter.getParameterName());
 		} else if (right.isPath()) {
 			return row.getObject(((ConditionPath) right).getPath());

@@ -304,4 +304,12 @@ public class Util {
 		}
 		return null;
 	}
+	
+	public static boolean isInteger(String str) {
+	    try {
+	        Integer.parseInt(str);
+	        return true;
+	    } catch (NumberFormatException nfe) {}
+	    return false;
+	}
 }

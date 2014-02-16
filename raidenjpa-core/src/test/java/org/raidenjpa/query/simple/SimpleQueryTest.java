@@ -87,10 +87,12 @@ public class SimpleQueryTest extends AbstractTestCase {
 	@Test
 	public void testInFrom() {
 		createAwithItens("a2", 3);
+		createAwithItens("a3", 2);
 		QueryHelper query;
 		List<?> resultList;
 
-		query = new QueryHelper("SELECT a.stringValue, item.value FROM A a, IN (a.itens) item");
+		query = new QueryHelper("SELECT a.stringValue, item.value FROM A a, IN (a.itens) item WHERE a.stringValue = :stringValue");
+		query.parameter("stringValue", "a2");
 		resultList = query.getResultList();
 		assertEquals(3, resultList.size());	
 	}

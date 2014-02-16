@@ -7,6 +7,7 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
+import org.raidenjpa.query.parser.QueryParser;
 import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.QueryHelper;
 
@@ -94,6 +95,22 @@ public class WhereTest extends AbstractTestCase {
 		
 //		query = new QueryHelper("SELECT a1 FROM A a1, B b1 WHERE a1 = b1");
 //		assertEquals(0, query.getResultList().size());
+	}
+	
+	@Test
+	public void testWhereLiteral() {
+		String jpql;
+		QueryHelper query;
+		
+		jpql = "SELECT a FROM A a";
+		jpql += " WHERE a.intValue = 1";
+		query = new QueryHelper(jpql);
+		assertEquals(1, query.getResultList().size());
+		
+		jpql = "SELECT a FROM A a";
+		jpql += " WHERE a.intValue = 0";
+		query = new QueryHelper(jpql);
+		assertEquals(0, query.getResultList().size());
 	}
 	
 	@FixMe("Implement")

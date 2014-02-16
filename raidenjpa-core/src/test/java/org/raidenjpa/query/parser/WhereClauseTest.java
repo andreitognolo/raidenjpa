@@ -52,6 +52,19 @@ public class WhereClauseTest {
 		assertExpression(firstExpression, "a.intValue", "IN", "values");
 	}
 	
+	@Test
+	public void testWhereLiteral() {
+		String jpql;
+		jpql = "SELECT a FROM A a";
+		jpql += " WHERE a.intValue = 1";
+
+		QueryParser parser = new QueryParser(jpql);
+		List<LogicExpressionElement> elements = parser.getWhere().getLogicExpression().getElements();
+		
+		Condition firstExpression = (Condition) elements.get(0);
+		assertExpression(firstExpression, "a.intValue", "=", "1");
+	}
+	
 	private void assertExpression(Condition condition, String leftSide, String operator, String parameterName) {
 		ConditionPath left = (ConditionPath) condition.getLeft();
 		String[] paths = leftSide.split("\\.");

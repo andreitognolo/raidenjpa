@@ -1,5 +1,8 @@
 package org.raidenjpa.query.parser;
 
+import org.raidenjpa.util.BadSmell;
+
+@BadSmell("Rename because parameter can be a literal")
 public class ConditionParameter extends ConditionElement {
 
 	private String parameterName;

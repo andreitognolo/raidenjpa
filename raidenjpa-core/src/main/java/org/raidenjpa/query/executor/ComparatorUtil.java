@@ -27,6 +27,8 @@ public class ComparatorUtil {
 			}
 		} else if ("IN".equalsIgnoreCase(operador)) {
 			return ((Collection<?>) filterValue).contains(objValue);
+		} else if ("IS".equalsIgnoreCase(operador)) {
+			return objValue == null;
 		} else {
 			throw new RuntimeException("Operador " + operador + " not implemented yet");
 		}

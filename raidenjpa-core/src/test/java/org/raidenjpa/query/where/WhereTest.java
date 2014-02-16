@@ -43,6 +43,14 @@ public class WhereTest extends AbstractTestCase {
 		query.parameter("um", 1);
 		assertEquals(1, query.getResultList().size());
 	}
+
+	@Test
+	public void testIsNull() {
+		QueryHelper query;
+		query = new QueryHelper("SELECT a FROM A a WHERE a.stringValue is null");
+		assertEquals(0, query.getResultList().size());
+	}
+	
 	
 	@Test
 	public void testAnd() {

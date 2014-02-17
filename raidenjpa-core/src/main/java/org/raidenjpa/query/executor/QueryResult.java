@@ -182,7 +182,6 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		String leftAlias = join.getPath().get(0);
 		String attribute = join.getPath().get(1);
 		
-		System.out.println("rows.size = " + rows.size());
 		for (QueryResultRow row : new ArrayList<QueryResultRow>(rows)) {
 			Object leftObject = row.get(leftAlias);
 			

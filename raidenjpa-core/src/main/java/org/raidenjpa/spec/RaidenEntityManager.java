@@ -172,15 +172,14 @@ public class RaidenEntityManager implements EntityManager {
 	public Query createQuery(String jpql) {
 		return new RaidenQuery(jpql);
 	}
-
+	
 	@Override
-	public <T> TypedQuery<T> createQuery(CriteriaQuery<T> criteriaQuery) {
-		// TODO Auto-generated method stub
-		return null;
+	public <T> TypedQuery<T> createQuery(String qlString, Class<T> resultClass) {
+		return new RaidenTypedQuery<T>(createQuery(qlString));
 	}
 
 	@Override
-	public <T> TypedQuery<T> createQuery(String qlString, Class<T> resultClass) {
+	public <T> TypedQuery<T> createQuery(CriteriaQuery<T> criteriaQuery) {
 		// TODO Auto-generated method stub
 		return null;
 	}

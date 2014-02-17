@@ -48,6 +48,11 @@ public class RaidenQuery implements Query {
 		this.maxResults = maxResult;
 		return this;
 	}
+	
+	public Query setParameter(String name, Object value) {
+		parameters.put(name, value);
+		return this;
+	}
 
 	public int getMaxResults() {
 		throw new NotYetImplementedException();
@@ -86,11 +91,6 @@ public class RaidenQuery implements Query {
 	public Query setParameter(Parameter<Date> param, Date value, TemporalType temporalType) {
 
 		throw new NotYetImplementedException();
-	}
-
-	public Query setParameter(String name, Object value) {
-		parameters.put(name, value);
-		return this;
 	}
 
 	public Query setParameter(String name, Calendar value, TemporalType temporalType) {

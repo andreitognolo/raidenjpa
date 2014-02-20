@@ -74,6 +74,11 @@ public class InMemoryDB {
 		Object originalObject = (Object) t;
 		
 		Method cloneMethod = ReflectionUtil.getMethod(originalObject, "clone");
+		
+		if (cloneMethod == null) {
+			throw new RuntimeException("For while, only class with clone method could be persisted. Clazz: '" + originalObject.getClass() + "'");
+		}
+		
 		Object entidade = ReflectionUtil.invoke(originalObject, cloneMethod);
 
 		if (ReflectionUtil.getBeanField(entidade, "id") == null) {

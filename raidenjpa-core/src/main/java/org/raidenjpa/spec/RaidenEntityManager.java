@@ -1,12 +1,18 @@
 package org.raidenjpa.spec;
 
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -15,6 +21,7 @@ import javax.persistence.metamodel.Metamodel;
 
 import org.raiden.exception.NotYetImplementedException;
 import org.raidenjpa.db.InMemoryDB;
+import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.ReflectionUtil;
 
 public class RaidenEntityManager implements EntityManager {
@@ -25,8 +32,37 @@ public class RaidenEntityManager implements EntityManager {
 
 	}
 
+	@BadSmell("This one could be expensive")
 	@Override
 	public <T> T merge(T entity) {
+		System.out.println("Merge - " + entity);
+		List<String> fields = ReflectionUtil.getBeanFields(entity);
+		for (String field : fields) {
+			Object attrObject = ReflectionUtil.getBeanField(entity, field);
+			if (attrObject == null) {
+				continue;
+			}
+			
+			Method method = ReflectionUtil.getMethodByName(entity.getClass(), ReflectionUtil.toMethodName("get", field));
+			if (attrObject instanceof Collection) {
+				OneToMany oneToMany = method.getAnnotation(OneToMany.class);
+				if (oneToMany == null || oneToMany.cascade() == null) {
+					continue;
+				}
+				
+				for (Object obj : ((Collection<?>) attrObject)) {
+					if (obj.getClass().isAnnotationPresent(Entity.class)) {
+						merge(obj);
+					}
+				}
+			} else {
+				ManyToOne manyToOne = method.getAnnotation(ManyToOne.class);
+				if (manyToOne != null && manyToOne.cascade().length != 0) {
+					merge(attrObject);
+				}
+			}
+		}
+		
 		return InMemoryDB.me().put(entity);
 	}
 

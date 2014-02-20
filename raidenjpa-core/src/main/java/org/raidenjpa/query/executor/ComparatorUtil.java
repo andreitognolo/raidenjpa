@@ -2,29 +2,23 @@ package org.raidenjpa.query.executor;
 
 import java.util.Collection;
 
+import org.raidenjpa.util.BadSmell;
+
 public class ComparatorUtil {
 
 	public static boolean isTrue(Object objValue, String operador, Object filterValue) {
 		if ("=".equals(operador)) {
-			if (filterValue.equals(objValue)) {
-				return true;
-			}
+			return equals(objValue, filterValue);
+		} else if ("!=".equals(operador)) {
+			return !equals(objValue, filterValue);
 		} else if (">=".equals(operador)) {
-			if (compareTo(objValue, filterValue) >= 0) {
-				return true;
-			}
+			return compareTo(objValue, filterValue) >= 0;
 		} else if (">".equals(operador)) {
-			if (compareTo(objValue, filterValue) > 0) {
-				return true;
-			}
+			return compareTo(objValue, filterValue) > 0;
 		} else if ("<".equals(operador)) {
-			if (compareTo(objValue, filterValue) < 0) {
-				return true;
-			}
+			return compareTo(objValue, filterValue) < 0;
 		} else if ("<=".equals(operador)) {
-			if (compareTo(objValue, filterValue) <= 0) {
-				return true;
-			}
+			return compareTo(objValue, filterValue) <= 0;
 		} else if ("IN".equalsIgnoreCase(operador)) {
 			return ((Collection<?>) filterValue).contains(objValue);
 		} else if ("IS".equalsIgnoreCase(operador)) {
@@ -32,8 +26,11 @@ public class ComparatorUtil {
 		} else {
 			throw new RuntimeException("Operador " + operador + " not implemented yet");
 		}
-		
-		return false;
+	}
+
+	@BadSmell("toString to avoid comparison between Long and Integer is a good ideia?")
+	private static boolean equals(Object objValue, Object filterValue) {
+		return filterValue.toString().equals(objValue.toString());
 	}
 	
 	@SuppressWarnings("unchecked")

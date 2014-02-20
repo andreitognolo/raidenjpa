@@ -13,18 +13,14 @@ import javax.persistence.OneToOne;
 @Entity
 public class A extends Entidade {
 
-	@Id
-	@GeneratedValue
 	private Long id;
 
 	private String stringValue;
 	
 	private int intValue;
 
-	@OneToOne
 	private B b;
 	
-	@OneToMany(cascade = CascadeType.ALL)
 	private List<ItemA> itens = new ArrayList<ItemA>();
 
 	public A() {
@@ -43,6 +39,8 @@ public class A extends Entidade {
 		itens.add(item);
 	}
 
+	@Id
+	@GeneratedValue
 	public Long getId() {
 		return id;
 	}
@@ -52,6 +50,7 @@ public class A extends Entidade {
 		return this;
 	}
 
+	@OneToOne
 	public B getB() {
 		return b;
 	}
@@ -76,8 +75,14 @@ public class A extends Entidade {
 		this.intValue = intValue;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL)
 	public List<ItemA> getItens() {
 		return itens;
+	}
+
+	public A setItens(List<ItemA> itens) {
+		this.itens = itens;
+		return this;
 	}
 
 	@Override

@@ -73,7 +73,7 @@ public class AbstractTestCase {
 		A a = new A(aValue);
 
 		for(int i = 1; i <= numberOfItens; i++) {
-			a.addItem(new ItemA(aValue + "." + i));
+			a.addItem(new ItemA(a, aValue + "." + i));
 		}
 		
 		B b = new B(bValue);
@@ -108,7 +108,7 @@ public class AbstractTestCase {
 		A a = new A(value);
 
 		for(int i = 1; i <= numberOfItens; i++) {
-			a.addItem(new ItemA(value + "." + i));
+			a.addItem(new ItemA(a, value + "." + i));
 		}
 		
 		merge(a);

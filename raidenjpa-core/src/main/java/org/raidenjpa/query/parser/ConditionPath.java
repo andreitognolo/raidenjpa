@@ -22,4 +22,8 @@ public class ConditionPath extends ConditionElement {
 	public boolean isPath() {
 		return true;
 	}
+
+	public String toString() {
+		return "ConditionPath [path=" + path + "]";
+	}
 }

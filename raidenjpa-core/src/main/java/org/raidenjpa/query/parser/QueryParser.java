@@ -103,4 +103,8 @@ public class QueryParser {
 	public OrderByClause getOrderBy() {
 		return orderBy;
 	}
+
+	public QueryWords getWords() {
+		return words;
+	}
 }

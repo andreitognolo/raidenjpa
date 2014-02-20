@@ -3,6 +3,7 @@ package org.raidenjpa.query.executor;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.raidenjpa.db.InMemoryDB;
 import org.raidenjpa.query.parser.FromClause;
@@ -32,6 +33,8 @@ public class QueryExecutor {
 
 	@FixMe("Which one is the first, group or order?")
 	public List<?> getResultList() {
+		showJpql();
+		
 		QueryResult queryResult = new QueryResult();
 		
 		executeFrom(queryParser, queryResult);
@@ -41,6 +44,14 @@ public class QueryExecutor {
 		executeLimit(queryResult);
 		
 		return queryResult.getList(queryParser.getSelect(), queryParser.getGroupBy());
+	}
+
+	private void showJpql() {
+		String jpql = queryParser.getWords().getJpql();
+		for (Entry<String, Object> entry : parameters.entrySet()) {
+			jpql = jpql.replaceAll(":" + entry.getKey(), entry.getValue().toString());
+		}
+		System.out.println("Executing = " + jpql);
 	}
 
 	private void executeOrderBy(QueryParser queryParser, QueryResult queryResult) {

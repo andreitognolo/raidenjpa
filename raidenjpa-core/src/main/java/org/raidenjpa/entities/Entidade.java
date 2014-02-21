@@ -1,11 +1,8 @@
 package org.raidenjpa.entities;
 
-import javax.persistence.MappedSuperclass;
-
 import org.raidenjpa.util.FixMe;
 
 @FixMe("Need to be remove. It is here for compatibility with original project")
-@MappedSuperclass
 public abstract class Entidade implements Cloneable {
 
 	public abstract Object getId();

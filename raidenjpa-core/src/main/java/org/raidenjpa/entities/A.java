@@ -75,7 +75,7 @@ public class A extends Entidade {
 		this.intValue = intValue;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "a")
 	public List<ItemA> getItens() {
 		return itens;
 	}

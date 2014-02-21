@@ -3,14 +3,11 @@ package org.raidenjpa.entities;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class ItemA extends Entidade {
 
-	@Id
-	@GeneratedValue
 	private Long id;
 
 	private String value;
@@ -25,13 +22,15 @@ public class ItemA extends Entidade {
 		this.value = value;
 	}
 
+	@Id
+	@GeneratedValue
+	public Long getId() {
+		return id;
+	}
+
 	public ItemA setId(Long id) {
 		this.id = id;
 		return this;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public String getValue() {
@@ -42,8 +41,7 @@ public class ItemA extends Entidade {
 		this.value = value;
 	}
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "aId")
+	@ManyToOne
 	public A getA() {
 		return a;
 	}

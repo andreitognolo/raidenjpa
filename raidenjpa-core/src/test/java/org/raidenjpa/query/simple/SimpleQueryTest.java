@@ -10,6 +10,7 @@ import org.raidenjpa.AbstractTestCase;
 import org.raidenjpa.entities.A;
 import org.raidenjpa.entities.B;
 import org.raidenjpa.util.BadSmell;
+import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.QueryHelper;
 
 @BadSmell("Rename")
@@ -101,7 +102,24 @@ public class SimpleQueryTest extends AbstractTestCase {
 	public void testWithoutSelect() {
 
 	}
+	
+	@Test
+	public void testDistinct() {
+		createA("a1");
+		createA("a1");
+		createA("a1");
+		createA("a2");
+		
+		String jpql = "SELECT distinct(a.stringValue) FROM A a";
+		QueryHelper query = new QueryHelper(jpql);
+		assertEquals(2, query.getResultList().size());
+	}
 
+	@FixMe("TODO")
+	public void testDistinctAndAggregateFunctions() {
+		
+	}
+	
 	private Object get(List<?> resultList, int linha, int coluna) {
 		return ((Object[]) resultList.get(linha))[coluna];
 	}

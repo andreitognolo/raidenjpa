@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -166,11 +167,21 @@ public class QueryResult implements Iterable<QueryResultRow> {
 
 	@BadSmell("Duplicated code?")
 	private List<?> selectOneElement(SelectClause select) {
-		List<Object> result = new ArrayList<Object>();
-		for (QueryResultRow row : rows) {
-			result.add(row.get(select.getElements().get(0)));
+		SelectElement selectElement = select.getElements().get(0);
+		Collection<Object> result;
+		
+		if(selectElement.isDistinct()) {
+			result = new HashSet<Object>();
+		} else {
+			result = new ArrayList<Object>();
 		}
-		return result;
+		
+		for (QueryResultRow row : rows) {
+			Object element = row.get(selectElement);
+			result.add(element);
+		}
+		
+		return new ArrayList<Object>(result);
 	}
 	
 	public int size() {

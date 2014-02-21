@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class GroupByClauseTest {
+public class GroupByParseTest {
 
 	@Test
 	public void testSimpleJoin() {

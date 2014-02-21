@@ -39,9 +39,8 @@ public class ConditionSubQuery extends ConditionElement {
 				jpql += " " + word;
 			}
 		} while(parentheses > 0);
-		
-		jpql = jpql.replace("(SELECT", "SELECT");
-		jpql = jpql.substring(0, jpql.length() -1);
+
+		jpql = jpql.substring(1, jpql.length() - 1);
 		
 		System.out.println("inner = " + jpql);
 		

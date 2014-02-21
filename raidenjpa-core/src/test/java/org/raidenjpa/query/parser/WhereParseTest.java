@@ -4,12 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 import org.raidenjpa.util.BadSmell;
 
-public class WhereClauseTest {
+public class WhereParseTest {
 
 	@Test
 	public void testOneExpression() {

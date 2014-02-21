@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.raidenjpa.util.FixMe;
 
-public class SelectClauseTest {
+public class SelectParseTest {
 
 	@Test
 	public void testMoreThanOneEntity() {
@@ -64,5 +64,16 @@ public class SelectClauseTest {
 		assertEquals("a", select.getElements().get(0).getPath().get(0));
 		
 		jpql = "FROM A a, B b";
+	}
+	
+	@Test
+	public void testDistinct() {
+		String jpql = "SELECT distinct(a.stringValue) FROM A a";
+		QueryParser parser = new QueryParser(jpql);
+		
+		SelectClause select = parser.getSelect();
+		assertTrue(select.getElements().get(0).isDistinct());
+		assertEquals("a", select.getElements().get(0).getPath().get(0)); 
+		assertEquals("stringValue", select.getElements().get(0).getPath().get(1)); 
 	}
 }

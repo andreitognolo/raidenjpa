@@ -35,7 +35,6 @@ public class RaidenEntityManager implements EntityManager {
 	@BadSmell("This one could be expensive")
 	@Override
 	public <T> T merge(T entity) {
-		System.out.println("Merge - " + entity);
 		List<String> fields = ReflectionUtil.getBeanFields(entity);
 		for (String field : fields) {
 			Object attrObject = ReflectionUtil.getBeanField(entity, field);

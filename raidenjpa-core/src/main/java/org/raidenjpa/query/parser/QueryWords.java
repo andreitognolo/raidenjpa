@@ -46,7 +46,6 @@ public class QueryWords {
 	}
 
 	public String next() {
-		System.out.println("next is " + words[position]);
 		return words[position++]; 
 	}
 

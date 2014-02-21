@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class FromClauseTest {
+public class FromParseTest {
 
 	@Test
 	public void testWithSelectEntityAndAlias() {

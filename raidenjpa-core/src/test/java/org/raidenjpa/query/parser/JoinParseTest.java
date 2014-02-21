@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Test;
 import org.raidenjpa.util.FixMe;
 
-public class JoinClauseTest {
+public class JoinParseTest {
 
 	@Test
 	public void testSimpleJoin() {

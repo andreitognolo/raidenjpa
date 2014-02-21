@@ -14,20 +14,36 @@ public class ConditionSubQuery extends ConditionElement {
 	@FixMe("The if in do/while is only necessary because the parser is not prepared for 'a, b'")
 	public ConditionSubQuery(QueryWords words) {
 		words.require("(SELECT");
-		words.next();
-		String jpql = "SELECT";
+		String jpql = words.next(); 
 		
+		int parentheses = 1;
 		String word;
 		do {
 			word = words.next();
+			
+			if (word.contains("(")) {
+				parentheses++;
+			} 
+			
+			if (word.contains("))")) {
+				parentheses = parentheses - 2;
+			} else if (word.contains(")")) {
+				parentheses--;
+			}
+			
+			System.out.println("parentheses = " + parentheses);
+			
 			if (word.equals(",")) {
 				jpql += word;
 			} else {
 				jpql += " " + word;
 			}
-		} while(!word.contains(")"));
+		} while(parentheses > 0);
 		
-		jpql = jpql.replace(")", "");
+		jpql = jpql.replace("(SELECT", "SELECT");
+		jpql = jpql.substring(0, jpql.length() -1);
+		
+		System.out.println("inner = " + jpql);
 		
 		queryParser = new QueryParser(jpql);
 		

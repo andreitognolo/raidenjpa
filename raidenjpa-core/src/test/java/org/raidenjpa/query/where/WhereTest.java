@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
 import org.raidenjpa.util.FixMe;
@@ -12,14 +11,10 @@ import org.raidenjpa.util.QueryHelper;
 
 public class WhereTest extends AbstractTestCase {
 	
-	@Before
-	public void setUp() {
-		super.setUp();
-		createABC();
-	}
-	
 	@Test
 	public void testOneValue() {
+		createABC();
+		
 		QueryHelper query;
 		
 		query = new QueryHelper("SELECT a FROM A a WHERE a.stringValue = :a");
@@ -45,6 +40,8 @@ public class WhereTest extends AbstractTestCase {
 
 	@Test
 	public void testIsNull() {
+		createABC();
+		
 		QueryHelper query;
 		query = new QueryHelper("SELECT a FROM A a WHERE a.stringValue is null");
 		assertEquals(0, query.getResultList().size());
@@ -53,6 +50,8 @@ public class WhereTest extends AbstractTestCase {
 	
 	@Test
 	public void testAnd() {
+		createABC();
+		
 		QueryHelper query = new QueryHelper("SELECT a FROM A a WHERE a.stringValue = :stringValue AND a.intValue = :intValue");
 		query.parameter("stringValue", "a1");
 		query.parameter("intValue", 1);
@@ -61,6 +60,7 @@ public class WhereTest extends AbstractTestCase {
 	
 	@Test
 	public void testTwoFromComparingAttributes() {
+		createABC();
 		createB("b2");
 	
 		QueryHelper query = new QueryHelper("SELECT a, b FROM A a, B b WHERE a.stringValue = :valueA AND b.value = :valueB");
@@ -72,6 +72,7 @@ public class WhereTest extends AbstractTestCase {
 	@FixMe("Compare the entities. Make this test work with merge")
 	@Test
 	public void testTwoFromComparingObjects() {
+		createABC();
 		createB("b2");
 	
 		QueryHelper query = new QueryHelper("SELECT a, b FROM A a, B b WHERE a.b.id = b.id");
@@ -80,6 +81,7 @@ public class WhereTest extends AbstractTestCase {
 
 	@Test
 	public void testInOperator() {
+		createABC();
 		createA("a2", 2);
 		createA("a3", 3);
 		createA("a4", 4);
@@ -92,6 +94,7 @@ public class WhereTest extends AbstractTestCase {
 	@FixMe("Check why in Hibernate the last jpql doesnt work")
 	@Test
 	public void testEntityComparation() {
+		createABC();
 		createA("a2");
 		
 		QueryHelper query = new QueryHelper("SELECT a1 FROM A a1, A a2 WHERE a1 = a2");
@@ -106,6 +109,7 @@ public class WhereTest extends AbstractTestCase {
 	
 	@Test
 	public void testWhereLiteral() {
+		createABC();
 		String jpql;
 		QueryHelper query;
 		
@@ -124,5 +128,22 @@ public class WhereTest extends AbstractTestCase {
 	@Test
 	public void testEntityComparationByParameter() {
 		
+	}
+	
+	@FixMe("% in the begin")
+	@Test
+	public void testLike() {
+		createA("a1");
+		createA("a1");
+		createA("a2");
+		
+		String jpql;
+		QueryHelper query;
+		
+		jpql = "SELECT a FROM A a";
+		jpql += " WHERE a.stringValue LIKE :a1";
+		query = new QueryHelper(jpql);
+		query.parameter("a1", "a1");
+		assertEquals(2, query.getResultList().size());
 	}
 }

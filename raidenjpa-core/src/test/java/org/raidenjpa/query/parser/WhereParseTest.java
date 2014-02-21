@@ -92,6 +92,16 @@ public class WhereParseTest {
 		assertExpression(firstExpression, "a.intValue", "=", "1");
 	}
 	
+	@Test
+	public void testLike() {
+		String jpql;
+		jpql = "SELECT a FROM A a";
+		jpql += " WHERE a.intValue like :a1";
+
+		QueryParser parser = new QueryParser(jpql);
+		assertEquals("like", ((Condition) parser.getWhere().getLogicExpression().getElements().get(0)).getOperator());
+	}
+	
 	@BadSmell("Duplicated")
 	private void assertNullExpression(Condition condition, String leftSide, String operator, String parameterName) {
 		ConditionPath left = (ConditionPath) condition.getLeft();

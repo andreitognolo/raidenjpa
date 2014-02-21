@@ -23,9 +23,22 @@ public class ComparatorUtil {
 			return ((Collection<?>) filterValue).contains(objValue);
 		} else if ("IS".equalsIgnoreCase(operador)) {
 			return objValue == null;
+		} else if ("LIKE".equalsIgnoreCase(operador)) {
+			return like(objValue, filterValue);
 		} else {
 			throw new RuntimeException("Operador " + operador + " not implemented yet");
 		}
+	}
+
+	private static boolean like(Object objValue, Object filterValue) {
+		String objString = (String) objValue;
+		String filterString = (String) filterValue;
+		
+		if (filterString.endsWith("%")) {
+			return objString.contains(filterString);
+		}
+		
+		return equals(objValue, filterValue);
 	}
 
 	@BadSmell("toString to avoid comparison between Long and Integer is a good ideia?")

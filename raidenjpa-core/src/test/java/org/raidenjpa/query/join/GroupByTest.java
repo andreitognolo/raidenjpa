@@ -6,11 +6,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
+import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.QueryHelper;
 
-public class CountTest extends AbstractTestCase {
+public class GroupByTest extends AbstractTestCase {
 
 	@Test
 	public void testCountWithoutGroupBy() {
@@ -63,6 +65,50 @@ public class CountTest extends AbstractTestCase {
 		assertResult(result, 0, "a1", 0, 1l);
 		assertResult(result, 1, "a1", 1, 1l);
 		assertResult(result, 2, "a2", 0, 1l);
+	}
+	
+	@Ignore
+	@Test
+	public void testOrderAfterGroup() {
+		createA("a1", 1);
+		createA("a1", 5);
+		createA("a2", 2);
+		createA("a1", 1);
+		
+		String jpql;
+		QueryHelper query;
+		List<?> result;
+		
+		jpql = "SELECT a.stringValue, count(*) FROM A a GROUP BY a.stringValue, max(a.intValue)";
+		query = new QueryHelper(jpql);
+		result = query.getResultList();
+		assertEquals("a2", ((Object[]) result.get(0))[0]);
+		assertEquals("a1", ((Object[]) result.get(1))[0]);
+		
+		jpql = "SELECT a.stringValue, count(*) FROM A a GROUP BY a.stringValue, max(a.intValue) desc";
+		query = new QueryHelper(jpql);
+		result = query.getResultList();
+		assertEquals("a1", ((Object[]) result.get(0))[0]);
+		assertEquals("a2", ((Object[]) result.get(1))[0]);
+	}
+
+	@FixMe("Implement")
+	@Ignore
+	@Test
+	public void testGroupWithoutAggreateFunciton() {
+		createA("a1", 1);
+		createA("a1", 5);
+		createA("a2", 2);
+		createA("a1", 1);
+		
+		String jpql;
+		QueryHelper query;
+		List<?> result;
+		
+		jpql = "SELECT a.stringValue FROM A a GROUP BY a.stringValue";
+		query = new QueryHelper(jpql);
+		result = query.getResultList();
+		assertEquals(2, result.size());
 	}
 
 	@SuppressWarnings("unchecked")

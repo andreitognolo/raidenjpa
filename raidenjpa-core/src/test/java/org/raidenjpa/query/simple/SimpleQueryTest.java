@@ -105,14 +105,18 @@ public class SimpleQueryTest extends AbstractTestCase {
 	
 	@Test
 	public void testDistinct() {
-		createA("a1");
-		createA("a1");
-		createA("a1");
-		createA("a2");
+		createA("a1", 1);
+		createA("a1", 1);
+		createA("a1", 2);
+		createA("a2", 2);
 		
-		String jpql = "SELECT distinct(a.stringValue) FROM A a";
+		String jpql = "SELECT distinct a.stringValue FROM A a";
 		QueryHelper query = new QueryHelper(jpql);
 		assertEquals(2, query.getResultList().size());
+		
+		jpql = "SELECT distinct a.stringValue, a.intValue FROM A a";
+		query = new QueryHelper(jpql);
+		assertEquals(3, query.getResultList().size());
 	}
 
 	@FixMe("TODO")

@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import org.raidenjpa.query.parser.GroupByClause;
@@ -160,9 +161,28 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			for (SelectElement element : select.getElements()) {
 				obj[index++] = row.get(element);
 			}
+			
 			result.add(obj);
 		}
+		
+		applyDistinct(select, result);
+		
 		return result;
+	}
+
+	private void applyDistinct(SelectClause select, List<Object[]> result) {
+		if (select.isDistinct()) {
+			Set<String> distinct = new HashSet<String>();
+			for (Object[] row : new ArrayList<Object[]>(result)) {
+				String idf = "";
+				for (Object column : row) {
+					idf += column + "-";
+				}
+				if (!distinct.add(idf)) {
+					result.remove(row);
+				}
+			}
+		}
 	}
 
 	@BadSmell("Duplicated code?")
@@ -170,7 +190,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		SelectElement selectElement = select.getElements().get(0);
 		Collection<Object> result;
 		
-		if(selectElement.isDistinct()) {
+		if(select.isDistinct()) {
 			result = new HashSet<Object>();
 		} else {
 			result = new ArrayList<Object>();

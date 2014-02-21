@@ -68,12 +68,15 @@ public class SelectParseTest {
 	
 	@Test
 	public void testDistinct() {
-		String jpql = "SELECT distinct(a.stringValue) FROM A a";
+		String jpql = "SELECT distinct a.stringValue, a.intValue FROM A a";
 		QueryParser parser = new QueryParser(jpql);
 		
 		SelectClause select = parser.getSelect();
-		assertTrue(select.getElements().get(0).isDistinct());
+		assertTrue(select.isDistinct());
 		assertEquals("a", select.getElements().get(0).getPath().get(0)); 
 		assertEquals("stringValue", select.getElements().get(0).getPath().get(1)); 
+		
+		assertEquals("a", select.getElements().get(1).getPath().get(0)); 
+		assertEquals("intValue", select.getElements().get(1).getPath().get(1));
 	}
 }

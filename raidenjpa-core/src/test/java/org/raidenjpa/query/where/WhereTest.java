@@ -141,9 +141,21 @@ public class WhereTest extends AbstractTestCase {
 		QueryHelper query;
 		
 		jpql = "SELECT a FROM A a";
-		jpql += " WHERE a.stringValue LIKE :a1";
+		jpql += " WHERE a.stringValue LIKE :a";
 		query = new QueryHelper(jpql);
-		query.parameter("a1", "a1");
+		query.parameter("a", "a1");
 		assertEquals(2, query.getResultList().size());
+		
+		jpql = "SELECT a FROM A a";
+		jpql += " WHERE a.stringValue LIKE :a";
+		query = new QueryHelper(jpql);
+		query.parameter("a", "a");
+		assertEquals(0, query.getResultList().size());
+		
+		jpql = "SELECT a FROM A a";
+		jpql += " WHERE a.stringValue LIKE :a";
+		query = new QueryHelper(jpql);
+		query.parameter("a", "a%");
+		assertEquals(3, query.getResultList().size());
 	}
 }

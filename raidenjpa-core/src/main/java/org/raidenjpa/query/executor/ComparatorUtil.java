@@ -35,7 +35,9 @@ public class ComparatorUtil {
 		String filterString = (String) filterValue;
 		
 		if (filterString.endsWith("%")) {
-			return objString.contains(filterString);
+			System.out.println(objString);
+			System.out.println(filterString.substring(0, filterString.length() - 1));
+			return objString.startsWith(filterString.substring(0, filterString.length() - 1));
 		}
 		
 		return equals(objValue, filterValue);

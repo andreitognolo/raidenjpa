@@ -74,6 +74,8 @@ public class GroupByTest extends AbstractTestCase {
 		createA("a1", 5);
 		createA("a2", 2);
 		createA("a1", 1);
+
+		// HINT: Aggregation should transform rows and after that order the result
 		
 		String jpql;
 		QueryHelper query;

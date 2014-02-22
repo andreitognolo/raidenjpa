@@ -134,6 +134,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		return result;
 	}
 
+	@BadSmell("Primitive obsession")
 	private Map<String, List<QueryResultRow>> aggregateRows(GroupByClause groupBy) {
 		Map<String, List<QueryResultRow>> map = new HashMap<String, List<QueryResultRow>>();
 		
@@ -185,7 +186,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		}
 	}
 
-	@BadSmell("Duplicated code?")
+	@BadSmell("Duplicated code? One element could be a especific case of more than one element")
 	private List<?> selectOneElement(SelectClause select) {
 		SelectElement selectElement = select.getElements().get(0);
 		Collection<Object> result;

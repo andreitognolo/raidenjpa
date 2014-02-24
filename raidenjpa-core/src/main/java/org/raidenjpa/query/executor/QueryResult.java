@@ -107,7 +107,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			return Arrays.asList(new Long(rows.size()));
 		}
 
-		Map<String, List<QueryResultRow>> aggregateRows = aggregateRows(groupBy);
+		Map<String, List<QueryResultRow>> aggregateRows = aggregateRowsOld(groupBy);
 		if (select.getElements().size() == 1) {
 			List<Long> result = new ArrayList<Long>();
 			for (Entry<String, List<QueryResultRow>> entry : aggregateRows.entrySet()) {
@@ -135,7 +135,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 	}
 
 	@BadSmell("Primitive obsession")
-	private Map<String, List<QueryResultRow>> aggregateRows(GroupByClause groupBy) {
+	public Map<String, List<QueryResultRow>> aggregateRowsOld(GroupByClause groupBy) {
 		Map<String, List<QueryResultRow>> map = new HashMap<String, List<QueryResultRow>>();
 		
 		for (QueryResultRow row : rows) {
@@ -152,6 +152,25 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			map.put(key, aggregatedRows);
 		}
 		return map;
+	}
+	
+	public void aggregateRows(GroupByClause groupBy) {
+		Map<String, GroupedRows> map = new HashMap<String, GroupedRows>();
+		
+		/*for (QueryResultRow row : rows) {
+			String key = "";
+			for (GroupByElements element : groupBy.getElements()) {
+				key += ";" + element.getPath() + "=" + row.getObject(element.getPath());
+			}
+			
+			List<QueryResultRow> aggregatedRows = map.get(key);
+			if (aggregatedRows == null) {
+				aggregatedRows = new ArrayList<QueryResultRow>();
+				groupedRows.add()
+			}
+			aggregatedRows.add(row);
+			map.put(key, aggregatedRows);
+		}*/
 	}
 
 	private List<?> selectMoreThanOneElement(SelectClause select) {

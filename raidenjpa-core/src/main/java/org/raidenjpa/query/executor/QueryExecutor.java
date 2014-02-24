@@ -1,5 +1,7 @@
 package org.raidenjpa.query.executor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -8,8 +10,12 @@ import java.util.Map.Entry;
 import org.raidenjpa.db.InMemoryDB;
 import org.raidenjpa.query.parser.FromClause;
 import org.raidenjpa.query.parser.FromClauseItem;
+import org.raidenjpa.query.parser.GroupByClause;
+import org.raidenjpa.query.parser.GroupByElements;
 import org.raidenjpa.query.parser.JoinClause;
 import org.raidenjpa.query.parser.QueryParser;
+import org.raidenjpa.query.parser.SelectClause;
+import org.raidenjpa.query.parser.SelectElement;
 import org.raidenjpa.query.parser.WithClause;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
@@ -44,6 +50,15 @@ public class QueryExecutor {
 		executeLimit(queryResult);
 		
 		return queryResult.getList(queryParser.getSelect(), queryParser.getGroupBy());
+	}
+
+	private boolean isThereAggregationFunction(SelectClause select) {
+		for (SelectElement element : select.getElements()) {
+			if ("count(*)".equalsIgnoreCase(element.getPath().get(0))) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void showJpql() {

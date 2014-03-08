@@ -15,7 +15,6 @@ public class QueryResultRow {
 	@BadSmell("Need be a HashMap because of clone. Is it weird?")
 	private HashMap<String, Object> aliases = new HashMap<String, Object>();
 	
-	// When this row was grouped by
 	private ArrayList<QueryResultRow> groupedRows = new ArrayList<QueryResultRow>();
 
 	public QueryResultRow(String alias, Object obj) {

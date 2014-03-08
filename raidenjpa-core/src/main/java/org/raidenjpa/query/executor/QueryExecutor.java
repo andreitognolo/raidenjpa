@@ -1,7 +1,6 @@
 package org.raidenjpa.query.executor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -10,12 +9,9 @@ import java.util.Map.Entry;
 import org.raidenjpa.db.InMemoryDB;
 import org.raidenjpa.query.parser.FromClause;
 import org.raidenjpa.query.parser.FromClauseItem;
-import org.raidenjpa.query.parser.GroupByClause;
 import org.raidenjpa.query.parser.GroupByElements;
 import org.raidenjpa.query.parser.JoinClause;
 import org.raidenjpa.query.parser.QueryParser;
-import org.raidenjpa.query.parser.SelectClause;
-import org.raidenjpa.query.parser.SelectElement;
 import org.raidenjpa.query.parser.WithClause;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
@@ -43,22 +39,27 @@ public class QueryExecutor {
 		
 		QueryResult queryResult = new QueryResult();
 		
-		executeFrom(queryParser, queryResult);
-		executeJoin(queryParser, queryResult);
-		executeWhere(queryParser, queryResult);
-		executeOrderBy(queryParser, queryResult);
+		executeFrom(queryResult);
+		executeJoin(queryResult);
+		executeWhere(queryResult);
+		executeGroup(queryResult);
+		executeOrderBy(queryResult);
 		executeLimit(queryResult);
 		
 		return queryResult.getList(queryParser.getSelect(), queryParser.getGroupBy());
 	}
 
-	private boolean isThereAggregationFunction(SelectClause select) {
-		for (SelectElement element : select.getElements()) {
-			if ("count(*)".equalsIgnoreCase(element.getPath().get(0))) {
-				return true;
-			}
+	private void executeGroup(QueryResult queryResult) {
+		if (queryParser.getGroupBy() == null || queryParser.getGroupBy().getElements().isEmpty()) {
+			return;
 		}
-		return false;
+		
+		List<List<String>> paths = new ArrayList<List<String>>();
+		for (GroupByElements groupByElements : queryParser.getGroupBy().getElements()) {
+			paths.add(groupByElements.getPath());
+		}
+
+		queryResult.group(paths);
 	}
 
 	private void showJpql() {
@@ -69,12 +70,12 @@ public class QueryExecutor {
 		System.out.println("Executing = " + jpql);
 	}
 
-	private void executeOrderBy(QueryParser queryParser, QueryResult queryResult) {
+	private void executeOrderBy(QueryResult queryResult) {
 		queryResult.sort(queryParser.getOrderBy());
 	}
 
 	@BadSmell("It is kind of confused. Put it in QueryResult")
-	private void executeJoin(QueryParser queryParser, QueryResult queryResult) {
+	private void executeJoin(QueryResult queryResult) {
 		if (queryResult.size() == 0) {
 			return;
 		}
@@ -100,7 +101,7 @@ public class QueryExecutor {
 		queryResult.limit(maxResult);
 	}
 
-	private void executeWhere(QueryParser queryParser, QueryResult queryResult) {
+	private void executeWhere(QueryResult queryResult) {
 		if (!queryParser.getWhere().hasElements()) {
 			return;
 		}
@@ -117,7 +118,7 @@ public class QueryExecutor {
 	}
 
 	@BadSmell("Refactory")
-	private void executeFrom(QueryParser queryParser, QueryResult queryResult) {
+	private void executeFrom(QueryResult queryResult) {
 		FromClause from = queryParser.getFrom();
 		
 		for (FromClauseItem item : from.getItens()) {

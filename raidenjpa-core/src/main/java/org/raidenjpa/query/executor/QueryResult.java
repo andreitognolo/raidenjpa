@@ -11,7 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import org.raidenjpa.query.parser.GroupByClause;
 import org.raidenjpa.query.parser.GroupByElements;
@@ -92,7 +91,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			}
 		}
 	}
-
+	
 	private boolean isThereAggregationFunction(SelectClause select) {
 		for (SelectElement element : select.getElements()) {
 			if ("count(*)".equalsIgnoreCase(element.getPath().get(0))) {
@@ -102,30 +101,30 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		return false;
 	}
 
+	@BadSmell("Have different treat for one count is wrong. Try return always List<Object[]> and transform in result")
 	private List<?> selectUsingAggregation(SelectClause select, GroupByClause groupBy) {
 		if (groupBy == null) {
 			return Arrays.asList(new Long(rows.size()));
 		}
 
-		Map<String, List<QueryResultRow>> aggregateRows = aggregateRowsOld(groupBy);
 		if (select.getElements().size() == 1) {
 			List<Long> result = new ArrayList<Long>();
-			for (Entry<String, List<QueryResultRow>> entry : aggregateRows.entrySet()) {
-				result.add(new Long(entry.getValue().size()));
+			for (QueryResultRow row : rows) {
+				result.add(new Long(row.getGroupedRows().size()));
 			}
 			return result;
 		}
 		
 		List<Object[]> result = new ArrayList<Object[]>();
-		for (Entry<String, List<QueryResultRow>> entry : aggregateRows.entrySet()) {
+		for (QueryResultRow row : rows) {
 			Object[] resultRow = new Object[select.getElements().size()];
 			for (int i = 0; i < select.getElements().size(); i++) {
 				SelectElement selectElement = select.getElements().get(i);
 				
 				if ("count(*)".equalsIgnoreCase(selectElement.getPath().get(0))) {
-					resultRow[i] = new Long(entry.getValue().size()); 
+					resultRow[i] = new Long(row.getGroupedRows().size()); 
 				} else {
-					resultRow[i] = entry.getValue().get(0).get(selectElement);
+					resultRow[i] = row.get(selectElement);
 				}
 			}
 			result.add(resultRow);
@@ -152,25 +151,6 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			map.put(key, aggregatedRows);
 		}
 		return map;
-	}
-	
-	public void aggregateRows(GroupByClause groupBy) {
-		Map<String, GroupedRows> map = new HashMap<String, GroupedRows>();
-		
-		/*for (QueryResultRow row : rows) {
-			String key = "";
-			for (GroupByElements element : groupBy.getElements()) {
-				key += ";" + element.getPath() + "=" + row.getObject(element.getPath());
-			}
-			
-			List<QueryResultRow> aggregatedRows = map.get(key);
-			if (aggregatedRows == null) {
-				aggregatedRows = new ArrayList<QueryResultRow>();
-				groupedRows.add()
-			}
-			aggregatedRows.add(row);
-			map.put(key, aggregatedRows);
-		}*/
 	}
 
 	private List<?> selectMoreThanOneElement(SelectClause select) {
@@ -345,5 +325,11 @@ public class QueryResult implements Iterable<QueryResultRow> {
 				return 0;
 			}
 		});
+	}
+
+	@BadSmell("Primitive obsession")
+	public void group(List<List<String>> paths) {
+		Collection<QueryResultRow> groupedRows = new PoolerRows().group(rows, paths);
+		rows = new ArrayList<QueryResultRow>(groupedRows);
 	}
 }

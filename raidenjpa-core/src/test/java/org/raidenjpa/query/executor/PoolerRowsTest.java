@@ -9,10 +9,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.raidenjpa.entities.A;
-import org.raidenjpa.util.BadSmell;
-import org.raidenjpa.util.FixMe;
 
-@BadSmell("Is it the best place to this one?")
 public class PoolerRowsTest {
 
 	@Test

@@ -50,7 +50,6 @@ public class QueryExecutor {
 		return queryResult.getList(queryParser.getSelect(), queryParser.getGroupBy());
 	}
 
-	@BadSmell("Organize this")
 	private void executeGroup(QueryResult queryResult) {
 		if (queryParser.getGroupBy() == null && !queryParser.getSelect().isThereAggregationFunction()) {
 			return;

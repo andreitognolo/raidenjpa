@@ -13,7 +13,7 @@ import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
 
 @BadSmell("Is it the best place to this one?")
-public class AggregatorRowsTest {
+public class PoolerRowsTest {
 
 	@Test
 	public void testAggregateOneColumn() {

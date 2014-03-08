@@ -82,16 +82,15 @@ public class QueryResult implements Iterable<QueryResultRow> {
 
 	@BadSmell("This double verification in groupBy is only necessary because of bad design")
 	public List<?> getList(SelectClause select, GroupByClause groupBy) {
+		List<Object[]> list;
+		
 		if (isThereAggregationFunction(select)) {
-			List<Object[]> list = selectUsingAggregation(select, groupBy);
-			return ListUtil.simplifyListTypeIfPossible(list);
+			list = selectUsingAggregation(select, groupBy);
 		} else {
-			if (select.getElements().size() == 1) {
-				return selectOneElement(select);
-			} else {
-				return selectMoreThanOneElement(select);
-			}
+			list = select(select);
 		}
+		
+		return ListUtil.simplifyListTypeIfPossible(list);
 	}
 	
 	private boolean isThereAggregationFunction(SelectClause select) {
@@ -149,7 +148,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		return map;
 	}
 
-	private List<?> selectMoreThanOneElement(SelectClause select) {
+	private List<Object[]> select(SelectClause select) {
 		List<Object[]> result = new ArrayList<Object[]>();
 		for (QueryResultRow row : rows) {
 			Object[] obj = new Object[select.getElements().size()];
@@ -181,25 +180,6 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		}
 	}
 
-	@BadSmell("Duplicated code? One element could be a especific case of more than one element")
-	private List<?> selectOneElement(SelectClause select) {
-		SelectElement selectElement = select.getElements().get(0);
-		Collection<Object> result;
-		
-		if(select.isDistinct()) {
-			result = new HashSet<Object>();
-		} else {
-			result = new ArrayList<Object>();
-		}
-		
-		for (QueryResultRow row : rows) {
-			Object element = row.get(selectElement);
-			result.add(element);
-		}
-		
-		return new ArrayList<Object>(result);
-	}
-	
 	public int size() {
 		return rows.size();
 	}

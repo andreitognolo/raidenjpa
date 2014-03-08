@@ -22,6 +22,7 @@ import org.raidenjpa.query.parser.SelectElement;
 import org.raidenjpa.query.parser.WhereClause;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
+import org.raidenjpa.util.ListUtil;
 import org.raidenjpa.util.ReflectionUtil;
 
 public class QueryResult implements Iterable<QueryResultRow> {
@@ -82,7 +83,8 @@ public class QueryResult implements Iterable<QueryResultRow> {
 	@BadSmell("This double verification in groupBy is only necessary because of bad design")
 	public List<?> getList(SelectClause select, GroupByClause groupBy) {
 		if (isThereAggregationFunction(select)) {
-			return selectUsingAggregation(select, groupBy);
+			List<Object[]> list = selectUsingAggregation(select, groupBy);
+			return ListUtil.simplifyListTypeIfPossible(list);
 		} else {
 			if (select.getElements().size() == 1) {
 				return selectOneElement(select);
@@ -102,19 +104,13 @@ public class QueryResult implements Iterable<QueryResultRow> {
 	}
 
 	@BadSmell("Have different treat for one count is wrong. Try return always List<Object[]> and transform in result")
-	private List<?> selectUsingAggregation(SelectClause select, GroupByClause groupBy) {
+	private List<Object[]> selectUsingAggregation(SelectClause select, GroupByClause groupBy) {
 		if (groupBy == null) {
-			return Arrays.asList(new Long(rows.size()));
+			List<Object[]> list = new ArrayList<Object[]>();
+			list.add(new Object[]{new Long(rows.size())});
+			return list;
 		}
 
-		if (select.getElements().size() == 1) {
-			List<Long> result = new ArrayList<Long>();
-			for (QueryResultRow row : rows) {
-				result.add(new Long(row.getGroupedRows().size()));
-			}
-			return result;
-		}
-		
 		List<Object[]> result = new ArrayList<Object[]>();
 		for (QueryResultRow row : rows) {
 			Object[] resultRow = new Object[select.getElements().size()];

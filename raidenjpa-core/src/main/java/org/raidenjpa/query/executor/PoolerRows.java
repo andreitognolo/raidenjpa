@@ -9,11 +9,11 @@ import org.raidenjpa.util.BadSmell;
 
 public class PoolerRows {
 
-	public Collection<QueryResultRow> group(List<QueryResultRow> rows, List<String> path) {
+	public Collection<QueryResultRow> group(List<QueryResultRow> rows, List<List<String>> paths) {
 		Map<String, QueryResultRow> map = new HashMap<String, QueryResultRow>(); 
 		
 		for (QueryResultRow row : rows) {
-			String key = toKey(row, path);
+			String key = toKey(row, paths);
 			QueryResultRow groupedRow = map.get(key);
 			if (groupedRow == null) {
 				groupedRow = row;
@@ -25,8 +25,12 @@ public class PoolerRows {
 		return map.values();
 	}
 
-	private String toKey(QueryResultRow row, List<String> path) {
-		return ";" + toStringPath(path) + "=" + row.getObject(path);
+	private String toKey(QueryResultRow row, List<List<String>> paths) {
+		String key = "";
+		for (List<String> path : paths) {
+			key += ";" + toStringPath(path) + "=" + row.getObject(path);
+		}
+		return key;
 	}
 
 	@BadSmell("Probably it would be better have a Path class")

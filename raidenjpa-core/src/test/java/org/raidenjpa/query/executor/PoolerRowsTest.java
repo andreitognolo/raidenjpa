@@ -17,20 +17,42 @@ public class PoolerRowsTest {
 
 	@Test
 	public void testAggregateOneColumn() {
-		List<QueryResultRow> rows = new ArrayList<QueryResultRow>();
+		List<QueryResultRow> rows;
+		Collection<QueryResultRow> aggregatedRows;
+		List<List<String>> paths = new ArrayList<List<String>>();
+		paths.add(Arrays.asList("a", "stringValue"));
 		
+		rows = new ArrayList<QueryResultRow>();
+		rows.add(new QueryResultRow("a", new A("a1")));
+		rows.add(new QueryResultRow("a", new A("a1")));
+		
+		aggregatedRows = new PoolerRows().group(rows, paths);
+		assertEquals(1, aggregatedRows.size());
+		assertEquals(2, aggregatedRows.iterator().next().getGroupedRows().size());
+		
+		rows = new ArrayList<QueryResultRow>();
 		rows.add(new QueryResultRow("a", new A("a1")));
 		rows.add(new QueryResultRow("a", new A("a1")));
 		rows.add(new QueryResultRow("a", new A("a2")));
-		
-		List<String> path = Arrays.asList("a", "stringValue");
-		Collection<QueryResultRow> aggregatedRows = new PoolerRows().group(rows, path);
+		aggregatedRows = new PoolerRows().group(rows, paths);
 		assertEquals(2, aggregatedRows.size());
 	}
 	
-	@FixMe("Implement")
 	@Test
 	public void testAggregateMoreThanOneColumn() {
-		List<QueryResultRow> rows = new ArrayList<QueryResultRow>();
+		List<QueryResultRow> rows;
+		List<List<String>> paths = new ArrayList<List<String>>();
+		Collection<QueryResultRow> aggregatedRows;
+		
+		rows = new ArrayList<QueryResultRow>();
+		rows.add(new QueryResultRow("a", new A("a1", 1)));
+		rows.add(new QueryResultRow("a", new A("a1", 1)));
+		rows.add(new QueryResultRow("a", new A("a1", 2)));
+		rows.add(new QueryResultRow("a", new A("a2", 1)));
+		
+		paths.add(Arrays.asList("a", "stringValue"));
+		paths.add(Arrays.asList("a", "intValue"));
+		aggregatedRows = new PoolerRows().group(rows, paths);
+		assertEquals(3, aggregatedRows.size());
 	}
 }

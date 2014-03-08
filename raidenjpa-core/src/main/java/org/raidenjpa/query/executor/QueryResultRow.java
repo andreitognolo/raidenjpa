@@ -73,4 +73,8 @@ public class QueryResultRow {
 	public void addGroupedRow(QueryResultRow row) {
 		this.groupedRows.add(row);
 	}
+
+	public List<QueryResultRow> getGroupedRows() {
+		return groupedRows;
+	}
 }

@@ -85,9 +85,9 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		List<Object[]> list;
 		
 		if (isThereAggregationFunction(select)) {
-			list = selectUsingAggregation(select, groupBy);
+			list = select(select, groupBy);
 		} else {
-			list = select(select);
+			list = select(select, groupBy);
 		}
 		
 		return ListUtil.simplifyListTypeIfPossible(list);
@@ -102,9 +102,8 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		return false;
 	}
 
-	@BadSmell("Have different treat for one count is wrong. Try return always List<Object[]> and transform in result")
-	private List<Object[]> selectUsingAggregation(SelectClause select, GroupByClause groupBy) {
-		if (groupBy == null) {
+	private List<Object[]> select(SelectClause select, GroupByClause groupBy) {
+		if (isThereAggregationFunction(select) && groupBy == null) {
 			List<Object[]> list = new ArrayList<Object[]>();
 			list.add(new Object[]{new Long(rows.size())});
 			return list;
@@ -124,6 +123,8 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			}
 			result.add(resultRow);
 		}
+		
+		applyDistinct(select, result);
 		
 		return result;
 	}
@@ -146,23 +147,6 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			map.put(key, aggregatedRows);
 		}
 		return map;
-	}
-
-	private List<Object[]> select(SelectClause select) {
-		List<Object[]> result = new ArrayList<Object[]>();
-		for (QueryResultRow row : rows) {
-			Object[] obj = new Object[select.getElements().size()];
-			int index = 0;
-			for (SelectElement element : select.getElements()) {
-				obj[index++] = row.get(element);
-			}
-			
-			result.add(obj);
-		}
-		
-		applyDistinct(select, result);
-		
-		return result;
 	}
 
 	private void applyDistinct(SelectClause select, List<Object[]> result) {

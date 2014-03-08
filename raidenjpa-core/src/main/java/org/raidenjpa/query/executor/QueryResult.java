@@ -45,11 +45,11 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		}
 		
 		for (QueryResultRow row : new ArrayList<QueryResultRow>(rows)) {
-			row.column(alias, newElements.get(0));
+			row.add(alias, newElements.get(0));
 			
 			for (int i = 1; i < newElements.size(); i++) {
 				QueryResultRow duplicatedRow = duplicate(row);
-				duplicatedRow.column(alias, newElements.get(i));
+				duplicatedRow.add(alias, newElements.get(i));
 				row = duplicatedRow;
 			}
 		}
@@ -250,7 +250,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		if (obj == null) {
 			rows.remove(row); // TODO: Beware about LEFT
 		} else {
-			row.column(join.getAlias(), obj);
+			row.add(join.getAlias(), obj);
 			removeRowsNoMatchWith(join, parameters, Arrays.asList(row));
 		}
 	}
@@ -267,12 +267,12 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		List<QueryResultRow> rowsInJoin = new ArrayList<QueryResultRow>();
 		rowsInJoin.add(row);
 		
-		row.column(join.getAlias(), it.next());
+		row.add(join.getAlias(), it.next());
 		
 		while(it.hasNext()) {
 			Object itemToAdd = it.next();
 			QueryResultRow newRow = duplicate(row);
-			newRow.column(join.getAlias(), itemToAdd);
+			newRow.add(join.getAlias(), itemToAdd);
 			rowsInJoin.add(newRow);
 			row = newRow;
 		}

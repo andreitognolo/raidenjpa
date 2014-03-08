@@ -1,5 +1,6 @@
 package org.raidenjpa.query.executor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,40 +13,43 @@ import org.raidenjpa.util.ReflectionUtil;
 public class QueryResultRow {
 
 	@BadSmell("Need be a HashMap because of clone. Is it weird?")
-	private HashMap<String, Object> columns = new HashMap<String, Object>();
+	private HashMap<String, Object> aliases = new HashMap<String, Object>();
+	
+	// When this row was grouped by
+	private ArrayList<QueryResultRow> groupedRows = new ArrayList<QueryResultRow>();
 
 	public QueryResultRow(String alias, Object obj) {
-		columns.put(alias, obj);
+		aliases.put(alias, obj);
 	}
 
 	private QueryResultRow() {
 	}
 
-	public void column(String alias, Object obj) {
-		columns.put(alias, obj);
+	public void add(String alias, Object obj) {
+		aliases.put(alias, obj);
 	}
 
 	public Object get(String alias) {
-		return columns.get(alias);
+		return aliases.get(alias);
 	}
 	
 	@BadSmell("Duplicated to getObjectFromExpression?")
 	public Object get(SelectElement selectElement) {
 		List<String> path = selectElement.getPath();
-		Object obj = columns.get(path.get(0));
+		Object obj = aliases.get(path.get(0));
 		return ReflectionUtil.getBeanField(obj, path);
 	}
 
 	@SuppressWarnings("unchecked")
 	public QueryResultRow copy() {
 		QueryResultRow copy = new QueryResultRow();
-		copy.columns = (HashMap<String, Object>) this.columns.clone();
+		copy.aliases = (HashMap<String, Object>) this.aliases.clone();
 
 		return copy;
 	}
 	
 	public int numberOfColumns() {
-		return columns.size();
+		return aliases.size();
 	}
 
 	@BadSmell("Inside ExpressionPath?")
@@ -64,5 +68,9 @@ public class QueryResultRow {
 			objValue = ReflectionUtil.getBeanField(objValue, attribute);
 		}
 		return objValue;
+	}
+
+	public void addGroupedRow(QueryResultRow row) {
+		this.groupedRows.add(row);
 	}
 }

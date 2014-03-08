@@ -1,6 +1,7 @@
 package org.raidenjpa.query.executor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -49,16 +50,21 @@ public class QueryExecutor {
 		return queryResult.getList(queryParser.getSelect(), queryParser.getGroupBy());
 	}
 
+	@BadSmell("Organize this")
 	private void executeGroup(QueryResult queryResult) {
-		if (queryParser.getGroupBy() == null || queryParser.getGroupBy().getElements().isEmpty()) {
+		if (queryParser.getGroupBy() == null && !queryParser.getSelect().isThereAggregationFunction()) {
 			return;
 		}
 		
 		List<List<String>> paths = new ArrayList<List<String>>();
-		for (GroupByElements groupByElements : queryParser.getGroupBy().getElements()) {
-			paths.add(groupByElements.getPath());
+		if (queryParser.getGroupBy() == null) {
+			paths.add(Arrays.asList("fake_aggregation_for_group_all_rows"));
+		} else {
+			for (GroupByElements groupByElements : queryParser.getGroupBy().getElements()) {
+				paths.add(groupByElements.getPath());
+			}
 		}
-
+		
 		queryResult.group(paths);
 	}
 

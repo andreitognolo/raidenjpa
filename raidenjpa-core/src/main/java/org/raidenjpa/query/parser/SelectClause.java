@@ -49,4 +49,13 @@ public class SelectClause {
 		return distinct;
 	}
 
+	public boolean isThereAggregationFunction() {
+		for (SelectElement element : getElements()) {
+			if ("count(*)".equalsIgnoreCase(element.getPath().get(0))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

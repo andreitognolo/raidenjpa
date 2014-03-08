@@ -82,33 +82,11 @@ public class QueryResult implements Iterable<QueryResultRow> {
 
 	@BadSmell("This double verification in groupBy is only necessary because of bad design")
 	public List<?> getList(SelectClause select, GroupByClause groupBy) {
-		List<Object[]> list;
-		
-		if (isThereAggregationFunction(select)) {
-			list = select(select, groupBy);
-		} else {
-			list = select(select, groupBy);
-		}
-		
+		List<Object[]> list = select(select, groupBy);
 		return ListUtil.simplifyListTypeIfPossible(list);
 	}
 	
-	private boolean isThereAggregationFunction(SelectClause select) {
-		for (SelectElement element : select.getElements()) {
-			if ("count(*)".equalsIgnoreCase(element.getPath().get(0))) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	private List<Object[]> select(SelectClause select, GroupByClause groupBy) {
-		if (isThereAggregationFunction(select) && groupBy == null) {
-			List<Object[]> list = new ArrayList<Object[]>();
-			list.add(new Object[]{new Long(rows.size())});
-			return list;
-		}
-
 		List<Object[]> result = new ArrayList<Object[]>();
 		for (QueryResultRow row : rows) {
 			Object[] resultRow = new Object[select.getElements().size()];
@@ -287,7 +265,7 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		});
 	}
 
-	@BadSmell("Primitive obsession")
+	@BadSmell("Primitive obsession in paths parameter")
 	public void group(List<List<String>> paths) {
 		Collection<QueryResultRow> groupedRows = new PoolerRows().group(rows, paths);
 		rows = new ArrayList<QueryResultRow>(groupedRows);

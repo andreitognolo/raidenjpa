@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
-import org.raidenjpa.util.FixMe;
+import org.raidenjpa.query.executor.ComparatorUtil;
 import org.raidenjpa.util.QueryHelper;
 
 public class GroupByTest extends AbstractTestCase {
@@ -33,9 +33,9 @@ public class GroupByTest extends AbstractTestCase {
 	
 	@Test
 	public void testCountWithGroupBy() {
-		createABC();
-		createA("a1");
-		createA("a2");
+		createA("a1", 1);
+		createA("a1", 0);
+		createA("a2", 0);
 		
 		String jpql;
 		QueryHelper query;
@@ -67,13 +67,13 @@ public class GroupByTest extends AbstractTestCase {
 		assertResult(result, 2, "a2", 0, 1l);
 	}
 	
-	@Ignore
 	@Test
 	public void testMax() {
 		createA("a1", 1);
 		createA("a1", 5);
 		createA("a2", 2);
 		createA("a1", 1);
+		createA("a3");
 		
 		String jpql;
 		QueryHelper query;
@@ -138,7 +138,7 @@ public class GroupByTest extends AbstractTestCase {
 				if (compareTo != 0) {
 					return compareTo;
 				} else {
-					return ((Integer) o1[1]).compareTo((Integer) o2[1]);
+					return ComparatorUtil.compareTo(o1[1], o2[1]);
 				}
 			}
 		});

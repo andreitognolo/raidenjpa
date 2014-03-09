@@ -1,6 +1,7 @@
 package org.raidenjpa.query.executor;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 import org.raidenjpa.util.BadSmell;
 
@@ -50,7 +51,20 @@ public class ComparatorUtil {
 	
 	@SuppressWarnings("unchecked")
 	public static int compareTo(Object a, Object b) {
-		return ((Comparable<Object>) a).compareTo(((Comparable<Object>) b));
+		if (a == null && b == null) {
+			return 0;
+		}
+		
+		if (a == null && b != null) {
+			return -1;
+		}
+		
+		if (a != null && b == null) {
+			return 1;
+		}
+		
+		return ((Comparable<Object>) a
+				).compareTo(((Comparable<Object>) b));
 	}
 
 }

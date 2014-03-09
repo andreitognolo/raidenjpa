@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.raidenjpa.query.parser.SelectElement;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.ReflectionUtil;
@@ -31,10 +30,9 @@ public class QueryResultRow {
 	public Object get(String alias) {
 		return aliases.get(alias);
 	}
-	
+
 	@BadSmell("Duplicated to getObjectFromExpression?")
-	public Object get(SelectElement selectElement) {
-		List<String> path = selectElement.getPath();
+	public Object get(List<String> path) {
 		Object obj = aliases.get(path.get(0));
 		
 		if (obj == null) {

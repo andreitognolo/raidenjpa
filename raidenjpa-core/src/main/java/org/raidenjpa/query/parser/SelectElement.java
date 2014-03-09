@@ -42,4 +42,8 @@ public class SelectElement {
 	public boolean isMax() {
 		return max;
 	}
+
+	public boolean isAggregationFunction() {
+		return max || count;
+	}
 }

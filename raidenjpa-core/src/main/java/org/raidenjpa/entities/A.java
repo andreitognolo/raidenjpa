@@ -17,7 +17,7 @@ public class A extends Entidade {
 
 	private String stringValue;
 	
-	private int intValue;
+	private Integer intValue;
 
 	private B b;
 	
@@ -67,11 +67,11 @@ public class A extends Entidade {
 		this.stringValue = stringValue;
 	}
 
-	public int getIntValue() {
+	public Integer getIntValue() {
 		return intValue;
 	}
 
-	public void setIntValue(int intValue) {
+	public void setIntValue(Integer intValue) {
 		this.intValue = intValue;
 	}
 

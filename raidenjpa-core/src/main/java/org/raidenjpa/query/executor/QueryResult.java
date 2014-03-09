@@ -95,11 +95,10 @@ public class QueryResult implements Iterable<QueryResultRow> {
 				
 				if (selectElement.isCount()) {
 					resultRow[i] = new Long(row.getGroupedRows().size());
-//				} else if (selectItem.toUpperCase().contains("MAX(")) {
-//					selectItem = selectItem.replace("MAX(", "").replace(")", "");
-//					resultRow[i] = MaxUtil.max(row.getGroupedRows(), selectItem);
+				} else if (selectElement.isMax()) {
+					resultRow[i] = MaxUtil.max(row.getGroupedRows(), selectElement.getPath());
 				} else {
-					resultRow[i] = row.get(selectElement);
+					resultRow[i] = row.get(selectElement.getPath());
 				}
 			}
 			result.add(resultRow);

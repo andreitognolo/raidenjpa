@@ -1,27 +1,28 @@
 package org.raidenjpa.query.executor;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.raidenjpa.util.ReflectionUtil;
-
 public class MaxUtil {
 
-	@SuppressWarnings("unchecked")
-	public static Object max(List<?> list, String attribute) {
-		Collections.sort(list, new Comparator<Object>() {
-			
+	public static Object max(List<QueryResultRow> rows, final List<String> path) {
+		if (rows.isEmpty()) {
+			throw new RuntimeException("The list is empty");
+		}
+		
+		List<Object> objects = new ArrayList<Object>();
+		for (QueryResultRow row : rows) {
+			objects.add(row.get(path));
+		}
+		
+		Collections.sort(objects, new Comparator<Object>() {
 			public int compare(Object o1, Object o2) {
-//				ReflectionUtil.getBeanField(o1, path)
-				
-				Comparable<Object> c1 = (Comparable<Object>) o1;
-				Comparable<Object> c2 = (Comparable<Object>) o2;
-				
-				return c1.compareTo(c2);
+				return ComparatorUtil.compareTo(o1, o2);
 			}
 		});
 		
-		return list.get(list.size() - 1);
+		return objects.get(objects.size() - 1);
 	}
 }

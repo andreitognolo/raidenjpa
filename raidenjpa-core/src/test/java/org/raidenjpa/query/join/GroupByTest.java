@@ -69,6 +69,25 @@ public class GroupByTest extends AbstractTestCase {
 	
 	@Ignore
 	@Test
+	public void testMax() {
+		createA("a1", 1);
+		createA("a1", 5);
+		createA("a2", 2);
+		createA("a1", 1);
+		
+		String jpql;
+		QueryHelper query;
+		List<?> result;
+		
+		jpql = "SELECT max(a.intValue) FROM A a";
+		query = new QueryHelper(jpql);
+		result = query.getResultList();
+		assertEquals(1, result.size());
+		assertEquals(5, result.get(0));
+	}
+	
+	@Ignore
+	@Test
 	public void testOrderAfterGroup() {
 		createA("a1", 1);
 		createA("a1", 5);
@@ -94,8 +113,6 @@ public class GroupByTest extends AbstractTestCase {
 		assertEquals("a2", ((Object[]) result.get(1))[0]);
 	}
 
-	@FixMe("Implement")
-	@Ignore
 	@Test
 	public void testGroupWithoutAggreateFunciton() {
 		createA("a1", 1);

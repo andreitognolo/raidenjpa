@@ -36,6 +36,11 @@ public class QueryResultRow {
 	public Object get(SelectElement selectElement) {
 		List<String> path = selectElement.getPath();
 		Object obj = aliases.get(path.get(0));
+		
+		if (obj == null) {
+			throw new RuntimeException("There is no object with alias '" + path.get(0) + "'");
+		}
+		
 		return ReflectionUtil.getBeanField(obj, path);
 	}
 

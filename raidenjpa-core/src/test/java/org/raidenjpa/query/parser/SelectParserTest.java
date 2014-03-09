@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.raidenjpa.util.FixMe;
 
-public class SelectParseTest {
+public class SelectParserTest {
 
 	@Test
 	public void testMoreThanOneEntity() {
@@ -78,5 +78,10 @@ public class SelectParseTest {
 		
 		assertEquals("a", select.getElements().get(1).getPath().get(0)); 
 		assertEquals("intValue", select.getElements().get(1).getPath().get(1));
+	}
+	
+	@Test
+	public void testCount() {
+		
 	}
 }

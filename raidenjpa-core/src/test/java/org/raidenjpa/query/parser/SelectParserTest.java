@@ -78,4 +78,15 @@ public class SelectParserTest {
 		SelectClause select = parser.getSelect();
 		assertTrue(select.getElements().get(0).isCount());
 	}
+	
+	@Test
+	public void testMax() {
+		String jpql = "SELECT max(a.intValue) FROM A a";
+		QueryParser parser = new QueryParser(jpql);
+		
+		SelectClause select = parser.getSelect();
+		assertTrue(select.getElements().get(0).isMax());
+		assertEquals("a", select.getElements().get(0).getPath().get(0));
+		assertEquals("intValue", select.getElements().get(0).getPath().get(1));
+	}
 }

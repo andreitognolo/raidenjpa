@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
 import org.raidenjpa.query.executor.ComparatorUtil;
@@ -86,7 +85,6 @@ public class GroupByTest extends AbstractTestCase {
 		assertEquals(5, result.get(0));
 	}
 	
-	@Ignore
 	@Test
 	public void testOrderAfterGroup() {
 		createA("a1", 1);

@@ -235,8 +235,15 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		Collections.sort(rows, new Comparator<QueryResultRow>() {
 			public int compare(QueryResultRow row1, QueryResultRow row2) {
 				for (OrderByElement orderByElement : orderBy.getElements()) {
-					Object value1 = row1.getObject(orderByElement.getPath());
-					Object value2 = row2.getObject(orderByElement.getPath());
+					Object value1;
+					Object value2;
+					if (orderByElement.isMax()) {
+						value1 = MaxUtil.max(row1.getGroupedRows(), orderByElement.getPath());
+						value2 = MaxUtil.max(row2.getGroupedRows(), orderByElement.getPath());
+					} else {
+						value1 = row1.getObject(orderByElement.getPath());
+						value2 = row2.getObject(orderByElement.getPath());
+					}
 					
 					int comp = ComparatorUtil.compare(value1, value2, orderByElement.getOrientation());
 					

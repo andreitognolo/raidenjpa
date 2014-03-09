@@ -43,16 +43,6 @@ public class SelectParserTest {
 		assertEquals("value", third.getPath().get(1));
 	}
 
-	@Test
-	public void testCountFunction() {
-		String jpql = "SELECT count(*) FROM A a";
-		QueryParser queryParser = new QueryParser(jpql);
-
-		SelectClause select = queryParser.getSelect();
-		assertEquals(1, select.getElements().size());
-		assertEquals("count(*)", select.getElements().get(0).getPath().get(0));
-	}
-	
 	@FixMe("Implement last test")
 	@Test
 	public void testWithouSelectClause() {
@@ -82,6 +72,10 @@ public class SelectParserTest {
 	
 	@Test
 	public void testCount() {
+		String jpql = "SELECT count(*) FROM A a";
+		QueryParser parser = new QueryParser(jpql);
 		
+		SelectClause select = parser.getSelect();
+		assertTrue(select.getElements().get(0).isCount());
 	}
 }

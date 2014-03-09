@@ -92,13 +92,12 @@ public class QueryResult implements Iterable<QueryResultRow> {
 			Object[] resultRow = new Object[select.getElements().size()];
 			for (int i = 0; i < select.getElements().size(); i++) {
 				SelectElement selectElement = select.getElements().get(i);
-				String selectItem = selectElement.getPath().get(0);
 				
-				if ("count(*)".equalsIgnoreCase(selectItem)) {
-					resultRow[i] = new Long(row.getGroupedRows().size()); 
-				} else if (selectItem.toUpperCase().contains("MAX(")) {
-					selectItem = selectItem.replace("MAX(", "").replace(")", "");
-					resultRow[i] = MaxUtil.max(row.getGroupedRows(), selectItem);
+				if (selectElement.isCount()) {
+					resultRow[i] = new Long(row.getGroupedRows().size());
+//				} else if (selectItem.toUpperCase().contains("MAX(")) {
+//					selectItem = selectItem.replace("MAX(", "").replace(")", "");
+//					resultRow[i] = MaxUtil.max(row.getGroupedRows(), selectItem);
 				} else {
 					resultRow[i] = row.get(selectElement);
 				}

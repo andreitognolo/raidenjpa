@@ -51,7 +51,7 @@ public class SelectClause {
 
 	public boolean isThereAggregationFunction() {
 		for (SelectElement element : getElements()) {
-			if ("count(*)".equalsIgnoreCase(element.getPath().get(0))) {
+			if (element.isCount()) {
 				return true;
 			}
 		}

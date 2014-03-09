@@ -10,9 +10,15 @@ public class SelectElement {
 
 	private List<String> path;
 	
+	private boolean count;
+	
 	@BadSmell("Is it the best way?")
 	public SelectElement(String element) {
-		path = new ArrayList<String>(Arrays.asList(element.split("\\.")));
+		if (element.toUpperCase().equals("COUNT(*)")) {
+			count = true;
+		} else {
+			path = new ArrayList<String>(Arrays.asList(element.split("\\.")));
+		}
 	}
 
 	public List<String> getPath() {
@@ -21,5 +27,9 @@ public class SelectElement {
 
 	public String toString() {
 		return "SelectElement [path=" + path + "]";
+	}
+
+	public boolean isCount() {
+		return count;
 	}
 }

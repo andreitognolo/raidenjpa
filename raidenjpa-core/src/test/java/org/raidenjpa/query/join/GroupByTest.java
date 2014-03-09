@@ -94,19 +94,17 @@ public class GroupByTest extends AbstractTestCase {
 		createA("a2", 2);
 		createA("a1", 1);
 
-		// HINT: Aggregation should transform rows and after that order the result
-		
 		String jpql;
 		QueryHelper query;
 		List<?> result;
 		
-		jpql = "SELECT a.stringValue, count(*) FROM A a GROUP BY a.stringValue, max(a.intValue)";
+		jpql = "SELECT a.stringValue, count(*) FROM A a GROUP BY a.stringValue ORDER BY max(a.intValue)";
 		query = new QueryHelper(jpql);
 		result = query.getResultList();
 		assertEquals("a2", ((Object[]) result.get(0))[0]);
 		assertEquals("a1", ((Object[]) result.get(1))[0]);
 		
-		jpql = "SELECT a.stringValue, count(*) FROM A a GROUP BY a.stringValue, max(a.intValue) desc";
+		jpql = "SELECT a.stringValue, count(*) FROM A a GROUP BY a.stringValue ORDER BY max(a.intValue) desc";
 		query = new QueryHelper(jpql);
 		result = query.getResultList();
 		assertEquals("a1", ((Object[]) result.get(0))[0]);
@@ -138,7 +136,7 @@ public class GroupByTest extends AbstractTestCase {
 				if (compareTo != 0) {
 					return compareTo;
 				} else {
-					return ComparatorUtil.compareTo(o1[1], o2[1]);
+					return ComparatorUtil.compare(o1[1], o2[1]);
 				}
 			}
 		});

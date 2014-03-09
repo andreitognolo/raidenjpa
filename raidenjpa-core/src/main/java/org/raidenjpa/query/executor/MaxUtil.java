@@ -19,7 +19,7 @@ public class MaxUtil {
 		
 		Collections.sort(objects, new Comparator<Object>() {
 			public int compare(Object o1, Object o2) {
-				return ComparatorUtil.compareTo(o1, o2);
+				return ComparatorUtil.compare(o1, o2);
 			}
 		});
 		

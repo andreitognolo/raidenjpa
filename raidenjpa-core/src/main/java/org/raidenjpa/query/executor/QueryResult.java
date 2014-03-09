@@ -233,32 +233,17 @@ public class QueryResult implements Iterable<QueryResultRow> {
 
 	public void sort(final OrderByClause orderBy) {
 		Collections.sort(rows, new Comparator<QueryResultRow>() {
-			@SuppressWarnings({ "unchecked" })
 			public int compare(QueryResultRow row1, QueryResultRow row2) {
 				for (OrderByElement orderByElement : orderBy.getElements()) {
-					Comparable<Object> value1 = (Comparable<Object>) row1.getObject(orderByElement.getPath());
-					Comparable<Object> value2 = (Comparable<Object>) row2.getObject(orderByElement.getPath());
+					Object value1 = row1.getObject(orderByElement.getPath());
+					Object value2 = row2.getObject(orderByElement.getPath());
 					
-					if (value1 == null && value2 == null) {
+					int comp = ComparatorUtil.compare(value1, value2, orderByElement.getOrientation());
+					
+					if (comp == 0) {
 						continue;
-					}
-					
-					if (value1 == null && value2 != null) {
-						return value2.compareTo(value1);
-					}
-					
-					if (value1 != null && value2 == null) {
-						return value1.compareTo(value2);
-					}
-					
-					if (value1.equals(value2)) {
-						continue;
-					}
-					
-					if (orderByElement.getOrientation().equals("ASC")) {
-						return value1.compareTo(value2);
 					} else {
-						return value2.compareTo(value1);
+						return comp;
 					}
 				}
 				

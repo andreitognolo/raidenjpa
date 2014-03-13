@@ -1,5 +1,6 @@
 package org.raidenjpa.query.executor;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +10,12 @@ import org.raidenjpa.util.BadSmell;
 
 public class PoolerRows {
 
+	@BadSmell("This first if is really weird")
 	public Collection<QueryResultRow> group(List<QueryResultRow> rows, List<List<String>> paths) {
+		if (rows.isEmpty() && paths.size() > 0 && paths.get(0).get(0).equals("fake_aggregation_for_group_all_rows")) {
+			return Arrays.asList(new QueryResultRow("", null));
+		}
+		
 		Map<String, QueryResultRow> map = new HashMap<String, QueryResultRow>(); 
 		
 		for (QueryResultRow row : rows) {

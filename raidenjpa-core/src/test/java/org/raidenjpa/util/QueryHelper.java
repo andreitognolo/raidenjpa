@@ -11,6 +11,7 @@ public class QueryHelper {
 
 	public QueryHelper(String jpql) {
 		EntityManager em = EntityManagerUtil.em();
+		System.out.println(em);
 		query = em.createQuery(jpql);
 	}
 	
@@ -37,9 +38,8 @@ public class QueryHelper {
 		query.setMaxResults(maxResult);
 	}
 
-	@BadSmell("Change to getSingleResult")
 	public Object getSingleResult() {
-		return query.getResultList().get(0);
+		return query.getSingleResult();
 	}
 
 	@SuppressWarnings("unchecked")

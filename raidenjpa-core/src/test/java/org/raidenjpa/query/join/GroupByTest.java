@@ -1,6 +1,6 @@
 package org.raidenjpa.query.join;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -64,6 +64,23 @@ public class GroupByTest extends AbstractTestCase {
 		assertResult(result, 0, "a1", 0, 1l);
 		assertResult(result, 1, "a1", 1, 1l);
 		assertResult(result, 2, "a2", 0, 1l);
+	}
+	
+	@Test
+	public void testCountWithoutRows() {
+		String jpql;
+		QueryHelper query;
+		List<?> result;
+
+		jpql = "SELECT count(*) FROM A a";
+		query = new QueryHelper(jpql);
+		result = query.getResultList();
+		assertEquals(0l, result.get(0));
+		
+		jpql = "SELECT count(*) FROM A a GROUP BY a.stringValue";
+		query = new QueryHelper(jpql);
+		result = query.getResultList();
+		assertTrue(result.isEmpty());
 	}
 	
 	@Test

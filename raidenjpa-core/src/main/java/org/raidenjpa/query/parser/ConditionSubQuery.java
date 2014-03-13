@@ -31,8 +31,6 @@ public class ConditionSubQuery extends ConditionElement {
 				parentheses--;
 			}
 			
-			System.out.println("parentheses = " + parentheses);
-			
 			if (word.equals(",")) {
 				jpql += word;
 			} else {
@@ -41,8 +39,6 @@ public class ConditionSubQuery extends ConditionElement {
 		} while(parentheses > 0);
 
 		jpql = jpql.substring(1, jpql.length() - 1);
-		
-		System.out.println("inner = " + jpql);
 		
 		queryParser = new QueryParser(jpql);
 		

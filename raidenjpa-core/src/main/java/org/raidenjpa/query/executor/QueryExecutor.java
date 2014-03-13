@@ -72,7 +72,6 @@ public class QueryExecutor {
 		for (Entry<String, Object> entry : parameters.entrySet()) {
 			jpql = jpql.replaceAll(":" + entry.getKey(), entry.getValue().toString());
 		}
-		System.out.println("Executing = " + jpql);
 	}
 
 	private void executeOrderBy(QueryResult queryResult) {

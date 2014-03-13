@@ -35,8 +35,6 @@ public class ComparatorUtil {
 		String filterString = (String) filterValue;
 
 		if (filterString.endsWith("%")) {
-			System.out.println(objString);
-			System.out.println(filterString.substring(0, filterString.length() - 1));
 			return objString.startsWith(filterString.substring(0, filterString.length() - 1));
 		}
 
@@ -70,7 +68,6 @@ public class ComparatorUtil {
 			return 0;
 		}
 
-		System.out.println(orientation);
 		if (a == null && b != null) {
 			return -1;
 		}

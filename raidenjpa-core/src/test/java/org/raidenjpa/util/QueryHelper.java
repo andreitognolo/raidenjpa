@@ -11,7 +11,6 @@ public class QueryHelper {
 
 	public QueryHelper(String jpql) {
 		EntityManager em = EntityManagerUtil.em();
-		System.out.println(em);
 		query = em.createQuery(jpql);
 	}
 	

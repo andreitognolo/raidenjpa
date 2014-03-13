@@ -23,8 +23,6 @@ public class QueryWords {
 		
 		jpql = ajust(jpql);
 		
-		System.out.println("jpql = " + jpql);
-		
 		this.words = jpql.split(" ");
 	}
 

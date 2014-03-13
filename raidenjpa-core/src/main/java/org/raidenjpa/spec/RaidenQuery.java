@@ -32,7 +32,6 @@ public class RaidenQuery implements Query {
 	@BadSmell("Log")
 	@SuppressWarnings("rawtypes")
 	public List getResultList() {
-		System.out.println("Raiden JPQL: '" + jpql + "'");
 		return new QueryExecutor(jpql, parameters, maxResults).getResultList();
 	}
 

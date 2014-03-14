@@ -1,5 +1,6 @@
 package org.raidenjpa.spec;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Cache;
@@ -9,14 +10,14 @@ import javax.persistence.PersistenceUnitUtil;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.metamodel.Metamodel;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.raiden.exception.NoPlansToImplementException;
 import org.raiden.exception.NotYetImplementedException;
 
 public class RaidenEntityManagerFactory implements EntityManagerFactory {
 
+	@SuppressWarnings("rawtypes")
 	public EntityManager createEntityManager() {
-		return createEntityManager(new HashedMap());
+		return createEntityManager(new HashMap());
 	}
 
 	@SuppressWarnings("rawtypes")

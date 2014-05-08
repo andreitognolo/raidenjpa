@@ -1,4 +1,4 @@
-package org.raidenjpa.util;
+package org.raidenjpa.reflection;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import org.raidenjpa.util.FixMe;
 
 public class ReflectionUtil {
 

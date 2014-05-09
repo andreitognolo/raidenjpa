@@ -306,10 +306,22 @@ public class Util {
 	}
 	
 	public static boolean isInteger(String str) {
+
+		if (str == null || str.isEmpty()) return false;
+		
+		for (int i = 0; i < str.length(); i++) {
+			if (!Character.isDigit(str.charAt(i))) return false;
+		}
+		
+		if (str.length() < 10) return true;
+		
 	    try {
 	        Integer.parseInt(str);
 	        return true;
-	    } catch (NumberFormatException nfe) {}
-	    return false;
+
+		} catch (NumberFormatException nfe) {
+			return false;
+		}
 	}
+	
 }

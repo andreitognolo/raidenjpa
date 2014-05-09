@@ -20,10 +20,10 @@ import org.raidenjpa.query.parser.OrderByElement;
 import org.raidenjpa.query.parser.SelectClause;
 import org.raidenjpa.query.parser.SelectElement;
 import org.raidenjpa.query.parser.WhereClause;
+import org.raidenjpa.reflection.ReflectionUtil;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
 import org.raidenjpa.util.ListUtil;
-import org.raidenjpa.util.ReflectionUtil;
 
 public class QueryResult implements Iterable<QueryResultRow> {
 

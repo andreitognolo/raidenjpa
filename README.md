@@ -3,6 +3,29 @@ Raiden JPA
 
 A implementation of JPA subset specification which main goal is be really fast in development environments.
 
+Maven
+=========
+
+Repository (it is not in maven central yet):
+
+    <repositories>
+        <repository>
+            <id>raidenjpa</id>
+            <url>http://storage.googleapis.com/raiden-jpa</url>
+        </repository>
+    </repositories>
+    
+Dependency:
+
+    <dependency>
+        <groupId>org.raidenjpa</groupId>
+        <artifactId>raidenjpa-core</artifactId>
+        <version>0.0.1</version>
+    </dependency>
+    
+Development
+=========
+
 Build Status (by Travis):
 
 [![Build Status](https://travis-ci.org/andreitognolo/raidenjpa.png)](http://travis-ci.org/andreitognolo/raidenjpa)

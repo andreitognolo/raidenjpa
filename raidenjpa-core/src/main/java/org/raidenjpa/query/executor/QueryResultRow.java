@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.raidenjpa.reflection.ReflectionUtil;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
-import org.raidenjpa.util.ReflectionUtil;
 
 @FixMe("It needs to be a hierarchical representation in order to have a lighter cartesian product")
 public class QueryResultRow {

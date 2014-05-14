@@ -15,9 +15,10 @@ import javax.persistence.ElementCollection;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.raidenjpa.reflection.Cloner;
+import org.raidenjpa.reflection.ReflectionUtil;
 import org.raidenjpa.util.BadSmell;
 import org.raidenjpa.util.FixMe;
-import org.raidenjpa.util.ReflectionUtil;
 
 @BadSmell("1) Singleton dont allow multi thread - 2) Is it really necessary?")
 public class InMemoryDB {
@@ -68,19 +69,9 @@ public class InMemoryDB {
 		return rows;
 	}
 
-	@FixMe("Programmer should not be forced to override clone method")
-	@SuppressWarnings("unchecked")
-	public <T> T put(T t) {
-		Object originalObject = (Object) t;
+	public <T> T put(T original) {
+		T entidade = this.cloneObject(original);
 		
-		Method cloneMethod = ReflectionUtil.getMethod(originalObject, "clone");
-		
-		if (cloneMethod == null) {
-			throw new RuntimeException("For while, only class with clone method could be persisted. Clazz: '" + originalObject.getClass() + "'");
-		}
-		
-		Object entidade = ReflectionUtil.invoke(originalObject, cloneMethod);
-
 		if (ReflectionUtil.getBeanField(entidade, "id") == null) {
 			ReflectionUtil.setBeanField(entidade, "id", nextSequence());
 			rows(entidade.getClass()).add(entidade);
@@ -88,7 +79,20 @@ public class InMemoryDB {
 			replace(rows(entidade.getClass()), entidade);
 		}
 		
-		return (T) entidade;
+		return entidade;
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> T cloneObject(T original) {
+		
+		if (original instanceof Cloneable) {
+			Method cloneMethod = ReflectionUtil.getMethod(original, "clone");
+			if (cloneMethod != null) {
+				return (T) ReflectionUtil.invoke(original, cloneMethod);
+			}
+		}
+		
+		return Cloner.shallowCopy(original);
 	}
 	
 	public void replace(List<Object> rows, Object newObject) {

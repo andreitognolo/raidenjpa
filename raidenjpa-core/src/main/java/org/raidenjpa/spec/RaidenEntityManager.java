@@ -21,8 +21,8 @@ import javax.persistence.metamodel.Metamodel;
 
 import org.raiden.exception.NotYetImplementedException;
 import org.raidenjpa.db.InMemoryDB;
+import org.raidenjpa.reflection.ReflectionUtil;
 import org.raidenjpa.util.BadSmell;
-import org.raidenjpa.util.ReflectionUtil;
 
 public class RaidenEntityManager implements EntityManager {
 

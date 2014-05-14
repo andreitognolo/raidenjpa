@@ -21,6 +21,20 @@
 		<module>raidenjpa-core</module>
 	</modules>
 
+    <repositories>
+        <repository>
+            <id>raidenjpa-repository</id>
+            <url>http://storage.googleapis.com/raiden-jpa</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>raidenjpa-repository</id>
+            <url>http://storage.googleapis.com/raiden-jpa</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <distributionManagement>
         <repository>
             <id>raidenjpa-repository</id>
@@ -77,5 +91,13 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
+        <extensions>
+            <extension>
+                <groupId>org.raidenjpa.wagon</groupId>
+                <artifactId>raidenjpa-wagon-gs</artifactId>
+                <version>1.0.0</version>
+            </extension>
+        </extensions>
 	</build>
 </project>

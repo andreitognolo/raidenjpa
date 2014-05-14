@@ -39,7 +39,7 @@
         <repository>
             <id>raidenjpa-repository</id>
             <name>Raiden Cloud Storage Repository</name>
-            <url>gs://raiden-jpa/maven/release</url>
+            <url>gs://raiden-jpa</url>
         </repository>
     </distributionManagement>
 

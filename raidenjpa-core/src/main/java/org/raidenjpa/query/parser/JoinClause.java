@@ -10,6 +10,8 @@ public class JoinClause {
 	private String alias;
 
 	private WithClause with;
+	
+	private boolean isFetch;
 
 	public void parse(QueryWords words) {
 		if ("INNER".equalsIgnoreCase(words.current())) {
@@ -19,10 +21,18 @@ public class JoinClause {
 		words.require("JOIN");
 		words.next();
 		
+		if ("FETCH".equalsIgnoreCase(words.current())) {
+			isFetch = true;
+			words.next();
+		}
+		
 		path = words.getAsPath();
-		alias = words.next();
-		with = new WithClause();
-		with.parse(words);
+		
+		if (!isFetch) {
+			alias = words.next();
+			with = new WithClause();
+			with.parse(words);
+		}
 	}
 
 	public List<String> getPath() {
@@ -35,6 +45,10 @@ public class JoinClause {
 
 	public WithClause getWith() {
 		return with;
+	}
+	
+	public boolean isFetch() {
+		return isFetch;
 	}
 
 	public void setPath(List<String> path) {

@@ -58,6 +58,34 @@ public class JoinTest extends AbstractTestCase {
 		assertEquals("a3.2", ((ItemA) result.get(3)[1]).getValue());
 	}
 	
+	@Test
+	public void testJoinFetchSimple() {
+		createAwithItens("a2", 2);
+		createAwithItens("a3", 3);
+		
+		QueryHelper query = new QueryHelper("SELECT a FROM A a JOIN FETCH a.itens");
+		List<?> result = query.getResultList();
+		assertEquals(3, result.size());
+		
+		assertEquals("a1", ((A) result.get(0)).getStringValue());
+		assertEquals("a2", ((A) result.get(1)).getStringValue());
+		assertEquals("a3", ((A) result.get(2)).getStringValue());
+	}
+	
+	@Test
+	public void testJoinFetchAndWhere() {
+		createAwithItens("a2", 2);
+		createAwithItens("a3", 3);
+		
+		QueryHelper query = new QueryHelper("SELECT a FROM A a JOIN FETCH a.itens WHERE a.stringValue = :value");
+		query.parameter("value", "a2");
+		
+		List<?> result = query.getResultList();
+		assertEquals(1, result.size());
+		
+		assertEquals("a2", ((A) result.get(0)).getStringValue());
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testTwoJoins() {

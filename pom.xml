@@ -77,13 +77,5 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
-        <extensions>
-            <extension>
-                <groupId>pdoc.plataform.wagon</groupId>
-                <artifactId>pdoc-wagon-gs</artifactId>
-                <version>1.0.0</version>
-            </extension>
-        </extensions>
 	</build>
 </project>

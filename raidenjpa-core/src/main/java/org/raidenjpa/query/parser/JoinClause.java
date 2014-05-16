@@ -14,7 +14,9 @@ public class JoinClause {
 	private boolean isFetch;
 
 	public void parse(QueryWords words) {
-		if ("INNER".equalsIgnoreCase(words.current())) {
+		if ("INNER".equalsIgnoreCase(words.current())
+				|| "LEFT".equalsIgnoreCase(words.current())
+				|| "RIGHT".equalsIgnoreCase(words.current())) {
 			words.next();
 		}
 		

@@ -63,7 +63,7 @@ public class JoinTest extends AbstractTestCase {
 		createAwithItens("a2", 2);
 		createAwithItens("a3", 3);
 		
-		QueryHelper query = new QueryHelper("SELECT a FROM A a JOIN FETCH a.itens");
+		QueryHelper query = new QueryHelper("SELECT DISTINCT a FROM A a LEFT JOIN FETCH a.itens");
 		List<?> result = query.getResultList();
 		assertEquals(3, result.size());
 		
@@ -77,10 +77,15 @@ public class JoinTest extends AbstractTestCase {
 		createAwithItens("a2", 2);
 		createAwithItens("a3", 3);
 		
-		QueryHelper query = new QueryHelper("SELECT a FROM A a JOIN FETCH a.itens WHERE a.stringValue = :value");
+		QueryHelper query = new QueryHelper("SELECT DISTINCT a FROM A a LEFT JOIN FETCH a.itens WHERE a.stringValue = :value");
 		query.parameter("value", "a2");
 		
 		List<?> result = query.getResultList();
+		
+		for (Object r : result) {
+			System.err.println(((A) r).getStringValue());
+		}
+		
 		assertEquals(1, result.size());
 		
 		assertEquals("a2", ((A) result.get(0)).getStringValue());

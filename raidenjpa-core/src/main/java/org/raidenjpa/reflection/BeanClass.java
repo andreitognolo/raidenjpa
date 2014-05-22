@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -77,6 +78,10 @@ class BeanClass<T> {
 		List<BeanField> beanFields = new ArrayList<>();
 		
 		for (Field field : fields) {
+			if ((field.getModifiers() & Modifier.FINAL) != 0 || (field.getModifiers() & Modifier.STATIC) != 0) {
+				continue;
+			}
+			
 			field.setAccessible(true);
 			
 			String name = field.getName();

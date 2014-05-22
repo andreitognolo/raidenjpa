@@ -1,8 +1,9 @@
 package org.raidenjpa.reflection;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Assert;
 import org.junit.Test;
-import org.raidenjpa.reflection.Cloner;
 
 public class ClonerTest {
 	
@@ -76,6 +77,14 @@ public class ClonerTest {
 		Assert.assertEquals("ggg", clone.getG());
 	}
 	
+	@Test
+	public void testFinalAttributes() {
+		H h = new H();
+		
+		h.c = "c2";
+		
+		assertEquals("c2", Cloner.shallowCopy(h).c);
+	}
 
 	private static class A {
 		
@@ -258,6 +267,14 @@ public class ClonerTest {
 			this.g = g;
 		}
 		
+	}
+	
+	@SuppressWarnings("unused")
+	private static class H {
+		private final String a = "";
+		private static final String b = "";
+		private static String d = "";
+		private String c;
 	}
 
 }

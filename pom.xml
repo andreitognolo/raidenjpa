@@ -4,7 +4,7 @@
 
 	<groupId>org.raidenjpa</groupId>
 	<artifactId>raidenjpa</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>raidenjpa</name>

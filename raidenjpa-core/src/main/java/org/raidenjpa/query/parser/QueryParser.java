@@ -56,7 +56,9 @@ public class QueryParser {
 			JoinClause join = new JoinClause();
 			join.parse(words);
 			
-			joins.add(join);
+			if (!join.isFetch()) {
+				joins.add(join);
+			}
 		}
 	}
 

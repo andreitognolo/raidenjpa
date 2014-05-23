@@ -96,7 +96,7 @@ public class QueryWords {
 			return false;
 		}
 		
-		return StringUtil.equalsIgnoreCase(current(), "INNER", "JOIN");
+		return StringUtil.equalsIgnoreCase(current(), "INNER", "JOIN", "LEFT", "RIGHT");
 	}
 
 	public List<String> getAsPath() {

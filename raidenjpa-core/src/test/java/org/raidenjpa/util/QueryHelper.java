@@ -33,8 +33,14 @@ public class QueryHelper {
 		return query.getResultList();
 	}
 
-	public void setMaxResult(int maxResult) {
+	public QueryHelper setMaxResult(int maxResult) {
 		query.setMaxResults(maxResult);
+		return this;
+	}
+	
+	public QueryHelper setFirstResult(int startPosition) {
+		query.setFirstResult(startPosition);
+		return this;
 	}
 
 	public Object getSingleResult() {

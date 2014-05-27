@@ -24,15 +24,18 @@ public class RaidenQuery implements Query {
 	
 	private Map<String, Object> parameters = new HashMap<String, Object>();
 	private Integer maxResults;
+	private int firstResult;
 
 	public RaidenQuery(String jpql) {
 		this.jpql = jpql;
+		this.firstResult = 0;
 	}
 
 	@BadSmell("Log")
 	@SuppressWarnings("rawtypes")
 	public List getResultList() {
-		return new QueryExecutor(jpql, parameters, maxResults).getResultList();
+		QueryExecutor executor = new QueryExecutor(jpql, parameters, maxResults);
+		return executor.setFirstResult(this.firstResult).getResultList();
 	}
 
 	public Object getSingleResult() {
@@ -52,21 +55,20 @@ public class RaidenQuery implements Query {
 		parameters.put(name, value);
 		return this;
 	}
+	
+	public Query setFirstResult(int startPosition) {
+		this.firstResult = startPosition;
+		return this;
+	}
+	
+	public int getFirstResult() {
+		return this.firstResult;
+	}
+	
 
 	public int getMaxResults() {
 		throw new NotYetImplementedException();
 	}
-
-	public Query setFirstResult(int startPosition) {
-
-		throw new NotYetImplementedException();
-	}
-
-	public int getFirstResult() {
-
-		throw new NotYetImplementedException();
-	}
-
 	public Query setHint(String hintName, Object value) {
 
 		throw new NotYetImplementedException();

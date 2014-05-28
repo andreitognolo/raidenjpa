@@ -31,6 +31,24 @@ public class GroupByTest extends AbstractTestCase {
 	}
 	
 	@Test
+	public void testCountColumnWithoutGroupBy() {
+		createABC();
+		createA("a1");
+		createA("a2");
+		
+		String jpql;
+		QueryHelper query;
+		List<?> result;
+		
+		jpql = "SELECT count(a.id) FROM A a";
+		query = new QueryHelper(jpql);
+		result = query.getResultList();
+		assertEquals(1, result.size());
+		assertEquals(3l, result.get(0));
+	}
+	
+	
+	@Test
 	public void testCountWithGroupBy() {
 		createA("a1", 1);
 		createA("a1", 0);

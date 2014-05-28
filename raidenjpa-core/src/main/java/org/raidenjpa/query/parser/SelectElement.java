@@ -16,7 +16,7 @@ public class SelectElement {
 	
 	@BadSmell("path, primite obsession")
 	public SelectElement(String element) {
-		if (element.toUpperCase().equals("COUNT(*)")) {
+		if (element.toUpperCase().startsWith("COUNT(")) {
 			count = true;
 		} else if (element.toUpperCase().startsWith("MAX(")) {
 			max = true;

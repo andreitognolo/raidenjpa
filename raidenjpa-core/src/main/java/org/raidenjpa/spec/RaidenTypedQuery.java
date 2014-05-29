@@ -43,6 +43,15 @@ public class RaidenTypedQuery<X> implements TypedQuery<X> {
 		return this;
 	}
 	
+	public int getFirstResult() {
+		return query.getFirstResult();
+	}
+	
+	public TypedQuery<X> setFirstResult(int startPosition) {
+		query.setFirstResult(startPosition);
+		return this;
+	}
+	
 	public int executeUpdate() {
 		throw new NotYetImplementedException();
 	}
@@ -51,12 +60,6 @@ public class RaidenTypedQuery<X> implements TypedQuery<X> {
 
 		throw new NotYetImplementedException();
 	}
-
-	public int getFirstResult() {
-
-		throw new NotYetImplementedException();
-	}
-
 	public Map<String, Object> getHints() {
 		throw new NotYetImplementedException();
 	}
@@ -116,11 +119,6 @@ public class RaidenTypedQuery<X> implements TypedQuery<X> {
 	}
 
 	public <T> T unwrap(Class<T> cls) {
-
-		throw new NotYetImplementedException();
-	}
-
-	public TypedQuery<X> setFirstResult(int startPosition) {
 
 		throw new NotYetImplementedException();
 	}

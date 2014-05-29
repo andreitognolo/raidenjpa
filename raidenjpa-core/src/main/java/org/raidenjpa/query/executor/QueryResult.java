@@ -72,12 +72,20 @@ public class QueryResult implements Iterable<QueryResultRow> {
 		return rows.iterator();
 	}
 
-	public void limit(Integer maxResult) {
-		if (maxResult == null || maxResult >= rows.size()) {
+	public void limit(int first, Integer maxResult) {
+		int size = rows.size();
+		int last = maxResult == null ? size : Math.min(maxResult + first, size);
+		
+		if (first == 0 && last == size) {
 			return;
 		}
 		
-		rows = rows.subList(0, maxResult);
+		if (first >= last) {
+			rows = Collections.emptyList();
+			return;
+		}
+		
+		rows = rows.subList(first, last);
 	}
 
 	@BadSmell("This double verification in groupBy is only necessary because of bad design")

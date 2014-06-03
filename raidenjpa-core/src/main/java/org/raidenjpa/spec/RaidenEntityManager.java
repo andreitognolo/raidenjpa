@@ -22,6 +22,8 @@ import javax.persistence.metamodel.Metamodel;
 import org.raiden.exception.NotYetImplementedException;
 import org.raidenjpa.db.InMemoryDB;
 import org.raidenjpa.reflection.ReflectionUtil;
+import org.raidenjpa.spec.criteria.RaidenCriteriaBuilder;
+import org.raidenjpa.spec.criteria.RaidenCriteriaQuery;
 import org.raidenjpa.util.BadSmell;
 
 public class RaidenEntityManager implements EntityManager {
@@ -215,8 +217,8 @@ public class RaidenEntityManager implements EntityManager {
 
 	@Override
 	public <T> TypedQuery<T> createQuery(CriteriaQuery<T> criteriaQuery) {
-		// TODO Auto-generated method stub
-		return null;
+		RaidenCriteriaQuery<T> raidenCriteriaQuery = (RaidenCriteriaQuery<T>) criteriaQuery;
+		return new RaidenTypedQuery<T>(createQuery(raidenCriteriaQuery.toJpql()));
 	}
 
 	@Override
@@ -291,8 +293,7 @@ public class RaidenEntityManager implements EntityManager {
 
 	@Override
 	public CriteriaBuilder getCriteriaBuilder() {
-		// TODO Auto-generated method stub
-		return null;
+		return new RaidenCriteriaBuilder();
 	}
 
 	@Override

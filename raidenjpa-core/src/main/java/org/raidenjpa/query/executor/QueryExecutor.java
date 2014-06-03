@@ -20,6 +20,7 @@ import org.raidenjpa.util.FixMe;
 public class QueryExecutor {
 
 	private Integer maxResult;
+	private int firstResult;
 	private	Map<String, Object> parameters;
 	private QueryParser queryParser; 
 	
@@ -27,6 +28,7 @@ public class QueryExecutor {
 		this.queryParser = new QueryParser(jpql);
 		this.parameters = parameters;
 		this.maxResult = maxResult;
+		this.firstResult = 0;
 	}
 
 	public QueryExecutor(QueryParser queryParser, Map<String, Object> parameters) {
@@ -102,7 +104,7 @@ public class QueryExecutor {
 
 	@FixMe("Execute limit before than group by is correct?")
 	private void executeLimit(QueryResult queryResult) {
-		queryResult.limit(maxResult);
+		queryResult.limit(firstResult, maxResult);
 	}
 
 	private void executeWhere(QueryResult queryResult) {
@@ -132,4 +134,9 @@ public class QueryExecutor {
 			}
 		}
 	}
-}
+	
+	public QueryExecutor setFirstResult(int first) {
+		this.firstResult = first;
+		return this;
+	}
+} 

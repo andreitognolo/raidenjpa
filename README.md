@@ -3,6 +3,11 @@ Raiden JPA
 
 An implementation of JPA subset specification which main goal is be really fast in development environments.
 
+Hibernate vs Raiden JPA (time comparison)
+=========
+
+This video show two unit tests. The first is a test in a simple project and the second is a more complex (private) project: https://www.youtube.com/watch?v=cpJuVDhoV0Q
+
 Is it ready to use?
 =========
 

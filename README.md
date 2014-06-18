@@ -1,7 +1,7 @@
 Raiden JPA
 =========
 
-An implementation of JPA subset specification which main goal is be really fast in development environments.
+A really fast JPA subset implementation to be use in development enviroments.
 
 Hibernate vs Raiden JPA (time comparison)
 =========

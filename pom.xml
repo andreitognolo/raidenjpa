@@ -7,41 +7,75 @@
 	<version>0.0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>raidenjpa</name>
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>9</version>
+	</parent>
+
+	<name>Raiden JPA</name>
+	<description>A really fast JPA subset implementation to be use in development enviroments</description>
+	<url>http://github.com/andreitognolo/raidenjpa</url>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:ssh://git@github.com/andreitognolo/raidenjpa.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/andreitognolo/raidenjpa.git</developerConnection>
+		<url>https://github.com/andreitognolo/raidenjpa</url>
+		<tag>HEAD</tag>
+	</scm>
+
+	<developers>
+		<developer>
+			<name>Andrei Tognolo</name>
+			<email>andreitognolo@gmail.com</email>
+		</developer>
+		<developer>
+			<name>Leonardo Couto</name>
+			<email>leonardo.couto@gmail.com</email>
+		</developer>
+	</developers>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-    <prerequisites>
-        <maven>3</maven>
-    </prerequisites>
+	<prerequisites>
+		<maven>3</maven>
+	</prerequisites>
 
 	<modules>
 		<module>raidenjpa-core</module>
 	</modules>
 
-    <repositories>
-        <repository>
-            <id>raidenjpa-repository</id>
-            <url>http://storage.googleapis.com/raiden-jpa</url>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>raidenjpa-repository</id>
+			<url>http://storage.googleapis.com/raiden-jpa</url>
+		</repository>
+	</repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>raidenjpa-repository</id>
-            <url>http://storage.googleapis.com/raiden-jpa</url>
-        </pluginRepository>
-    </pluginRepositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>raidenjpa-repository</id>
+			<url>http://storage.googleapis.com/raiden-jpa</url>
+		</pluginRepository>
+	</pluginRepositories>
 
-    <distributionManagement>
-        <repository>
-            <id>raidenjpa-repository</id>
-            <name>Raiden Cloud Storage Repository</name>
-            <url>gs://raiden-jpa</url>
-        </repository>
-    </distributionManagement>
+	<distributionManagement>
+		<repository>
+			<id>raidenjpa-repository</id>
+			<name>Raiden Cloud Storage Repository</name>
+			<url>gs://raiden-jpa</url>
+		</repository>
+	</distributionManagement>
 
 	<dependencyManagement>
 		<dependencies>
@@ -81,7 +115,7 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-                        <plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<version>2.9</version>
@@ -92,12 +126,41 @@
 			</plugin>
 		</plugins>
 
-        <extensions>
-            <extension>
-                <groupId>org.raidenjpa.wagon</groupId>
-                <artifactId>raidenjpa-wagon-gs</artifactId>
-                <version>1.0.0</version>
-            </extension>
-        </extensions>
+		<extensions>
+			<extension>
+				<groupId>org.raidenjpa.wagon</groupId>
+				<artifactId>raidenjpa-wagon-gs</artifactId>
+				<version>1.0.0</version>
+			</extension>
+		</extensions>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>deploy</id>
+			<activation>
+				<property>
+					<name>deploy</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.5</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

@@ -103,14 +103,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
-		<extensions>
-			<extension>
-				<groupId>org.raidenjpa.wagon</groupId>
-				<artifactId>raidenjpa-wagon-gs</artifactId>
-				<version>1.0.0</version>
-			</extension>
-		</extensions>
 	</build>
 
 	<profiles>

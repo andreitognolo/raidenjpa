@@ -55,28 +55,6 @@
 		<module>raidenjpa-core</module>
 	</modules>
 
-	<repositories>
-		<repository>
-			<id>raidenjpa-repository</id>
-			<url>http://storage.googleapis.com/raiden-jpa</url>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>raidenjpa-repository</id>
-			<url>http://storage.googleapis.com/raiden-jpa</url>
-		</pluginRepository>
-	</pluginRepositories>
-
-	<distributionManagement>
-		<repository>
-			<id>raidenjpa-repository</id>
-			<name>Raiden Cloud Storage Repository</name>
-			<url>gs://raiden-jpa</url>
-		</repository>
-	</distributionManagement>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

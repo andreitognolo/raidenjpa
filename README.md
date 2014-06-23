@@ -17,15 +17,6 @@ Do you want help to put it on your project? Send me an email: andreitognolo@gmai
 
 Getting Started
 =========
-
-Repository (it is not in maven central yet):
-
-    <repositories>
-        <repository>
-            <id>raidenjpa</id>
-            <url>http://storage.googleapis.com/raiden-jpa</url>
-        </repository>
-    </repositories>
     
 Dependency:
 

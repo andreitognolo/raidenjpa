@@ -6,7 +6,7 @@ A really fast JPA subset implementation to be use in development enviroments.
 Hibernate vs Raiden JPA
 =========
 
-This video show two unit tests. The first is a test in a simple project and the second is a more complex (private) project: https://www.youtube.com/watch?v=cpJuVDhoV0Q
+(55 sec) https://www.youtube.com/watch?v=BPrVga6dRRA
 
 Is it ready to use?
 =========

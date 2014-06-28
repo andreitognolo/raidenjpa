@@ -5,7 +5,7 @@ SNAPSHOT_VERSION="$2"
 
 STOP=0
 
-source env/dextra/env.sh
+source env/standalone/env.sh
 
 if [ "x$CLOSE_VERSION" == "x" ]; then 
 	STOP=1;
@@ -31,7 +31,7 @@ if [ "x$STOP" == "x0" ]; then
 	mvn versions:set -DnewVersion=$CLOSE_VERSION
 	git commit -am "releasing raidenjpa-$CLOSE_VERSION"
 	git tag pdoc-$CLOSE_VERSION
-	git push origin pdoc-$CLOSE_VERSION
+	git push origin raidenjpa-$CLOSE_VERSION
  
 	mvn clean install -Dmaven.test.skip.exec
 	mvn deploy -e -DreleaseMail -Dmaven.test.skip.exec

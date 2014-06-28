@@ -16,9 +16,9 @@
 		<mkdir dir="gen/app" />
 		<parallel>
 			<sequential>
-				<get dest="gen/app/maven.zip" src="http://storage.googleapis.com/portaldocs-pub/repo/ext/br/com/portaldedocumentos/ext/maven/3.0.5/maven-3.0.5.zip" />
+				<get dest="gen/app/maven.zip" src="http://ftp.unicamp.br/pub/apache/maven/maven-3/3.2.2/binaries/apache-maven-3.2.2-bin.zip" />
 				<unzip dest="gen/app" src="gen/app/maven.zip" />
-				<move file="gen/app/apache-maven-3.0.5" tofile="gen/app/maven" />
+				<move file="gen/app/apache-maven-3.2.2" tofile="gen/app/maven" />
 				<chmod perm="u+x" file="gen/app/maven/bin/mvn" />
 			</sequential>
 		</parallel>

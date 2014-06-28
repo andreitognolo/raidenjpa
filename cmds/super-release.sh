@@ -30,7 +30,7 @@ fi
 if [ "x$STOP" == "x0" ]; then
 	mvn versions:set -DnewVersion=$CLOSE_VERSION
 	git commit -am "releasing raidenjpa-$CLOSE_VERSION"
-	git tag pdoc-$CLOSE_VERSION
+	git tag raidenjpa-$CLOSE_VERSION
 	git push origin raidenjpa-$CLOSE_VERSION
  
 	mvn clean install -Dmaven.test.skip.exec

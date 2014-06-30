@@ -15,13 +15,16 @@ import javax.persistence.metamodel.EntityType;
 
 public class RaidenCriteriaQuery<T> implements CriteriaQuery<T> {
 
+	private RaindenRoot<?> raindenRoot;
+
 	public RaidenCriteriaQuery(Class<T> resultClass) {
 		// TODO Auto-generated constructor stub
 	}
 
 	public <X> Root<X> from(Class<X> entityClass) {
-		// TODO Auto-generated method stub
-		return null;
+		RaindenRoot<X> root = new RaindenRoot<X>(entityClass);
+		raindenRoot = root;
+		return root;
 	}
 
 	public <X> Root<X> from(EntityType<X> entity) {
@@ -140,7 +143,7 @@ public class RaidenCriteriaQuery<T> implements CriteriaQuery<T> {
 	}
 
 	public String toJpql() {
-		return "FROM A a";
+		return "FROM " + raindenRoot.getEntityClass().getSimpleName() + " a";
 	}
 
 }

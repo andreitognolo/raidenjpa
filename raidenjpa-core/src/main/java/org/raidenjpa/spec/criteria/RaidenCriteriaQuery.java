@@ -1,5 +1,7 @@
 package org.raidenjpa.spec.criteria;
 
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -15,15 +17,15 @@ import javax.persistence.metamodel.EntityType;
 
 public class RaidenCriteriaQuery<T> implements CriteriaQuery<T> {
 
-	private RaindenRoot<?> raindenRoot;
+	private Set<Root<?>> roots = new LinkedHashSet<>();
 
 	public RaidenCriteriaQuery(Class<T> resultClass) {
 		// TODO Auto-generated constructor stub
 	}
 
 	public <X> Root<X> from(Class<X> entityClass) {
-		RaindenRoot<X> root = new RaindenRoot<X>(entityClass);
-		raindenRoot = root;
+		Root<X> root = new RaidenRoot<X>(entityClass);
+		roots.add(root);
 		return root;
 	}
 
@@ -38,8 +40,7 @@ public class RaidenCriteriaQuery<T> implements CriteriaQuery<T> {
 	}
 
 	public Set<Root<?>> getRoots() {
-		// TODO Auto-generated method stub
-		return null;
+		return roots;
 	}
 
 	public Selection<T> getSelection() {
@@ -143,7 +144,17 @@ public class RaidenCriteriaQuery<T> implements CriteriaQuery<T> {
 	}
 
 	public String toJpql() {
-		return "FROM " + raindenRoot.getEntityClass().getSimpleName() + " a";
+		StringBuilder sb = new StringBuilder();
+		sb.append("FROM ");
+		Iterator<Root<?>> it = roots.iterator();
+		while(it.hasNext()){
+			RaidenRoot<?> raidenRoot = (RaidenRoot<?>) it.next();
+			sb.append(raidenRoot.getEntityClass().getSimpleName());
+			if(it.hasNext()){
+				sb.append(", ");
+			}
+		}
+		return sb.toString();
 	}
 
 }

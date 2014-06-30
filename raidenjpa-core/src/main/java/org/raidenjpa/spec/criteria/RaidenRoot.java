@@ -26,11 +26,11 @@ import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
-public class RaindenRoot<X> implements Root<X> {
+public class RaidenRoot<X> implements Root<X> {
 
 	private Class<X> entityClass;
 
-	public RaindenRoot(Class<X> entityClass) {
+	public RaidenRoot(Class<X> entityClass) {
 		this.setEntityClass(entityClass);
 	}
 

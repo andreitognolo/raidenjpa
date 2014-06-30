@@ -25,6 +25,7 @@ public class RaidenCriteriaQuery<T> implements CriteriaQuery<T> {
 
 	public <X> Root<X> from(Class<X> entityClass) {
 		Root<X> root = new RaidenRoot<X>(entityClass);
+		root.alias(""+roots.size());
 		roots.add(root);
 		return root;
 	}
@@ -149,7 +150,7 @@ public class RaidenCriteriaQuery<T> implements CriteriaQuery<T> {
 		Iterator<Root<?>> it = roots.iterator();
 		while(it.hasNext()){
 			RaidenRoot<?> raidenRoot = (RaidenRoot<?>) it.next();
-			sb.append(raidenRoot.getEntityClass().getSimpleName());
+			sb.append(raidenRoot.getClassName()).append(" ").append(raidenRoot.getAlias());
 			if(it.hasNext()){
 				sb.append(", ");
 			}

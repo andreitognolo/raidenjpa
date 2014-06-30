@@ -21,7 +21,7 @@ public class CriteriaTest extends AbstractTestCase {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<A> criteria = builder.createQuery(A.class);
 		criteria.from(A.class);
-		assertEquals(((RaidenCriteriaQuery<A>) criteria).toJpql(), "FROM A");
+		assertEquals(((RaidenCriteriaQuery<A>) criteria).toJpql(), "FROM A a_0");
 	}
 
 	@Test
@@ -31,7 +31,7 @@ public class CriteriaTest extends AbstractTestCase {
 		CriteriaQuery<A> criteria = builder.createQuery(A.class);
 		criteria.from(A.class);
 		criteria.from(B.class);
-		assertEquals(((RaidenCriteriaQuery<A>) criteria).toJpql(), "FROM A, B");
+		assertEquals(((RaidenCriteriaQuery<A>) criteria).toJpql(), "FROM A a_0, B b_1");
 	}
 
 }

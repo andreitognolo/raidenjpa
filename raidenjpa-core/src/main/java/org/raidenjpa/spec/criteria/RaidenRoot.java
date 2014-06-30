@@ -30,8 +30,10 @@ public class RaidenRoot<X> implements Root<X> {
 
 	private Class<X> entityClass;
 
+	private String alias;
+	
 	public RaidenRoot(Class<X> entityClass) {
-		this.setEntityClass(entityClass);
+		this.entityClass = entityClass;
 	}
 
 	@Override
@@ -259,7 +261,7 @@ public class RaidenRoot<X> implements Root<X> {
 
 	@Override
 	public Selection<X> alias(String name) {
-		// TODO Auto-generated method stub
+		alias = getClassName().toLowerCase() + "_"+name;
 		return null;
 	}
 
@@ -283,8 +285,7 @@ public class RaidenRoot<X> implements Root<X> {
 
 	@Override
 	public String getAlias() {
-		// TODO Auto-generated method stub
-		return null;
+		return alias;
 	}
 
 	@Override
@@ -337,12 +338,9 @@ public class RaidenRoot<X> implements Root<X> {
 		return null;
 	}
 
-	public Class<X> getEntityClass() {
-		return entityClass;
-	}
-
-	public void setEntityClass(Class<X> entityClass) {
-		this.entityClass = entityClass;
+	
+	public String getClassName(){
+		return entityClass.getSimpleName();
 	}
 
 }

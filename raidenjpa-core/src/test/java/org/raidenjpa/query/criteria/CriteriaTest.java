@@ -15,9 +15,8 @@ import org.raidenjpa.spec.criteria.RaidenCriteriaQuery;
 import org.raidenjpa.util.EntityManagerUtil;
 
 public class CriteriaTest extends AbstractTestCase {
-	
+
 	@Before
-	@Override
 	public void setUp() {
 		asRaiden();
 		truncate();

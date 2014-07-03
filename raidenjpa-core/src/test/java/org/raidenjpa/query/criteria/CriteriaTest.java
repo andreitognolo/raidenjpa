@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.raidenjpa.AbstractTestCase;
 import org.raidenjpa.entities.A;
@@ -14,6 +15,13 @@ import org.raidenjpa.spec.criteria.RaidenCriteriaQuery;
 import org.raidenjpa.util.EntityManagerUtil;
 
 public class CriteriaTest extends AbstractTestCase {
+	
+	@Before
+	@Override
+	public void setUp() {
+		asRaiden();
+		truncate();
+	}
 
 	@Test
 	public void testSimpleFrom() {
@@ -31,7 +39,8 @@ public class CriteriaTest extends AbstractTestCase {
 		CriteriaQuery<A> criteria = builder.createQuery(A.class);
 		criteria.from(A.class);
 		criteria.from(B.class);
-		assertEquals(((RaidenCriteriaQuery<A>) criteria).toJpql(), "FROM A a_0, B b_1");
+		assertEquals(((RaidenCriteriaQuery<A>) criteria).toJpql(),
+				"FROM A a_0, B b_1");
 	}
 
 }

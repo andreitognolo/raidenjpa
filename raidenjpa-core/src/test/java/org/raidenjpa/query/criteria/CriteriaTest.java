@@ -1,29 +1,35 @@
 package org.raidenjpa.query.criteria;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
 import org.junit.Test;
-import org.raidenjpa.AbstractTestCase;
 import org.raidenjpa.entities.A;
-import org.raidenjpa.util.EntityManagerUtil;
+import org.raidenjpa.entities.B;
+import org.raidenjpa.spec.criteria.RaidenCriteriaBuilder;
+import org.raidenjpa.spec.criteria.RaidenCriteriaQuery;
 
-public class CriteriaTest extends AbstractTestCase {
+public class CriteriaTest {
+
 
 	@Test
-	public void testSimpleTx() {
-		createA("a1");
-		
-		EntityManager em = EntityManagerUtil.em();
-		CriteriaBuilder builder = em.getCriteriaBuilder(); 
+	public void testSimpleFrom() {
+		CriteriaBuilder builder = new RaidenCriteriaBuilder();
 		CriteriaQuery<A> criteria = builder.createQuery(A.class);
 		criteria.from(A.class);
-		List<A> as = em.createQuery(criteria).getResultList();
-		assertEquals(1, as.size());
+		assertEquals(((RaidenCriteriaQuery<A>) criteria).toJpql(), "FROM A a_0");
 	}
+
+	@Test
+	public void testMultipleFrom() {
+		CriteriaBuilder builder = new RaidenCriteriaBuilder();
+		CriteriaQuery<A> criteria = builder.createQuery(A.class);
+		criteria.from(A.class);
+		criteria.from(B.class);
+		assertEquals(((RaidenCriteriaQuery<A>) criteria).toJpql(),
+				"FROM A a_0, B b_1");
+	}
+
 }

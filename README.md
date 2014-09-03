@@ -5,6 +5,8 @@ A really fast JPA subset implementation to be use in development enviroments.
 
 STOP using mocks to improve your tests velocity, START using RaidenJPA.
 
+"if it (test) takes ten seconds just to start testing, toss it!" by Uncle Bob - bit.ly/WbZTTU
+
 Hibernate vs Raiden JPA
 =========
 

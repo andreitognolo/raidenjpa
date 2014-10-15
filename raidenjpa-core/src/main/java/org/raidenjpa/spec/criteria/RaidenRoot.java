@@ -26,6 +26,7 @@ import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
+@SuppressWarnings("hiding")
 public class RaidenRoot<X> implements Root<X> {
 
 	private Class<X> entityClass;

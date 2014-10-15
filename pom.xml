@@ -52,6 +52,7 @@
 
 	<modules>
 		<module>raidenjpa-core</module>
+		<module>raidenjpa-benchmark</module>
 	</modules>
 
 	<dependencyManagement>

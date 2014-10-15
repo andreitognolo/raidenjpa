@@ -26,6 +26,7 @@ public class RaidenCriteriaBuilder implements CriteriaBuilder {
 		return null;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public <T> CriteriaQuery<T> createQuery(Class<T> resultClass) {
 		return new RaidenCriteriaQuery(resultClass);
 	}

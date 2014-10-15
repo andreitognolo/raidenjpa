@@ -43,10 +43,15 @@ In your code:
 Development
 =========
 
-Build Status (by Travis):
-
-[![Build Status](https://travis-ci.org/andreitognolo/raidenjpa.png)](http://travis-ci.org/andreitognolo/raidenjpa)
-
 ## @Before
 
 You need Java 7+ and maven 3+
+
+## Compile
+
+    mvn clean install
+    
+## Run tests
+
+    mvn test (run tests using Raiden)
+    mvn test -Dhibernate (run the same tests, but using Hibernate)

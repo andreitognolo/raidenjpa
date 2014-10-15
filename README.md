@@ -1,3 +1,8 @@
+Continuous Integration status
+=========
+
+[![Build Status](https://snap-ci.com/andreitognolo/raidenjpa/branch/master/build_image)](https://snap-ci.com/andreitognolo/raidenjpa/branch/master)
+
 Raiden JPA
 =========
 

@@ -47,11 +47,14 @@ Development
 
 You need Java 7+ and maven 3+
 
-## Compile
+## Compile, run tests and eclipse
 
-    mvn clean install
+    $ # Compile 
+    $ mvn clean install
     
-## Run tests
+    $ # Run tests
+    $ mvn test (run tests using Raiden)
+    $ mvn test -Dhibernate (run the same tests, but using Hibernate)
 
-    mvn test (run tests using Raiden)
-    mvn test -Dhibernate (run the same tests, but using Hibernate)
+    $ # Configure eclipse files
+    $ mvn eclipse:clean eclipse:eclipse

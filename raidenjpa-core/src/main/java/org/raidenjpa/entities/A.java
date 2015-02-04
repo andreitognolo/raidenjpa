@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-@Entity11
+@Entity
 public class A extends Entidade {
 
 	private Long id;

@@ -1,6 +1,5 @@
 package org.raidenjpa.benchmark.entity;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;

@@ -6,7 +6,7 @@ Continuous Integration status
 Raiden JPA
 =========
 
-A really fast JPA subset implementation to be use in development enviroments. 
+A really fast JPA subset implementation to be use in development environments. 
 
 STOP using mocks to improve your tests velocity, START using RaidenJPA.
 
